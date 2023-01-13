@@ -197,3 +197,6 @@ __pycache__
 # yalc
 .yalc
 yalc.lock
+
+# sqlite
+*.sqlite
