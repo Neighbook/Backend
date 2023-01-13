@@ -1,4 +1,5 @@
-const sequelize = require("./core/database/sequelize");
+import { sequelize } from '../core/database/sequelize';
+
 const { Sequelize, DataTypes, Model } = require('sequelize');
 
 class User extends Model {}

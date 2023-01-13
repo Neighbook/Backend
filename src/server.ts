@@ -2,8 +2,6 @@ const http = require("http");
 const app = require("./app");
 const sequelize = require("./core/database/sequelize");
 
-
-
 const normalizePort = (val: string) => {
   const port = parseInt(val, 10);
 
@@ -15,7 +13,7 @@ const normalizePort = (val: string) => {
   }
   return false;
 };
-const port = normalizePort(process.env.PORT || "3000");
+var port = normalizePort(process.env.PORT || "3000");
 app.set("port", port);
 
 const errorHandler = (error: { syscall: string; code: any }) => {
@@ -32,7 +30,11 @@ const errorHandler = (error: { syscall: string; code: any }) => {
       break;
     case "EADDRINUSE":
       console.error(bind + " is already in use.");
-      process.exit(1);
+      // Sugesstion: use a different port
+      console.log("We will try to use a different port");
+      port = Number(port) + 1;
+      app.set("port", port);
+      server.listen(port);
       break;
     default:
       throw error;
