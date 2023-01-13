@@ -1,10 +1,18 @@
-import express from 'express';
-const route = express.Router();
+import express from "express";
+const foo_route = express.Router();
+import { FooController } from "../controller/foo_controller";
 
 // FooController
-route.get('/foo', (req, res) => {
-	// #swagger.tags = ['Users']
-		res.json({ id: 1, name: "Catcher in the Rye" })
+foo_route.get("/foo", (req: express.Request, res) => {
+  // #swagger.tags = ['FOO']
+  const response = FooController.getFoo(req.body.id);
+  res.status(200).json(response);
 });
 
-module.exports = route;
+foo_route.post("/foo", (req: express.Request, res) => {
+  // #swagger.tags = ['FOO']
+  const response = FooController.createFoo(req.body.name);
+  res.status(201).json(response);
+});
+
+module.exports = foo_route;

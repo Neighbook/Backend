@@ -1,15 +1,16 @@
-
+import { Foo } from "../../models/foo_model";
 export class FooController {
-	constructor() {
-		// ...
-	}
+  static createFoo(name: string): Foo {
+    const foo = new Foo(name);
+    return foo;
+  }
 
-	createFoo(name: string): Foo {
-		const foo = new Foo(name)
-		return foo
-	}
+  static getFoo(id: string): Foo {
+    return new Foo("foo");
+  }
 
-	getFoo(id: string): Foo {
-		// ...
-	}
+  static updateFoo(id: string, name: string): Foo {
+    const foo = new Foo(name);
+    return foo;
+  }
 }

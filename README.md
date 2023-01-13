@@ -1,6 +1,6 @@
-# Projet tutoré _backend server_ 
+# Projet tutoré _backend server_
 
-Bienvenue dans le _repository_ contenant le _backend_ du projet tutoré ! 
+Bienvenue dans le _repository_ contenant le _backend_ du projet tutoré !
 
 Pour l'instant, celui-ci ne contient que le tempalte de base d'une serveur node js avec express. Javascript a été remplacé par Typescript.
 

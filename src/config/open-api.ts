@@ -1,13 +1,25 @@
+import { environnement } from "./environnement";
+
 export const metadata = {
-	"swagger": "2.0",
-	"info": {
-		"version": "1.0.0",
-		"title": "REST API Backend",
-		"description": "Backend for REST API",
-	},
-	"host": "localhost:3000",
-	"basePath": "/",
-	"schemes": [
-		"http"
-	],
+  openapi: "3.0",
+  swagger: "2.0",
+  info: {
+    title: environnement.api_name,
+    version: environnement.api_version,
+    description: environnement.api_description,
+    license: {
+      name: environnement.licence_name,
+      url: environnement.licence_url,
+    },
+    contact: {
+      name: "john doe",
+      url: "https://logrocket.com",
+      email: "info@email.com",
+    },
+  },
+  servers: [
+    {
+      url: "http://localhost:3000",
+    },
+  ],
 };
