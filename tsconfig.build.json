@@ -1,4 +1,17 @@
 {
-	"outDir": "dist/<cjs, sys, global, etc>",
-	"exclude": ["test"] /* Exclude files and folders from type checking. */,
+    "extends": "./tsconfig.json",
+    "compilerOptions": {
+        "outDir": "./dist",
+        "sourceMap": true,
+        "declaration": true,
+        "noEmitOnError": true
+    },
+    "include": [
+        "src/**/*"
+    ],
+    "exclude": [
+        "node_modules",
+        "**/*.spec.ts",
+				"test"
+    ]
 }
