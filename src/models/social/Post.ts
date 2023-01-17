@@ -21,7 +21,7 @@ export class Post {
     idUtilisateur!: string
 
     @OneToOne(() => Event) @JoinColumn()
-    idEvenement!: number
+    idEvenement!: Event
 
     @Column({ type: 'timestamptz' })
     dateDeCreation!: Date
