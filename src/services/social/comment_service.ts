@@ -7,7 +7,8 @@ export class CommentService {
   static async getComment(id: number): Promise<Comment | null> {
     return await CommentRepository.findOne({
         where: {
-          Id: id
+          Id: id,
+          DateDeSuppression: undefined
         }
       })
   }
@@ -17,11 +18,19 @@ export class CommentService {
     comment.Contenu = Contenu
     comment.IdCommentaire = idCommentaire
     comment.IdUtilisateur = IdUtilisateur
+    comment.DateDeCreation = new Date()
+    comment.DateDeModification = new Date()
     return await CommentRepository.save(comment)
   }
 
   static async deleteComment(id: number): Promise<any> {
-    return await CommentRepository.delete(id)
+    let comment = await this.getComment(id)
+    if (comment){
+      comment.DateDeSuppression = new Date()
+      return await CommentRepository.save(comment)
+    }else {
+      Promise.reject("Comment doesn't exist")
+    }
   }
 
 }
