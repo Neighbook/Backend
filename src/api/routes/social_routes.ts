@@ -1,10 +1,10 @@
 import express from 'express'
 const socialRoutes = express.Router()
-import {SocialService} from '../../services/social_service'
+import {SocialService} from '../../services/social/comment_service'
 
 // User routes
 
-socialRoutes.get('/post', async (req: express.Request, res) => {
+socialRoutes.get('/comment', async (req: express.Request, res) => {
   res.status(200).json('aa')
 })
 
