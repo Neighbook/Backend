@@ -200,3 +200,6 @@ yalc.lock
 
 # sqlite
 *.sqlite
+
+# openapi
+**openapi.json**

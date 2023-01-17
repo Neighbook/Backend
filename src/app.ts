@@ -6,7 +6,7 @@ import { apiConfig } from './config/api_config'
 import { cors_config } from './config/cors'
 import cors from 'cors'
 import morgan from 'morgan'
-const swaggerDocument = require('./doc/open-api.json')
+const swaggerDocument = require('./doc/openapi.json')
 const userRoutes = require('./api/routes/user_routes')
 
 let app: Express = express()
