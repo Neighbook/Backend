@@ -20,3 +20,17 @@ export const UsersDataSource = new DataSource({
 	subscribers: [],
 	applicationName: environnement.api_name,
 });
+
+export const SocialDataSource = new DataSource({
+    type: 'postgres',
+    host: environnement.database.host,
+    port: environnement.database.port,
+    username: environnement.database.username,
+    password: environnement.database.password,
+    database: environnement.database.social_database,
+    synchronize: true,
+    logging: environnement.logging.level === 'debug',
+    entities: [],
+    migrations: [],
+    subscribers: [],
+})
