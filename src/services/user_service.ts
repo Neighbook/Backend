@@ -42,6 +42,7 @@ export class UserService {
 		user.firstName = firstName
 		user.lastName = lastName
 		user.age = age
+		console.log("service log : " + firstName)
 
 		await userRepository.save(user).then((user) => {
 			response = user;

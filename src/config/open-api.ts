@@ -1,7 +1,6 @@
 import { environnement } from './environnement'
 
 export const metadata = {
-    openapi: '3.0.3',
     info: {
         title: environnement.api_name,
         version: environnement.api_version,

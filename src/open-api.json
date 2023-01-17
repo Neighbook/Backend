@@ -1,5 +1,5 @@
 {
-  "openapi": "3.0.3",
+  "swagger": "2.0",
   "info": {
     "title": "API",
     "version": "0.1.0",
@@ -14,17 +14,22 @@
       "email": "info@email.com"
     }
   },
+  "host": "localhost:3000",
   "servers": [
     {
       "url": "http://localhost:3000",
       "description": "Local server"
     }
   ],
+  "basePath": "/",
   "tags": [
     {
       "name": "User",
       "description": "User management"
     }
+  ],
+  "schemes": [
+    "http"
   ],
   "paths": {
     "/user": {
@@ -40,22 +45,28 @@
         "tags": [
           "User"
         ],
-        "description": "",
+        "summary": "Create a user",
+        "description": "Endpoint",
         "parameters": [
           {
-            "name": "body",
+            "name": "obj",
+            "description": "User object",
             "in": "body",
+            "required": true,
             "schema": {
               "type": "object",
               "properties": {
                 "firstName": {
-                  "example": "any"
+                  "type": "string",
+                  "example": "string"
                 },
                 "lastName": {
-                  "example": "any"
+                  "type": "string",
+                  "example": "string"
                 },
                 "age": {
-                  "example": "any"
+                  "type": "number",
+                  "example": 0
                 }
               }
             }
@@ -63,7 +74,10 @@
         ],
         "responses": {
           "201": {
-            "description": "Created"
+            "description": "User created"
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         }
       },
@@ -132,9 +146,17 @@
         "tags": [
           "User"
         ],
-        "description": "",
+        "summary": "Get all users",
+        "description": "Endpoint to get all users",
         "parameters": [],
-        "responses": {}
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
       }
     }
   },

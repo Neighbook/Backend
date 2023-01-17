@@ -9,12 +9,20 @@ import morgan from 'morgan'
 const swaggerDocument = require('./open-api.json')
 const userRoutes = require('./api/routes/user_routes')
 
-const app: Express = express()
+let app: Express = express()
 
 app.use(morgan('[:date[web]] " :method :url " :status :response-time ms :res[content-length]'))
 
-app.use(express.urlencoded({ extended: false }))
-app.use(express.json())
+
+app.use((req, res, next) => {
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    res.setHeader("Access-Control-Allow-Headers", "*");
+    res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, PATCH, OPTIONS");
+    next();
+});
+
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 
 app.use(cors(cors_config))
 
