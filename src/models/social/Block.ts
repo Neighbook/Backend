@@ -1,7 +1,10 @@
-import {Entity, Column} from 'typeorm'
+import {Entity, Column, PrimaryGeneratedColumn} from 'typeorm'
 
 @Entity('UtilisateurBloque')
 export class Block {
+    @PrimaryGeneratedColumn()
+    Id!: number
+
     @Column()
     IdUtilisateur!: string;
 

@@ -1,5 +1,4 @@
-import {Entity, PrimaryGeneratedColumn, Column, OneToOne} from 'typeorm'
-import {JoinColumn} from "typeorm/browser";
+import {Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn} from 'typeorm'
 import {Event} from "./Evenement";
 
 
