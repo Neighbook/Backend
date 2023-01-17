@@ -2,12 +2,34 @@
 
 Bienvenue dans le _repository_ contenant le _backend_ du projet tutoré !
 
-Pour l'instant, celui-ci ne contient que le tempalte de base d'une serveur node js avec express. Javascript a été remplacé par Typescript.
+## Prérequis  pour bien démarer
 
-## Commandes de démarrage
+- node installer, versions supportés : 12, 14, 16
+- npm ou yarn, yarn de péference car plus performant
+- disposer d'un seveur de base de donnée postgrsql en local ou en ligne
 
-Pour lancer le serveur de dev `npm run dev`, le serveur a été configuré pour tourner sur le port 30000, si vous le changez merci de le changer également dans le README.md.
 
-Pour faire un build `npm run build`, la commande créera un dossier `dist` avec les fichiers ts compilé en js.
+## Guide des commandes de gestion du projet
 
-Pour lancer le serveur de prod `npm start`, la commande éxécutera le fichier `app.js` dans le dossier `dist`, n'oubliez pas de build avant sinon cela ne marchera pas.
+### - `install` : installer les dependance du projet 
+
+  - Command yarn
+  
+```bash
+yarn install
+```
+
+  - Command npm
+
+```bash
+npm install
+```
+
+### - `build`  : compiler le projet (ici npx compile de ts a js et effectuer les optims)
+### - `dev` : lancer le serveur d'application en mode dev
+### - `start` : lancer le serveur d'application a partir du build
+### - `build-clean` : supprimer l'ancienne version compile du projet et recrer un nouveau build
+### - `swagger-gendoc` : generer le fichier de documentation de open api
+### - `lint` : verifier la quqlite du code
+### - `format` : formater le code avec pretier
+### - `lint-fix` : verifier et corriger si possible les problemes de lint
