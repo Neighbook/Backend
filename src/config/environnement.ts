@@ -17,7 +17,7 @@ export const environnement = {
         username: process.env.DATABASE_USERNAME || 'postgres',
         password: process.env.DATABASE_PASSWORD || 'myPassword',
         user_database: process.env.DATABASE_USER_DATABASE || 'postgres',
-        social_database: process.env.DATABASE_USER_DATABASE || 'social',
+        social_database: process.env.DATABASE_SOCIAL_DATABASE || 'social'
     },
     logging: {
         level: process.env.LOGGING_LEVEL || 'info',

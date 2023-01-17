@@ -1,6 +1,6 @@
 import http from 'http'
 const app = require('./app')
-import { UserDataSource } from './core/datastores/typeorm_datastores'
+import { UserDataSource, SocialDataSource} from './core/datastores/typeorm_datastores'
 
 const normalizePort = (val: string) => {
     const port = parseInt(val, 10)
@@ -54,6 +54,7 @@ server.listen(port)
 
 try {
     UserDataSource.initialize()
+    SocialDataSource.initialize()
     console.log('Connection has been established successfully.')
 } catch (error) {
     console.error('Unable to connect to the database:', error)

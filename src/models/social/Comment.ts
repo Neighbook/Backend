@@ -10,9 +10,6 @@ export class Comment {
     Contenu!: string
 
     @Column()
-    Email!: string
-
-    @Column()
     IdUtilisateur!: string;
 
     @OneToOne(() => Post) @JoinTable()
