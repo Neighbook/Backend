@@ -12,7 +12,7 @@ export const UserDataSource = new DataSource({
     password: environnement.database.password,
     database: environnement.database.user_database,
     synchronize: true,
-    logging: environnement.loggin.level === 'debug' ? true : false,
+    logging: environnement.logging.level === 'debug' ? true : false,
     entities: [User],
     migrations: [],
     subscribers: [],

@@ -18,9 +18,10 @@ export const environnement = {
         password: process.env.DATABASE_PASSWORD || 'myPassword',
         user_database: process.env.DATABASE_USER_DATABASE || 'postgres',
     },
-    loggin: {
+    logging: {
         level: process.env.LOGGING_LEVEL || 'info',
-        format: process.env.LOGGING_FORMAT || 'combined',
+        format: process.env.LOGGING_FORMAT || 'dev',
+        date_format: process.env.LOGGING_DATE_FORMAT || 'iso',
     },
     licence_name: process.env.LICENCE_NAME || 'MIT',
     licence_url: process.env.LICENCE_URL || 'https://spdx.org/licenses/MIT.html',
