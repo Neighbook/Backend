@@ -10,14 +10,14 @@ export const metadata = {
             url: environnement.licence_url,
         },
         contact: {
-            name: 'john doe',
-            url: 'https://logrocket.com',
-            email: 'info@email.com',
+            name: 'John Folly',
+            url: 'https://github.com/Neighbook/Backend',
+            email: 'john.folly@utbm.fr',
         },
     },
     servers: [
         {
-            url: 'http://localhost:3000',
+            url: 'http://'+environnement.api_host+':'+environnement.api_port +'',
             description: 'Local server',
         },
     ],

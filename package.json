@@ -6,8 +6,8 @@
     "scripts": {
         "start": "node dist/server.js",
         "dev": "nodemon src/server.ts",
-        "build": "tsc -p tsconfig.build.json && node dist/swagger.js",
-        "swagger-gendoc": "tsc -p tsconfig.build.json && node dist/swagger.js && cp dist/open-api.json src",
+        "build": "tsc -p tsconfig.build.json && node dist/doc/swagger.js",
+        "swagger-gendoc": "tsc -p tsconfig.build.json && node dist/doc/swagger.js && cp dist/doc/open-api.json src/doc",
         "lint-fix": "eslint . --fix",
         "format": "prettier --write .",
         "lint": "nx run-many --target=lint --all --parallel"

@@ -1,7 +1,7 @@
 export const environnement = {
-    api_name: process.env.API_NAME || 'API',
+    api_name: process.env.API_NAME || 'Neighbook API',
     api_version: process.env.API_VERSION || '0.1.0',
-    api_description: process.env.API_DESCRIPTION || 'API description',
+    api_description: process.env.API_DESCRIPTION || 'Neighbook : Tutored project of FISA 3 - A22',
     api_port: process.env.API_PORT || 3001,
     api_host: process.env.API_HOST || 'localhost',
     api_base_path: process.env.API_BASE_PATH || '/',
