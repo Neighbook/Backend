@@ -1,16 +1,32 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm'
+import {Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinTable} from 'typeorm'
+import { Post } from './Post'
 
-@Entity('users')
-export class User {
+@Entity('Commentaire')
+export class Comment {
     @PrimaryGeneratedColumn()
-    id!: number
+    Id!: number
 
     @Column()
-    firstName!: string
+    Contenu!: string
 
     @Column()
-    lastName!: string
+    Email!: string
 
     @Column()
-    age!: number
+    IdUtilisateur!: string;
+
+    @OneToOne(() => Post) @JoinTable()
+    IdPoste!: Post;
+
+    @OneToOne(() => Comment) @JoinTable()
+    IdCommentaire!: Comment;
+
+    @Column({ type: 'timestamptz' })
+    DateDeCreation!: Date
+
+    @Column({ type: 'timestamptz' })
+    DateDeModification!: Date
+
+    @Column({ type: 'timestamptz' })
+    DateDeSuppression!: Date
 }
