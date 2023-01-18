@@ -2,9 +2,6 @@ import {
   Entity,
   PrimaryGeneratedColumn,
   Column,
-  AfterUpdate,
-  AfterInsert,
-  AfterSoftRemove,
   CreateDateColumn, UpdateDateColumn, DeleteDateColumn
 } from 'typeorm'
 
@@ -25,10 +22,10 @@ export class Event {
     @CreateDateColumn()
     dateDeCreation!: Date
 
-    @UpdateDateColumn({ type: 'timestamptz' })
+    @UpdateDateColumn()
     dateDeModification!: Date
 
-    @DeleteDateColumn({ type: 'timestamptz' })
+    @DeleteDateColumn()
     dateDeSuppression?: Date
 
 

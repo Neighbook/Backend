@@ -1,17 +1,17 @@
-import {Entity, Column, ManyToOne, JoinColumn, PrimaryGeneratedColumn} from 'typeorm'
+import {Entity, Column, JoinColumn, PrimaryGeneratedColumn, OneToOne} from 'typeorm'
 import {Post} from "./Post";
 import {Reaction} from "./Reaction";
 
 @Entity('postReactions')
 export class PostReaction {
     @PrimaryGeneratedColumn()
-    Id!: number
+    id!: number
 
-    @ManyToOne(()=>Reaction)@JoinColumn()
-      idReaction!: Reaction
+    @OneToOne(()=>Reaction)@JoinColumn()
+    reaction!: Reaction
 
-    @ManyToOne(()=>Post)
-    idPost!: Post
+    @OneToOne(()=>Post)
+    post!: Post
 
     @Column()
     idUtilisateur!: string

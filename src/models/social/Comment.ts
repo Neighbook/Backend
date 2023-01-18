@@ -9,22 +9,22 @@ import {
 } from 'typeorm'
 import { Post } from './Post'
 
-@Entity('Commentaire')
+@Entity('Commentaires')
 export class Comment {
     @PrimaryGeneratedColumn()
-    Id!: number
+    id!: number
 
     @Column()
-    Contenu!: string
+    contenu!: string
 
     @Column()
-    IdUtilisateur!: string;
+    idUtilisateur!: string;
 
     @OneToOne(() => Post) @JoinTable()
-    IdPoste!: Post;
+    post!: Post;
 
     @OneToOne(() => Comment) @JoinTable()
-    IdCommentaire!: Comment;
+    commentaire!: Comment;
 
     @CreateDateColumn({ type: 'timestamptz' })
     dateDeCreation!: Date

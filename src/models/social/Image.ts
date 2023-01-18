@@ -18,15 +18,15 @@ export class Image {
     @Column()
     url!: string
 
-    @CreateDateColumn({ type: 'timestamptz' })
+    @CreateDateColumn()
     dateDeCreation!: Date
 
-    @UpdateDateColumn({ type: 'timestamptz' })
+    @UpdateDateColumn()
     dateDeModification!: Date
 
-    @DeleteDateColumn({ type: 'timestamptz' })
+    @DeleteDateColumn()
     dateDeSuppression?: Date
 
     @OneToOne(()=>Post)@JoinColumn()
-    idPost!: Post
+    post!: Post
 }

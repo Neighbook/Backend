@@ -1,4 +1,13 @@
-import {Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn, JoinTable, OneToMany} from 'typeorm'
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  OneToOne,
+  JoinColumn,
+  JoinTable,
+  OneToMany,
+  CreateDateColumn, UpdateDateColumn, DeleteDateColumn
+} from 'typeorm'
 import {Event} from "./Evenement";
 import {Comment} from "./Comment";
 import {Image} from "./Image";
@@ -22,21 +31,21 @@ export class Post {
     idUtilisateur!: string
 
     @OneToOne(() => Event) @JoinColumn()
-    idEvenement!: Event
+    Evenement!: Event
 
-    @Column({ type: 'timestamptz' })
+    @CreateDateColumn()
     dateDeCreation!: Date
 
-    @Column({ type: 'timestamptz' })
+    @UpdateDateColumn()
     dateDeModification!: Date
 
-    @Column({ type: 'timestamptz' })
-    dateDeSuppression!: Date
+    @DeleteDateColumn()
+    dateDeSuppression?: Date
 
-    @OneToMany(() => Comment, (comment)=>comment.IdPoste) @JoinTable()
+    @OneToMany(() => Comment, (comment)=>comment.post) @JoinTable()
     commentaires!: Comment[];
 
-    @OneToMany(() => Image, (image)=>image.idPost) @JoinTable()
+    @OneToMany(() => Image, (image)=>image.post) @JoinTable()
     images!: Image[]
 
 }

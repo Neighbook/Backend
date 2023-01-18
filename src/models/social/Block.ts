@@ -1,13 +1,13 @@
 import {Entity, Column, PrimaryGeneratedColumn} from 'typeorm'
 
-@Entity('UtilisateurBloque')
+@Entity('UtilisateurBloques')
 export class Block {
     @PrimaryGeneratedColumn()
-    Id!: number
+    id!: number
 
     @Column()
-    IdUtilisateur!: string;
+    idUtilisateur!: string;
 
     @Column()
-    IdUtilisateurBloque!: string;
+    idUtilisateurBloque!: string;
 }

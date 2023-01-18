@@ -4,11 +4,11 @@ import {Event} from "./Evenement";
 @Entity('Abonnements')
 export class Abonnement {
     @PrimaryGeneratedColumn()
-    Id!: number
+    id!: number
 
     @OneToOne(() => Event) @JoinColumn()
-    IdEvenement!: Event
+    evenement!: Event
 
     @Column()
-    IdUtilisateur!: string;
+    idUtilisateur!: string;
 }

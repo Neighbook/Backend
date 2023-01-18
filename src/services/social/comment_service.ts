@@ -1,36 +1,32 @@
 import {SocialDataSource} from '../../core/datastores/typeorm_datastores'
 import {Comment} from "../../models/social/Comment";
+import {Post} from "../../models/social/Post";
 
 const CommentRepository = SocialDataSource.manager.getRepository(Comment)
 
 export class CommentService {
   static async getComment(id: number): Promise<Comment | null> {
     return await CommentRepository.findOne({
-        where: {
-          Id: id,
-          dateDeSuppression: undefined
-        }
-      })
+      where: {
+        id: id,
+        dateDeSuppression: undefined
+      }
+    })
   }
 
-  static async putComment(Contenu: string, idCommentaire: Comment, IdUtilisateur: string): Promise<any> {
+  static async putComment(contenu: string, idPost: Post, commentaire: Comment | null, idUtilisateur: string): Promise<any> {
     let comment = new Comment()
-    comment.Contenu = Contenu
-    comment.IdCommentaire = idCommentaire
-    comment.IdUtilisateur = IdUtilisateur
-    comment.dateDeCreation = new Date()
-    comment.dateDeModification = new Date()
+    comment.contenu = contenu
+    comment.idUtilisateur = idUtilisateur
+    comment.post = idPost
+    if (commentaire){
+      comment.commentaire = commentaire
+    }
     return await CommentRepository.save(comment)
   }
 
   static async deleteComment(id: number): Promise<any> {
-    let comment = await this.getComment(id)
-    if (comment){
-      comment.dateDeSuppression = new Date()
-      return await CommentRepository.save(comment)
-    }else {
-      await Promise.reject("Comment doesn't exist")
-    }
+    return await CommentRepository.softDelete(id)
   }
 
 }
