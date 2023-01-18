@@ -34,7 +34,7 @@ jobs:
         uses: actions/configure-pages@v2
 
       - name: Deps
-        run: yarn add -g bootprint bootprint-openapi
+        run: yarn add bootprint bootprint-openapi
 
       - name: Install node_modules
         run: yarn install
@@ -43,7 +43,7 @@ jobs:
         run: yarn swagger-gendoc
 
       - name: Static build
-        run: bootprint openapi src/doc/openapi.json target
+        run: ./node_modules/.bin/bootprint openapi src/doc/openapi.json target
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v1
