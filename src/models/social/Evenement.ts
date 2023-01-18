@@ -1,4 +1,12 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm'
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  AfterUpdate,
+  AfterInsert,
+  AfterSoftRemove,
+  CreateDateColumn, UpdateDateColumn, DeleteDateColumn
+} from 'typeorm'
 
 @Entity('events')
 export class Event {
@@ -14,13 +22,14 @@ export class Event {
     @Column()
     addresse!: string
 
-    @Column()
+    @CreateDateColumn()
     dateDeCreation!: Date
 
-    @Column({ type: 'timestamptz' })
+    @UpdateDateColumn({ type: 'timestamptz' })
     dateDeModification!: Date
 
-    @Column({ type: 'timestamptz' })
-    dateDeSuppression!: Date
+    @DeleteDateColumn({ type: 'timestamptz' })
+    dateDeSuppression?: Date
+
 
 }
