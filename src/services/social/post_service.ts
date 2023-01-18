@@ -18,22 +18,20 @@ export class PostService {
     })
   }
 
-  static async savePost(titre: string, description: string, estPartage: boolean, idUtilisateur: string, evenement: Event | null): Promise<any> {
+  static async savePost(titre: string, description: string, estPartage: boolean, idUtilisateur: string, idEvenement: number | null): Promise<any> {
     let post = new Post()
     post.titre = titre
     post.description = description
     post.estPartage = estPartage
     post.idUtilisateur = idUtilisateur
-    if(evenement) {
-      post.Evenement = evenement
+    if(idEvenement) {
+      post.Evenement = new Event()
+      post.Evenement.id = idEvenement
     }
     return await postRepository.save(post)
   }
 
   static async deletePost(id: number) {
-    let post = await this.getPost(id)
-    if(post){
-      post.dateDeSuppression = new Date()
-    }
+    return await postRepository.softDelete(id)
   }
 }
