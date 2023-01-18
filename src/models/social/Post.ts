@@ -1,5 +1,7 @@
-import {Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn} from 'typeorm'
+import {Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn, JoinTable, OneToMany} from 'typeorm'
 import {Event} from "./Evenement";
+import {Comment} from "./Comment";
+import {Image} from "./Image";
 
 
 @Entity('posts')
@@ -30,4 +32,11 @@ export class Post {
 
     @Column({ type: 'timestamptz' })
     dateDeSuppression!: Date
+
+    @OneToMany(() => Comment, (comment)=>comment.IdPoste) @JoinTable()
+    commentaires!: Comment[];
+
+    @OneToMany(() => Image, (image)=>image.idPost) @JoinTable()
+    images!: Image[]
+
 }

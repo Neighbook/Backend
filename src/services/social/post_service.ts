@@ -1,5 +1,4 @@
 import {SocialDataSource} from '../../core/datastores/typeorm_datastores'
-import {User} from "../../models/User";
 import {Post} from "../../models/social/Post";
 
 const postRepository = SocialDataSource.manager.getRepository(Post)
@@ -8,40 +7,16 @@ export class PostService {
 
   // return user or null
   static async getPost(id: number): Promise<Post | null> {
-    let post: Post | null = null
-    await postRepository
-      .findOne({
-        where: {
-          id: id,
-          dateDeSuppression: undefined
-        },
-      })
-      .then((result?) => {
-        post = result
-      })
-      .catch((error) => {
-        console.log('Error: ' + error)
-      })
-    return post
-  }
-
-  static async getPosts(): Promise<Post[]> {
-    let posts: Post[] = []
-    await postRepository
-      .find(
-        {
-          where:{
-            dateDeSuppression:undefined
-          }
-        }
-      )
-      .then((result) => {
-        posts = result
-      })
-      .catch((error) => {
-        console.log('Error: ' + error)
-      })
-    return posts
+    return await postRepository.findOne({
+      where: {
+        id: id,
+        dateDeSuppression: undefined
+      },
+      relations: {
+        commentaires: true,
+        images: true
+      },
+    })
   }
 
   static async savePost(titre: string, description: string, estPartage: boolean) {

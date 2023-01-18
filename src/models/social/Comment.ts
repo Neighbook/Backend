@@ -1,4 +1,12 @@
-import {Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinTable} from 'typeorm'
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  OneToOne,
+  JoinTable,
+  CreateDateColumn,
+  UpdateDateColumn, DeleteDateColumn
+} from 'typeorm'
 import { Post } from './Post'
 
 @Entity('Commentaire')
@@ -18,12 +26,12 @@ export class Comment {
     @OneToOne(() => Comment) @JoinTable()
     IdCommentaire!: Comment;
 
-    @Column({ type: 'timestamptz' })
-    DateDeCreation!: Date
+    @CreateDateColumn({ type: 'timestamptz' })
+    dateDeCreation!: Date
 
-    @Column({ type: 'timestamptz' })
-    DateDeModification!: Date
+    @UpdateDateColumn({ type: 'timestamptz' })
+    dateDeModification!: Date
 
-    @Column({ type: 'timestamptz' })
-    DateDeSuppression!: Date
+    @DeleteDateColumn({ type: 'timestamptz' })
+    dateDeSuppression?: Date
 }
