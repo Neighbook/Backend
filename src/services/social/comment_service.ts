@@ -14,13 +14,15 @@ export class CommentService {
     })
   }
 
-  static async putComment(contenu: string, idPost: Post, commentaire: Comment | null, idUtilisateur: string): Promise<any> {
+  static async putComment(contenu: string, postId: number, idUtilisateur: string, idCommentaire: number | null): Promise<any> {
     let comment = new Comment()
     comment.contenu = contenu
     comment.idUtilisateur = idUtilisateur
-    comment.post = idPost
-    if (commentaire){
-      comment.commentaire = commentaire
+    comment.post = new Post()
+    comment.post.id = postId
+    if (idCommentaire){
+      comment.commentaire = new Comment()
+      comment.commentaire.id = idCommentaire
     }
     return await CommentRepository.save(comment)
   }
