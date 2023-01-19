@@ -49,7 +49,29 @@ socialRoutes.get('/post', async (req: express.Request, res) => {
   if(req.query.id) {
     const post = await PostService.getPost(Number(req.query.id))
     if(post !== null){
-      res.status(200).json(post)
+      const formattedPost = {
+        "id": post.id,
+        "titre": post.titre,
+        "description": post.description,
+        "estPartage": post.estPartage,
+        "idUtilisateur": post.idUtilisateur,
+        "dateDeCreation": post.dateDeCreation,
+        "dateDeModification": post.dateDeModification,
+        "dateDeSuppression": null,
+        "commentaires": post.commentaires,
+        "images": post.images,
+        "evenement": post.evenement,
+        "nombreReactions":{
+          "like": post.nlike,
+          "mdr": post.nmdr,
+          "Oo": post.nOo,
+          "snif": post.nsnif,
+          "grr": post.ngrr,
+          "ok": post.nok,
+        }
+      }
+
+      res.status(200).json(formattedPost)
     }else{
       res.status(404).send()
     }

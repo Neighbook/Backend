@@ -52,4 +52,10 @@ export class Post {
     @OneToMany(() => PostReaction, postReaction=>postReaction.post) @JoinTable()
     reactions!: PostReaction[]
 
+    nlike!: number
+    nmdr!: number
+    nOo!: number
+    nsnif!: number
+    ngrr!: number
+    nok!: number
 }

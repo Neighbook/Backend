@@ -38,7 +38,7 @@ export const SocialDataSource = new DataSource({
   database: environnement.database.social_database,
   synchronize: true,
   logging: environnement.logging.level === 'debug',
-  entities: [Abonnement, Block, Comment, Event, Follow, Image, Post, PostReaction, Reaction],
+  entities: [Abonnement, Block, Comment, Event, Follow, Image, Post, PostReaction],
   migrations: [],
   subscribers: [],
 })
