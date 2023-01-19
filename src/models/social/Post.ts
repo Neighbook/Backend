@@ -11,6 +11,7 @@ import {
 import {Event} from "./Evenement";
 import {Comment} from "./Comment";
 import {Image} from "./Image";
+import {PostReaction} from "./PostReaction";
 
 
 @Entity('posts')
@@ -31,7 +32,7 @@ export class Post {
     idUtilisateur!: string
 
     @OneToOne(() => Event) @JoinColumn()
-    Evenement!: Event
+    evenement!: Event
 
     @CreateDateColumn()
     dateDeCreation!: Date
@@ -47,5 +48,8 @@ export class Post {
 
     @OneToMany(() => Image, (image)=>image.post) @JoinTable()
     images!: Image[]
+
+    @OneToMany(() => PostReaction, postReaction=>postReaction.post) @JoinTable()
+    reactions!: PostReaction[]
 
 }

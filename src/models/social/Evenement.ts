@@ -13,7 +13,7 @@ export class Event {
     @Column()
     titre!: string
 
-    @Column({ type: 'timestamptz' })
+    @Column()
     dateEvenement!: Date
 
     @Column()

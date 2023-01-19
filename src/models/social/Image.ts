@@ -3,10 +3,9 @@ import {
   PrimaryGeneratedColumn,
   Column,
   JoinColumn,
-  OneToOne,
   CreateDateColumn,
   UpdateDateColumn,
-  DeleteDateColumn
+  DeleteDateColumn, ManyToOne
 } from 'typeorm'
 import {Post} from "./Post";
 
@@ -27,6 +26,6 @@ export class Image {
     @DeleteDateColumn()
     dateDeSuppression?: Date
 
-    @OneToOne(()=>Post)@JoinColumn()
+    @ManyToOne(()=>Post)@JoinColumn()
     post!: Post
 }

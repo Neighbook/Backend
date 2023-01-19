@@ -2,10 +2,9 @@ import {
   Entity,
   PrimaryGeneratedColumn,
   Column,
-  OneToOne,
   JoinTable,
   CreateDateColumn,
-  UpdateDateColumn, DeleteDateColumn
+  UpdateDateColumn, DeleteDateColumn, ManyToOne, JoinColumn
 } from 'typeorm'
 import { Post } from './Post'
 
@@ -20,18 +19,22 @@ export class Comment {
     @Column()
     idUtilisateur!: string;
 
-    @OneToOne(() => Post) @JoinTable()
+    @ManyToOne(() => Post) @JoinTable()
     post!: Post;
 
-    @OneToOne(() => Comment) @JoinTable()
+    @ManyToOne(() => Comment) @JoinTable()
+    @JoinColumn({ name: 'idCommentaire' })
     commentaire!: Comment;
 
-    @CreateDateColumn({ type: 'timestamptz' })
+    @Column({nullable: true})
+    idCommentaire!: number;
+
+    @CreateDateColumn()
     dateDeCreation!: Date
 
-    @UpdateDateColumn({ type: 'timestamptz' })
+    @UpdateDateColumn()
     dateDeModification!: Date
 
-    @DeleteDateColumn({ type: 'timestamptz' })
+    @DeleteDateColumn()
     dateDeSuppression?: Date
 }

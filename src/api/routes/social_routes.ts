@@ -1,7 +1,6 @@
 import express from 'express'
 import {PostService} from "../../services/social/post_service";
 import {CommentService} from "../../services/social/comment_service";
-import {Post} from "../../models/social/Post";
 const socialRoutes = express.Router()
 
 // Comment routes
@@ -20,8 +19,8 @@ socialRoutes.get('/comment', async (req: express.Request, res) => {
 })
 
 socialRoutes.post('/comment', async (req: express.Request, res) => {
-  if(req.body.userId && req.body.contenu && req.body.postId) {
-    CommentService.putComment(req.body.contenu, req.body.postId, req.body.idUtilisateur, req.body.idCommentaire)
+  if(req.body.idUtilisateur && req.body.contenu && req.body.idPost) {
+    CommentService.putComment(req.body.contenu, req.body.idPost, req.body.idUtilisateur, req.body.idCommentaire)
       .then(()=>res.status(200).send())
       .catch(error=>{
         console.log(error)
@@ -60,10 +59,13 @@ socialRoutes.get('/post', async (req: express.Request, res) => {
 })
 
 socialRoutes.post('/post', async (req: express.Request, res) => {
-  if(req.body.titre && req.body.description && req.body.postId) {
+  console.log(req.body.titre)
+  console.log(req.body.description)
+  console.log(req.body.es)
+  if(req.body.titre && req.body.description && req.body.estPartage !== undefined && req.body.idUtilisateur) {
     PostService.savePost(req.body.titre,
                          req.body.description,
-               req.body.estPartage === 'true',
+                         req.body.estPartage,
                          req.body.idUtilisateur,
                          req.body.idEvenement)
       .then(()=>res.status(200).send())
