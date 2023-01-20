@@ -1,13 +1,13 @@
 import express, { Express, Request, Response } from 'express'
 import bodyParser from 'body-parser'
-import swaggerJsdoc from 'swagger-jsdoc'
 import swaggerUi from 'swagger-ui-express'
 import { apiConfig } from './config/api_config'
 import { cors_config } from './config/cors'
 import cors from 'cors'
 import morgan from 'morgan'
 const swaggerDocument = require('./doc/openapi.json')
-const userRoutes = require('./api/routes/user_routes')
+const userRoutes = require('./api/routes/users/user_routes')
+const authRoutes = require('./api/routes/users/auth_routes')
 
 let app: Express = express()
 
@@ -33,5 +33,6 @@ app.get('/', (req: Request, res: Response) => {
 })
 
 app.use('/', userRoutes)
+app.use('/', authRoutes)
 
 module.exports = app

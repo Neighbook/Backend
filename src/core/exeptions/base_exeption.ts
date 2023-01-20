@@ -2,7 +2,6 @@
 export class BaseException {
 	constructor(
 		public message: string,
-		public code: ExceptionCode,
 		public status: number,
 		public data?: any,
 	) {}
@@ -10,4 +9,34 @@ export class BaseException {
 
 export class ExceptionCode {
 	constructor(public code: string, public label: string) {}
+}
+
+export class ApiException extends BaseException {
+	constructor(
+		public message: string,
+		public status: number,
+		public data?: any,
+	) {
+		super(message, status, data)
+	}
+}
+
+export class ValidationException extends BaseException {
+	constructor(
+		public message: string,
+		public status: number,
+		public data?: any,
+	) {
+		super(message, status, data)
+	}
+}
+
+export class ServiceException extends BaseException {
+	constructor(
+		public message: string,
+		public status: number,
+		public data?: any,
+	) {
+		super(message, status, data)
+	}
 }

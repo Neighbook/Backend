@@ -1,6 +1,6 @@
 import express from 'express'
 const userRoutes = express.Router()
-import { UserService } from '../../services/user_service'
+import { UserService } from '../../../services/users_service/user_service'
 
 // User routes
 
@@ -40,9 +40,9 @@ userRoutes.post('/user', async (req, res) => {
 	// #swagger.responses[500] = { description: 'Internal Server Error' }
 	await UserService.createUser(req.body.firstName, req.body.lastName, req.body.age).then((response) => {
 		res.status(201).json({ "message": "User created", "data": response })
-		}).catch((error) => {
-			res.status(500).json(error)
-		});
+	}).catch((error) => {
+		res.status(500).json(error)
+	});
 })
 
 userRoutes.put('/user', (req: express.Request, res) => {

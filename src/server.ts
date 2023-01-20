@@ -1,6 +1,7 @@
 import http from 'http'
 const app = require('./app')
-import { UserDataSource } from './core/datastores/typeorm_datastores'
+import { UsersDataSource } from './core/datastores/typeorm_datastores'
+import { VaultService } from './services/users_service/vault_service'
 
 const normalizePort = (val: string) => {
     const port = parseInt(val, 10)
@@ -41,20 +42,21 @@ const errorHandler = (error: { syscall: string; code: any }) => {
     }
 }
 
-const server = http.createServer(app)
+new VaultService().initialize();
 
-server.on('error', errorHandler)
-server.on('listening', () => {
-    const address = server.address()
-    const bind = typeof address === 'string' ? 'pipe ' + address : 'port ' + port
-    console.log(`⚡️[server]: Server is running at http://localhost:${port}`)
-})
+const server = http.createServer(app)
 
 server.listen(port)
 
 try {
-    UserDataSource.initialize()
-    console.log('Connection has been established successfully.')
+    UsersDataSource.initialize()
+    console.log('Connection with database has been established successfully.')
+    server.on('error', errorHandler)
+    server.on('listening', () => {
+        const address = server.address()
+        const bind = typeof address === 'string' ? 'pipe ' + address : 'port ' + port
+        console.log(`⚡️[server]: Server is running at http://localhost:${port}`)
+    })
 } catch (error) {
     console.error('Unable to connect to the database:', error)
 }

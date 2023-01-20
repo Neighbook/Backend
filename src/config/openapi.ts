@@ -27,5 +27,9 @@ export const metadata = {
             name: 'User',
             description: 'User management',
         },
+        {
+            name: 'Auth',
+            description: 'Authentication',
+        },
     ],
 }
