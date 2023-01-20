@@ -7,7 +7,7 @@ export const userRepository = UsersDataSource.manager.getRepository(User)
 export class UserService {
 
 
-	static async createNewUser(user: User): Promise<User | null> {
+	static async createUser(user: User): Promise<User | null> {
 		let createdUser: User | null = null
 		await userRepository.save(user).then((result) => {
 			createdUser = result
@@ -15,25 +15,6 @@ export class UserService {
 			console.log('Error: ' + error)
 		});
 		return createdUser;
-	}
-
-	static async addUserProfilePicture(id: number, profilePicture: string): Promise<User | null> {
-		let updatedUser: User | null = null
-		await userRepository.findOne({
-			where: {
-				id: id,
-			}
-		}).then((user) => {
-			if (user == null) {
-				return null
-			}
-			user.photo = profilePicture
-			userRepository.save(user)
-			updatedUser = user
-		}).catch((error) => {
-			console.log('Error: ' + error)
-		});
-		return updatedUser;
 	}
 
 	static async getUser(id: number): Promise<User | null> {
@@ -68,20 +49,6 @@ export class UserService {
 		return users
 	}
 
-	static async createUser(firstName: string, lastName: string, age: number) {
-		const userRepository = UsersDataSource.manager.getRepository(User)
-		let user = new User()
-		let response: User | null = null
-
-		console.log("service log : " + firstName)
-
-		await userRepository.save(user).then((user) => {
-			response = user;
-		})
-
-		return response
-	}
-
 	static async updateUser(id: number, firstName: string, lastName: string, age: number) {
 		const userRepository = UsersDataSource.manager.getRepository(User)
 		await userRepository
@@ -111,5 +78,24 @@ export class UserService {
 					userRepository.remove(user)
 				}
 			})
+	}
+
+	static async addUserProfilePicture(id: number, profilePicture: string): Promise<User | null> {
+		let updatedUser: User | null = null
+		await userRepository.findOne({
+			where: {
+				id: id,
+			}
+		}).then((user) => {
+			if (user == null) {
+				return null
+			}
+			user.photo = profilePicture
+			userRepository.save(user)
+			updatedUser = user
+		}).catch((error) => {
+			console.log('Error: ' + error)
+		});
+		return updatedUser;
 	}
 }

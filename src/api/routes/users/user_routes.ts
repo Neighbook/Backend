@@ -1,4 +1,5 @@
 import express from 'express'
+import { User } from '../../../models/users/user'
 const userRoutes = express.Router()
 import { UserService } from '../../../services/users_service/user_service'
 
@@ -6,7 +7,11 @@ import { UserService } from '../../../services/users_service/user_service'
 
 userRoutes.get('/user', async (req: express.Request, res) => {
 	// #swagger.tags = ['User']
-	// #swagger.body = { "id": 3 }
+	// #swagger.description = 'Endpoint to get a user'
+	// #swagger.summary = 'Get a user'
+	// #swagger.parameters['obj'] = { description: 'User id', in: 'body', required: true, type: 'object', schema: { id: 'number' } }
+	// #swagger.responses[200] = { description: 'Success' }
+	// #swagger.responses[500] = { description: 'Internal Server Error' }
 	await UserService.getUser(req.body.id)
 		.then((response) => {
 			res.status(200).json(response)
@@ -20,6 +25,7 @@ userRoutes.get('/users', async (req: express.Request, res) => {
 	// #swagger.tags = ['User']
 	// #swagger.description = 'Endpoint to get all users'
 	// #swagger.summary = 'Get all users'
+
 	// #swagger.responses[200] = { description: 'Success' }
 	// #swagger.responses[500] = { description: 'Internal Server Error' }
 	await UserService.getUsers()
@@ -35,10 +41,21 @@ userRoutes.post('/user', async (req, res) => {
 	// #swagger.tags = ['User']
 	// #swagger.summary = 'Create a user'
 	// #swagger.description = 'Endpoint
-	// #swagger.parameters['obj'] = { description: 'User object', in: 'body', required: true, type: 'object', schema: { firstName: 'string', lastName: 'string', age: 0 } }
-	// #swagger.responses[201] = { description: 'User created' }
+	// #swagger.parameters['obj'] = { description: 'User object', in: 'body', required: true, type: 'object', schema: { prenom: 'string', nom: 'string', sexe: 'string', nom_utilisateur: 'string', date_naissance: 'string', email: 'string', password: 'string', telephone: 'string', code_pays: 'string', photo: 'string' } }
+	// #swagger.responses[200] = { description: 'User Created' }
 	// #swagger.responses[500] = { description: 'Internal Server Error' }
-	await UserService.createUser(req.body.firstName, req.body.lastName, req.body.age).then((response) => {
+	const user = new User()
+	user.prenom = req.body.prenom
+	user.nom = req.body.nom
+	user.sexe = req.body.sexe
+	user.nom_utilisateur = req.body.nom_utilisateur
+	user.date_naissance = req.body.date_naissance
+	user.email = req.body.email
+	user.password = req.body.password
+	user.telephone = req.body.telephone
+	user.code_pays = req.body.code_pays
+	user.photo = req.body.photo
+	await UserService.createUser(user).then((response) => {
 		res.status(201).json({ "message": "User created", "data": response })
 	}).catch((error) => {
 		res.status(500).json(error)

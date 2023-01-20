@@ -1,4 +1,5 @@
-import { DatabaseType } from 'typeorm/driver/types/DatabaseType';
+require('dotenv').config()
+
 export const environnement = {
     api_name: process.env.API_NAME || 'Neighbook API',
     api_version: process.env.API_VERSION || '0.1.0',
@@ -11,18 +12,22 @@ export const environnement = {
     api_swagger_path: process.env.API_SWAGGER_PATH || '/documentation',
     api_swagger_json_path: process.env.API_SWAGGER_JSON_PATH || '/documentation.json',
     api_swagger_ui_path: process.env.API_SWAGGER_UI_PATH || '/documentation-ui',
-    jwt_secret_key_name: process.env.JWT_SECRET_KEY_NAME || 'jwtsecret',
+    jwt_secret_name: process.env.JWT_SECRET_KEY_NAME || 'jwtsecret',
     jwt_token_expiration_time: process.env.JWT_TOKEN_EXPIRATION_TIME || '2 days',
     argon2_salt_key_name: process.env.ARGON2_SECRET_KEY_NAME || 'argon2_secret',
-    azure : {
+    azure: {
         client_id: process.env.AZURE_CLIENT_ID || 'client_id',
         client_secret: process.env.AZURE_CLIENT_SECRET || 'client_secret',
         tenant_id: process.env.AZURE_TENANT_ID || 'tenant_id',
-        storage_accont_name: process.env.AZURE_STORAGE_ACCOUNT_NAME || 'storage_account_name',
-        storage_accont_key: process.env.AZURE_STORAGE_ACCOUNT_KEY || 'storage_account_key',
-        key_vault_name: process.env.AZURE_KEY_VAULT_NAME || 'key_vault_name',
         key_vault_uri: process.env.AZURE_KEY_VAULT_URI || 'key_vault_uri',
     },
+    vault_keys: [
+        {
+            name: process.env.JWT_SECRET_NAME || 'jwtsecret',
+            type: process.env.JWT_SECRET_TYPE || 'hmac',
+            length: Number(process.env.JWT_SECRET_LENGTH) || 32,
+        },
+    ],
     database: {
         dialect: process.env.DATABASE_DIALECT || 'postgres',
         host: process.env.DATABASE_HOST || 'localhost',

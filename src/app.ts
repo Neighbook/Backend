@@ -1,7 +1,6 @@
 import express, { Express, Request, Response } from 'express'
 import bodyParser from 'body-parser'
 import swaggerUi from 'swagger-ui-express'
-import { apiConfig } from './config/api_config'
 import { cors_config } from './config/cors'
 import cors from 'cors'
 import morgan from 'morgan'

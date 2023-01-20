@@ -4,49 +4,68 @@
  * @summary Get a secret from Azure Key Vault
  */
 
-import { EnvironmentCredential, ClientSecretCredential } from "@azure/identity";
-import { KeyClient } from "@azure/keyvault-keys";
+import { vault_client, generateSecret } from "../../core/azure/vault_client";
 import { environnement } from "../../config/environnement";
+import { KeyVaultSecret } from "@azure/keyvault-secrets";
+import { nextTick } from "process";
 
 
 export class VaultService {
-	private keyClient: KeyClient;
 
-	constructor() {
-		const credential = new ClientSecretCredential(environnement.azure.tenant_id,
-																									environnement.azure.client_id,
-																									environnement.azure.client_secret);
-
-		const key_vault_uri = environnement.azure.key_vault_uri;
-		this.keyClient = new KeyClient(key_vault_uri, credential);
+	static async initialize(): Promise<void> {
+		// create all vault keys
+		if (!vault_client) {
+			console.log('Vault client not initialized');
+			return;
+		}
+		for (const key of environnement.vault_keys) {
+			if (this.getSecret(key.name) === null) {
+				const random_secret = await generateSecret(key.length, key.type === "hmac" ? "hmac" : "aes");
+				await vault_client.setSecret(key.name, random_secret).then((value: KeyVaultSecret | null) => {
+					if (value != null) {
+						console.log(`Vault key ${key.name} created`);
+					}
+				}).catch((error) => {
+					console.log(`Error while creating vault key ${key.name}: ${error}`);
+				});
+			}
+		}
 	}
 
-	public async initialize(): Promise<void> {
-		let tests = null;
-		await this.keyClient.getKey(environnement.jwt_secret_key_name).then((secret) => {
-			if (secret == null) {
-				this.keyClient.createKey(environnement.jwt_secret_key_name, "EC");
+	static async getSecret(secretName: string): Promise<KeyVaultSecret | null> {
+		if (!vault_client) {
+			console.log('Vault client not initialized');
+			return null;
+		}
+		let secret: KeyVaultSecret | null = null;
+		await vault_client.getSecret(secretName).then((value: KeyVaultSecret | null) => {
+			if (value != null) {
+				secret = value;
 			}
 		}).catch((error) => {
-			console.log(error);
-			this.keyClient.createKey(environnement.jwt_secret_key_name, "EC");
+			console.log(`Error while getting secret ${secretName}: ${error}`);
 		});
+
+		return secret;
 	}
 
-	public async getSecret(secretName: string): Promise<string | null> {
-		const secret = await this.keyClient.getKey(secretName);
-		if (secret == null) {
+	static async createKey(name: string, length: number, type = "hmac"): Promise<KeyVaultSecret | null> {
+		if (!vault_client) {
+			console.log('Vault client not initialized');
 			return null;
 		}
-		return secret.name;
-	}
+		let secret: KeyVaultSecret | null = null;
+		const random_secret = await generateSecret(length, type === "hmac" ? "hmac" : "aes");
+		await vault_client.setSecret(name, random_secret.toString()).then((value: KeyVaultSecret | null) => {
+			if (value != null) {
+				secret = value;
+				console.log(`Key ${name} created`);
+			}
+		}).catch((error) => {
+			console.log(`Error while creating key ${name}: ${error}`);
+		});
 
-	public async createToken(name: string, type: string): Promise<string | null> {
-		const secret = await this.keyClient.createKey(name, type);
-		if (secret == null) {
-			return null;
-		}
-		return secret.name;
+		return secret;
 	}
 
 }

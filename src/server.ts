@@ -3,6 +3,8 @@ const app = require('./app')
 import { UsersDataSource } from './core/datastores/typeorm_datastores'
 import { VaultService } from './services/users_service/vault_service'
 
+require('dotenv').config()
+
 const normalizePort = (val: string) => {
     const port = parseInt(val, 10)
 
@@ -15,7 +17,7 @@ const normalizePort = (val: string) => {
     return false
 }
 
-var port = normalizePort(process.env.PORT || '3000')
+let port = normalizePort(process.env.PORT || '3000')
 app.set('port', port)
 
 const errorHandler = (error: { syscall: string; code: any }) => {
@@ -42,7 +44,7 @@ const errorHandler = (error: { syscall: string; code: any }) => {
     }
 }
 
-new VaultService().initialize();
+VaultService.initialize();
 
 const server = http.createServer(app)
 

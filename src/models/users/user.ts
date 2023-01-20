@@ -15,13 +15,13 @@ export class User {
     @Column()
     sexe!: string
 
-    @Column()
+    @Column({ unique: true})
     nom_utilisateur!: string
 
-    @Column()
+    @Column({type: "date"})
     date_naissance!: string
 
-    @Column()
+    @Column({ unique: true})
     email!: string
 
     @Column()
@@ -35,7 +35,6 @@ export class User {
 
     @Column({ nullable: true})
     photo!: string
-
 
     @CreateDateColumn()
     date_creation!: Date
