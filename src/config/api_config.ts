@@ -1,9 +1,9 @@
-import { environnement } from "./environnement";
+import { environnement } from './environnement';
 
 export const apiConfig = {
 	base_path:
-		"/api" +
+		'/api' +
 		environnement.api_base_path +
-		"/v" +
+		'/v' +
 		environnement.api_version[0],
 };

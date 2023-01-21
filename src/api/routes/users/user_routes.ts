@@ -1,14 +1,14 @@
-import express from "express";
+import express from 'express';
 
-import { authMiddleware } from "../../../middlewares/auth/auth_middleware";
-import { User } from "../../../models/users/user";
-import { UserService } from "../../../services/users_service/user_service";
+import { authMiddleware } from '../../../middlewares/auth/auth_middleware';
+import { User } from '../../../models/users/user';
+import { UserService } from '../../../services/users_service/user_service';
 
 const userRoutes = express.Router();
 
 // User routes
 
-userRoutes.get("/user", authMiddleware, async (req: express.Request, res) => {
+userRoutes.get('/user', authMiddleware, async (req: express.Request, res) => {
 	// #swagger.tags = ['User']
 	// #swagger.description = 'Endpoint to get a user'
 	// #swagger.summary = 'Get a user'
@@ -24,7 +24,7 @@ userRoutes.get("/user", authMiddleware, async (req: express.Request, res) => {
 		});
 });
 
-userRoutes.get("/users", authMiddleware, async (req: express.Request, res) => {
+userRoutes.get('/users', authMiddleware, async (req: express.Request, res) => {
 	// #swagger.tags = ['User']
 	// #swagger.description = 'Endpoint to get all users'
 	// #swagger.summary = 'Get all users'
@@ -41,7 +41,7 @@ userRoutes.get("/users", authMiddleware, async (req: express.Request, res) => {
 		});
 });
 
-userRoutes.post("/user", async (req, res) => {
+userRoutes.post('/user', async (req, res) => {
 	// #swagger.tags = ['User']
 	// #swagger.summary = 'Create a user'
 	// #swagger.description = 'Endpoint
@@ -61,14 +61,14 @@ userRoutes.post("/user", async (req, res) => {
 	user.photo = req.body.photo;
 	await UserService.createUser(user)
 		.then((response) => {
-			res.status(201).json({ message: "User created", data: response });
+			res.status(201).json({ message: 'User created', data: response });
 		})
 		.catch((error) => {
 			res.status(500).json(error);
 		});
 });
 
-userRoutes.put("/user", (req: express.Request, res) => {
+userRoutes.put('/user', (req: express.Request, res) => {
 	// #swagger.tags = ['User']
 	const response = UserService.updateUser(
 		req.body.id,
@@ -79,7 +79,7 @@ userRoutes.put("/user", (req: express.Request, res) => {
 	res.status(202).json(response);
 });
 
-userRoutes.delete("/user", (req: express.Request, res) => {
+userRoutes.delete('/user', (req: express.Request, res) => {
 	// #swagger.tags = ['User']
 	const response = UserService.deleteUser(req.body.id);
 	res.status(204).json(response);

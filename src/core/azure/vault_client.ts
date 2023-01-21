@@ -1,8 +1,8 @@
-import { ClientSecretCredential } from "@azure/identity";
-import { SecretClient } from "@azure/keyvault-secrets";
-import { generateKeySync } from "crypto";
+import { ClientSecretCredential } from '@azure/identity';
+import { SecretClient } from '@azure/keyvault-secrets';
+import { generateKeySync } from 'crypto';
 
-import { environnement } from "../../config/environnement";
+import { environnement } from '../../config/environnement';
 
 const key_vault_uri = environnement.azure.key_vault_uri;
 
@@ -24,8 +24,8 @@ export const vault_client = client;
 
 export async function generateSecret(
 	length: number,
-	type: "hmac" | "aes"
+	type: 'hmac' | 'aes'
 ): Promise<string> {
 	const random_secret = generateKeySync(type, { length: length });
-	return random_secret.export().toString("hex");
+	return random_secret.export().toString('hex');
 }

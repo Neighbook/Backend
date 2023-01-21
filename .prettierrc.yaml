@@ -3,11 +3,9 @@ singleAttributePerLine: true
 tabWidth: 4
 useTabs: true
 semi: true
-singleQuote: false
+singleQuote: true
 printWidth: 80
 quoteProps: as-needed
-jsxBracketSameLine: false
-jsxSingleQuote: false
 arrowParens: always
 endOfLine: auto
 importOrder: ["^components/(.*)$", "^[./]"]

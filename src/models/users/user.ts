@@ -1,4 +1,4 @@
-import * as argon from "argon2";
+import * as argon from 'argon2';
 import {
 	Entity,
 	PrimaryGeneratedColumn,
@@ -8,11 +8,11 @@ import {
 	DeleteDateColumn,
 	UpdateDateColumn,
 	CreateDateColumn,
-} from "typeorm";
+} from 'typeorm';
 
-@Entity("users")
+@Entity('users')
 export class User {
-	@PrimaryGeneratedColumn("uuid")
+	@PrimaryGeneratedColumn('uuid')
 	id!: number;
 
 	@Column()
@@ -27,7 +27,7 @@ export class User {
 	@Column({ unique: true })
 	nom_utilisateur!: string;
 
-	@Column({ type: "date" })
+	@Column({ type: 'date' })
 	date_naissance!: string;
 
 	@Column({ unique: true })

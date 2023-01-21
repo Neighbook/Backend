@@ -6,13 +6,13 @@ import {
 	UpdateDateColumn,
 	CreateDateColumn,
 	ManyToOne,
-} from "typeorm";
+} from 'typeorm';
 
-import { User } from "./user";
+import { User } from './user';
 
-@Entity("user_preferences")
+@Entity('user_preferences')
 export class UserPreference {
-	@PrimaryGeneratedColumn("uuid")
+	@PrimaryGeneratedColumn('uuid')
 	id!: number;
 
 	@Column()

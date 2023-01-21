@@ -1,39 +1,39 @@
-import * as argon from "argon2";
-import * as jwt from "jsonwebtoken";
+import * as argon from 'argon2';
+import * as jwt from 'jsonwebtoken';
 
-import { environnement } from "../../config/environnement";
-import { ServiceException } from "../../core/exeptions/base_exeption";
-import { User } from "../../models/users/user";
-import { userRepository } from "./user_service";
-import { VaultService } from "./vault_service";
+import { environnement } from '../../config/environnement';
+import { ServiceException } from '../../core/exeptions/base_exeption';
+import { User } from '../../models/users/user';
+import { userRepository } from './user_service';
+import { VaultService } from './vault_service';
 
 export class AuthService {
 	static async login(email: string, password: string) {
-		let user = await userRepository
+		const user = await userRepository
 			.findOne({
 				where: {
 					email: email,
 				},
 			})
 			.catch((error) => {
-				console.log("Error - service: " + error);
+				console.log('Error - service: ' + error);
 			});
 		if (user == null) {
-			return new ServiceException("Invalid user credentials", 401);
+			return new ServiceException('Invalid user credentials', 401);
 		}
 		if (!(await argon.verify(user.password, password))) {
-			return new ServiceException("Invalid user credentials", 401);
+			return new ServiceException('Invalid user credentials', 401);
 		}
 		const jwt_secret = await VaultService.getSecret(
 			environnement.jwt_secret_name
 		);
 		if (jwt_secret == null) {
-			console.log("Error: JWT secret not found");
-			return new ServiceException("Internal server error", 500);
+			console.log('Error: JWT secret not found');
+			return new ServiceException('Internal server error', 500);
 		}
 		if (jwt_secret.value == null) {
-			console.log("Error: JWT secret not found");
-			return new ServiceException("Internal server error", 500);
+			console.log('Error: JWT secret not found');
+			return new ServiceException('Internal server error', 500);
 		}
 		const token = jwt.sign(
 			{
@@ -60,10 +60,10 @@ export class AuthService {
 				createdUser = result;
 			})
 			.catch((error) => {
-				console.log("Error - service: " + error);
+				console.log('Error - service: ' + error);
 			});
 		if (createdUser == null) {
-			return new ServiceException("Internal server error", 500);
+			return new ServiceException('Internal server error', 500);
 		}
 		return await this.login(user.email, user.password);
 	}
@@ -73,14 +73,14 @@ export class AuthService {
 			environnement.jwt_secret_name
 		);
 		if (jwt_secret == null) {
-			console.log("Error: JWT secret not found");
-			throw new ServiceException("Internal server error", 500);
+			console.log('Error: JWT secret not found');
+			throw new ServiceException('Internal server error', 500);
 		}
 		let decoded: any = null;
 		jwt.verify(token, String(jwt_secret.value), (err, decodedToken) => {
 			if (err) {
-				console.log("Error - verify: " + err);
-				throw new ServiceException("Invalid token.", 400);
+				console.log('Error - verify: ' + err);
+				throw new ServiceException('Invalid token.', 400);
 			}
 			decoded = decodedToken;
 		});

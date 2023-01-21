@@ -1,13 +1,13 @@
-import express from "express";
+import express from 'express';
 
-import { apiConfig } from "../../../config/api_config";
-import { ServiceException } from "../../../core/exeptions/base_exeption";
-import { User } from "../../../models/users/user";
-import { AuthService } from "../../../services/users_service/auth_service";
+import { apiConfig } from '../../../config/api_config';
+import { ServiceException } from '../../../core/exeptions/base_exeption';
+import { User } from '../../../models/users/user';
+import { AuthService } from '../../../services/users_service/auth_service';
 
 const authRoutes = express.Router();
 
-authRoutes.post(`/auth/login`, async (req: express.Request, res) => {
+authRoutes.post('/auth/login', async (req: express.Request, res) => {
 	// #swagger.tags = ['Auth']
 	// #swagger.description = 'Endpoint to login'
 	// #swagger.summary = 'Login'
@@ -28,7 +28,7 @@ authRoutes.post(`/auth/login`, async (req: express.Request, res) => {
 		});
 });
 
-authRoutes.post(`/auth/register`, async (req: express.Request, res) => {
+authRoutes.post('/auth/register', async (req: express.Request, res) => {
 	// #swagger.tags = ['Auth']
 	// #swagger.description = 'Endpoint to register'
 	// #swagger.summary = 'Register'

@@ -1,14 +1,14 @@
-import bodyParser from "body-parser";
-import cors from "cors";
-import express, { Express, Request, Response } from "express";
-import morgan from "morgan";
-import swaggerUi from "swagger-ui-express";
+import bodyParser from 'body-parser';
+import cors from 'cors';
+import express, { Express, Request, Response } from 'express';
+import morgan from 'morgan';
+import swaggerUi from 'swagger-ui-express';
 
-import { cors_config } from "./config/cors";
+import { cors_config } from './config/cors';
 
-const swaggerDocument = require("./doc/openapi.json");
-const userRoutes = require("./api/routes/users/user_routes");
-const authRoutes = require("./api/routes/users/auth_routes");
+const swaggerDocument = require('./doc/openapi.json');
+const userRoutes = require('./api/routes/users/user_routes');
+const authRoutes = require('./api/routes/users/auth_routes');
 
 const app: Express = express();
 
@@ -23,13 +23,13 @@ app.use(bodyParser.json());
 
 app.use(cors(cors_config));
 
-app.use("/documentation", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+app.use('/documentation', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
-app.get("/", (req: Request, res: Response) => {
-	res.redirect("/documentation");
+app.get('/', (req: Request, res: Response) => {
+	res.redirect('/documentation');
 });
 
-app.use("/", userRoutes);
-app.use("/", authRoutes);
+app.use('/', userRoutes);
+app.use('/', authRoutes);
 
 module.exports = app;

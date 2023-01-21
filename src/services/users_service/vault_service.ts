@@ -3,26 +3,26 @@
 /**
  * @summary Get a secret from Azure Key Vault
  */
-import { KeyVaultSecret } from "@azure/keyvault-secrets";
-import { Logger } from "tslog";
+import { KeyVaultSecret } from '@azure/keyvault-secrets';
+import { Logger } from 'tslog';
 
-import { environnement } from "../../config/environnement";
-import { vault_client, generateSecret } from "../../core/azure/vault_client";
+import { environnement } from '../../config/environnement';
+import { vault_client, generateSecret } from '../../core/azure/vault_client';
 
-const logger = new Logger({ name: "VaultService" });
+const logger = new Logger({ name: 'VaultService' });
 
 export class VaultService {
 	static async initialize(): Promise<void> {
 		// create all vault keys
 		if (!vault_client) {
-			logger.error("Vault client not initialized");
+			logger.error('Vault client not initialized');
 			return;
 		}
 		for (const key of environnement.vault_keys) {
 			if (this.getSecret(key.name) === null) {
 				const random_secret = await generateSecret(
 					key.length,
-					key.type === "hmac" ? "hmac" : "aes"
+					key.type === 'hmac' ? 'hmac' : 'aes'
 				);
 				await vault_client
 					.setSecret(key.name, random_secret)
@@ -42,7 +42,7 @@ export class VaultService {
 
 	static async getSecret(secretName: string): Promise<KeyVaultSecret | null> {
 		if (!vault_client) {
-			console.log("Vault client not initialized");
+			console.log('Vault client not initialized');
 			return null;
 		}
 		let secret: KeyVaultSecret | null = null;
@@ -65,16 +65,16 @@ export class VaultService {
 	static async createKey(
 		name: string,
 		length: number,
-		type = "hmac"
+		type = 'hmac'
 	): Promise<KeyVaultSecret | null> {
 		if (!vault_client) {
-			console.log("Vault client not initialized");
+			console.log('Vault client not initialized');
 			return null;
 		}
 		let secret: KeyVaultSecret | null = null;
 		const random_secret = await generateSecret(
 			length,
-			type === "hmac" ? "hmac" : "aes"
+			type === 'hmac' ? 'hmac' : 'aes'
 		);
 		await vault_client
 			.setSecret(name, random_secret.toString())
