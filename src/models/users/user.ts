@@ -1,61 +1,69 @@
-import { Entity, PrimaryGeneratedColumn, Column, BeforeUpdate, BeforeInsert, DeleteDateColumn, UpdateDateColumn, CreateDateColumn } from 'typeorm'
-import * as argon from 'argon2'
+import {
+    Entity,
+    PrimaryGeneratedColumn,
+    Column,
+    BeforeUpdate,
+    BeforeInsert,
+    DeleteDateColumn,
+    UpdateDateColumn,
+    CreateDateColumn,
+} from "typeorm";
+import * as argon from "argon2";
 
-@Entity('users')
+@Entity("users")
 export class User {
     @PrimaryGeneratedColumn("uuid")
-    id!: number
+    id!: number;
 
     @Column()
-    prenom!: string
+    prenom!: string;
 
     @Column()
-    nom!: string
+    nom!: string;
 
     @Column()
-    sexe!: string
+    sexe!: string;
 
-    @Column({ unique: true})
-    nom_utilisateur!: string
+    @Column({ unique: true })
+    nom_utilisateur!: string;
 
-    @Column({type: "date"})
-    date_naissance!: string
+    @Column({ type: "date" })
+    date_naissance!: string;
 
-    @Column({ unique: true})
-    email!: string
-
-    @Column()
-    password!: string
+    @Column({ unique: true })
+    email!: string;
 
     @Column()
-    telephone!: string
+    password!: string;
 
     @Column()
-    code_pays!: string
+    telephone!: string;
 
-    @Column({ nullable: true})
-    photo!: string
+    @Column()
+    code_pays!: string;
+
+    @Column({ nullable: true })
+    photo!: string;
 
     @CreateDateColumn()
-    date_creation!: Date
+    date_creation!: Date;
 
     @UpdateDateColumn()
-    date_modification!: Date
+    date_modification!: Date;
 
     @DeleteDateColumn()
-    date_suppression!: Date
+    date_suppression!: Date;
 
-    @Column({ default: true})
-    actif!: boolean
+    @Column({ default: true })
+    actif!: boolean;
 
     @BeforeUpdate()
     async hashPassword() {
-        this.password = await argon.hash(this.password)
+        this.password = await argon.hash(this.password);
     }
 
     @BeforeInsert()
     async hashPasswordBeforeInsert() {
-        this.password = await argon.hash(this.password)
+        this.password = await argon.hash(this.password);
     }
-
 }

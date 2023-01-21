@@ -1,27 +1,30 @@
+root: true
 env:
-    browser: true
-    commonjs: true
+    node: true
     es6: true
-extends: eslint:recommended
-globals:
-    Atomics: readonly
-    SharedArrayBuffer: readonly
+extends:
+    - "eslint:recommended"
+    - "plugin:@typescript-eslint/recommended"
+parser: "@typescript-eslint/parser"
 parserOptions:
-    ecmaVersion: 2018
+    project: "./tsconfig.json"
+plugins:
+    - "@typescript-eslint"
 rules:
-    indent:
-        - error
-        - 4
-    linebreak-style:
-        - error
-        - unix
-    quotes:
-        - error
-        - double
-    semi:
-        - error
-        - always
-    max-len:
-        - error
-        - code :
-            - 80
+    no-eval: error
+    no-debugger: error
+    no-console: error
+    no-var: error
+    no-unsafe-finally: error
+    prefer-const: error
+    prefer-rest-params: error
+    prefer-spread: error
+    no-duplicate-imports: off
+    "@typescript-eslint/prefer-interface": off
+    "@typescript-eslint/no-explicit-any": off
+    "@typescript-eslint/no-non-null-assertion": off
+    "@typescript-eslint/no-empty-function": off
+    "@typescript-eslint/explicit-module-boundary-types": off
+ignorePatterns:
+    - test/**/*.ts
+    - dist/*

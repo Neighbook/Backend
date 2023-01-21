@@ -11,7 +11,7 @@
         "swagger-gendoc": "tsc -p tsconfig.build.json && node dist/doc/swagger.js && cp dist/doc/openapi.json src/doc",
         "lint-fix": "eslint . --fix",
         "format": "prettier --write .",
-        "lint": "nx run-many --target=lint --all --parallel"
+        "lint": "eslint ."
     },
     "author": "",
     "license": "ISC",
@@ -38,6 +38,7 @@
         "sqlite3": "^5.1.4",
         "swagger-jsdoc": "^6.2.8",
         "swagger-ui-express": "^4.6.0",
+        "tslog": "^4.7.1",
         "typeorm": "^0.3.11",
         "uuid": "^9.0.0"
     },

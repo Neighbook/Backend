@@ -1,4 +1,4 @@
-import { environnement } from './environnement'
+import { environnement } from "./environnement";
 
 export const metadata = {
     info: {
@@ -10,26 +10,26 @@ export const metadata = {
             url: environnement.licence_url,
         },
         contact: {
-            name: 'John Folly',
-            url: 'https://github.com/Neighbook/Backend',
-            email: 'john.folly@utbm.fr',
+            name: "John Folly",
+            url: "https://github.com/Neighbook/Backend",
+            email: "john.folly@utbm.fr",
         },
     },
     servers: [
         {
-            url: 'http://'+environnement.api_host+':'+environnement.api_port +'',
-            description: 'Local server',
+            url: "http://" + environnement.api_host + ":" + environnement.api_port + "",
+            description: "Local server",
         },
     ],
     security: [{ bearerAuth: [] }],
     tags: [
         {
-            name: 'User',
-            description: 'User management',
+            name: "User",
+            description: "User management",
         },
         {
-            name: 'Auth',
-            description: 'Authentication',
+            name: "Auth",
+            description: "Authentication",
         },
     ],
-}
+};
