@@ -13,7 +13,7 @@ plugins:
 rules:
     no-eval: error
     no-debugger: error
-    no-console: error
+    no-console: warn
     no-var: error
     no-unsafe-finally: error
     prefer-const: error

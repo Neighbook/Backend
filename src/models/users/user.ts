@@ -1,69 +1,69 @@
-import {
-    Entity,
-    PrimaryGeneratedColumn,
-    Column,
-    BeforeUpdate,
-    BeforeInsert,
-    DeleteDateColumn,
-    UpdateDateColumn,
-    CreateDateColumn,
-} from "typeorm";
 import * as argon from "argon2";
+import {
+	Entity,
+	PrimaryGeneratedColumn,
+	Column,
+	BeforeUpdate,
+	BeforeInsert,
+	DeleteDateColumn,
+	UpdateDateColumn,
+	CreateDateColumn,
+} from "typeorm";
 
 @Entity("users")
 export class User {
-    @PrimaryGeneratedColumn("uuid")
-    id!: number;
+	@PrimaryGeneratedColumn("uuid")
+	id!: number;
 
-    @Column()
-    prenom!: string;
+	@Column()
+	prenom!: string;
 
-    @Column()
-    nom!: string;
+	@Column()
+	nom!: string;
 
-    @Column()
-    sexe!: string;
+	@Column()
+	sexe!: string;
 
-    @Column({ unique: true })
-    nom_utilisateur!: string;
+	@Column({ unique: true })
+	nom_utilisateur!: string;
 
-    @Column({ type: "date" })
-    date_naissance!: string;
+	@Column({ type: "date" })
+	date_naissance!: string;
 
-    @Column({ unique: true })
-    email!: string;
+	@Column({ unique: true })
+	email!: string;
 
-    @Column()
-    password!: string;
+	@Column()
+	password!: string;
 
-    @Column()
-    telephone!: string;
+	@Column()
+	telephone!: string;
 
-    @Column()
-    code_pays!: string;
+	@Column()
+	code_pays!: string;
 
-    @Column({ nullable: true })
-    photo!: string;
+	@Column({ nullable: true })
+	photo!: string;
 
-    @CreateDateColumn()
-    date_creation!: Date;
+	@CreateDateColumn()
+	date_creation!: Date;
 
-    @UpdateDateColumn()
-    date_modification!: Date;
+	@UpdateDateColumn()
+	date_modification!: Date;
 
-    @DeleteDateColumn()
-    date_suppression!: Date;
+	@DeleteDateColumn()
+	date_suppression!: Date;
 
-    @Column({ default: true })
-    actif!: boolean;
+	@Column({ default: true })
+	actif!: boolean;
 
-    @BeforeUpdate()
-    async hashPassword() {
-        this.password = await argon.hash(this.password);
-    }
+	@BeforeUpdate()
+	async hashPassword() {
+		this.password = await argon.hash(this.password);
+	}
 
-    @BeforeInsert()
-    async hashPasswordBeforeInsert() {
-        this.password = await argon.hash(this.password);
-    }
+	@BeforeInsert()
+	async hashPasswordBeforeInsert() {
+		this.password = await argon.hash(this.password);
+	}
 }
