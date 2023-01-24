@@ -5,13 +5,13 @@ import {Post} from "../../models/social/Post";
 const CommentRepository = SocialDataSource.manager.getRepository(Comment)
 
 export class CommentService {
-  static async getComment(id: number): Promise<Comment | null> {
-    return await CommentRepository.findOne({
-      where: {
-        id: id,
-        dateDeSuppression: undefined
-      }
-    })
+  static async getComment(id: number): Promise<Comment[] | null> {
+    const CommentQueryBuilder = CommentRepository.createQueryBuilder('comment')
+    return await CommentQueryBuilder.where("comment.post = " +
+      CommentQueryBuilder.subQuery()
+        .select('commentaire.post').from(Comment, 'commentaire')
+        .where('commentaire.id = :id', {id: id}).getQuery())
+      .getMany();
   }
 
   static async putComment(contenu: string, postId: number, idUtilisateur: string, idCommentaire: number | null): Promise<any> {

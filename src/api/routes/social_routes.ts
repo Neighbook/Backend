@@ -1,15 +1,29 @@
 import express from 'express'
 import {PostService} from "../../services/social/post_service";
 import {CommentService} from "../../services/social/comment_service";
+import {Comment} from "../../models/social/Comment";
+
 const socialRoutes = express.Router()
 
 // Comment routes
 socialRoutes.get('/comment', async (req: express.Request, res) => {
   if(req.query.id) {
-    const comment = await CommentService.getComment(Number(req.query.id))
-    console.log(comment)
-    if(comment !== null){
-      res.status(200).json(comment)
+    const searchId = Number(req.query.id)
+    const comments = await CommentService.getComment(searchId)
+    if(comments !== null){
+      let comment: Comment = new Comment(), relatedComment: Comment[] = []
+      comments.forEach(c=>{
+        if(c.id === searchId){
+          comment = c
+        }else{
+          relatedComment.push(c)
+        }
+      })
+      const apiRes = {
+        comment: comment,
+        relatedComment: relatedComment
+      }
+      res.status(200).json(apiRes)
     }else{
       res.status(404).send()
     }
