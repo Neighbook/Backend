@@ -82,35 +82,33 @@ export class AuthService {
 			decoded = decodedToken;
 		});
 		return decoded;
-    }
+	}
 
-    static async refreshToken(token: string) {
-        const jwt_secret: KeyVaultSecret | null = await VaultService.getSecret(environnement.jwt_secret_name);
-        if (jwt_secret === null) {
-            console.log('Error: JWT secret not found');
-            return new ServiceException('Internal server error', 500);
-        }
-        let decoded: any = null;
-        decoded = AuthService.verifyToken(token);
-        if (decoded === null) {
-            throw new ServiceException('Invalid token.', 400);
-        }
-        const newToken = jwt.sign(
-            {
-                _user_id: decoded._user_id,
-                _user_name: decoded._user_name,
-                _user_firstname: decoded._user_firstname,
-                _user_lastname: decoded._user_lastname,
-            },
-            jwt_secret.value as string,
-            {
-                expiresIn: environnement.jwt_token_expiration_time,
-                issuer: environnement.jwt_token_issuer,
-            }
-        );
+	static async refreshToken(token: string) {
+		const jwt_secret: KeyVaultSecret | null = await VaultService.getSecret(environnement.jwt_secret_name);
+		if (jwt_secret === null) {
+			console.log('Error: JWT secret not found');
+			return new ServiceException('Internal server error', 500);
+		}
+		let decoded: any = null;
+		decoded = AuthService.verifyToken(token);
+		if (decoded === null) {
+			throw new ServiceException('Invalid token.', 400);
+		}
+		const newToken = jwt.sign(
+			{
+				_user_id: decoded._user_id,
+				_user_name: decoded._user_name,
+				_user_firstname: decoded._user_firstname,
+				_user_lastname: decoded._user_lastname,
+			},
+			jwt_secret.value as string,
+			{
+				expiresIn: environnement.jwt_token_expiration_time,
+				issuer: environnement.jwt_token_issuer,
+			}
+		);
 
-        return newToken;
-
-    }
-
+		return newToken;
+	}
 }
