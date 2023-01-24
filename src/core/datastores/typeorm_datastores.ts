@@ -1,6 +1,7 @@
 import 'reflect-metadata'
 import { DataSource } from 'typeorm'
-import { User } from '../../models/User'
+import { User } from '../../models/users/user'
+import { UserPreference } from '../../models/users/user_preference'
 import { environnement } from '../../config/environnement'
 import {Block} from "../../models/social/Block";
 import {Abonnement} from "../../models/social/Abonnement";
@@ -10,7 +11,6 @@ import {Comment} from "../../models/social/Comment";
 import {Image} from "../../models/social/Image";
 import {Post} from "../../models/social/Post";
 import {PostReaction} from "../../models/social/PostReaction";
-import {Reaction} from "../../models/social/Reaction";
 import 'reflect-metadata';
 
 export const UsersDataSource = new DataSource({
