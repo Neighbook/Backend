@@ -23,7 +23,7 @@ yarn install
 ```
 Si vous n'avez pas yarn installer le en global avec la commande `npm install -g yarn`
 
-si vous n'avez pas npm installer le en global avec la commande `sudo apt install npm`
+Si vous n'avez pas npm installer le en global avec la commande `sudo apt install npm`
 
 ### 3. Configurer les variables d'environnement
 
