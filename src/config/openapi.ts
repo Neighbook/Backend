@@ -30,6 +30,10 @@ export const metadata = {
 		{
 			name: 'Auth',
 			description: 'Authentication',
-		},
+        },
+        {
+            name: 'File',
+            description: 'File Uploas'
+        },
 	],
 };

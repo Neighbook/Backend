@@ -32,7 +32,8 @@ export class VaultService {
 						logger.trace(`Error while creating vault key ${key.name}: ${error}`);
 					});
 			}
-		}
+        }
+        logger.info('Vault intialized')
 	}
 
 	static async getSecret(secretName: string): Promise<KeyVaultSecret | null> {
