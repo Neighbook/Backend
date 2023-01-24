@@ -8,139 +8,71 @@ Bienvenue dans le _repository_ contenant le _backend_ du projet tutoré !
 -   npm ou yarn, yarn de péference car plus performant
 -   disposer d'un seveur de base de donnée postgrsql en local ou en ligne
 
-## Guide des commandes de gestion du projet
+## Comment démarrer le projet
 
-#### - `install` : installer les dependance du projet
+### 1. Cloner le projet
 
--   Commande yarn
+```bash
+git clone https://github.com/Neighbook/Backend.git
+```
+
+### 2. Installer les dépendances
 
 ```bash
 yarn install
 ```
+Si vous n'avez pas yarn installer le en global avec la commande `npm install -g yarn`
 
--   Commande npm
+si vous n'avez pas npm installer le en global avec la commande `sudo apt install npm`
 
-```bash
-npm install
+### 3. Configurer les variables d'environnement
+
+Pour configurer les variables d'environnement, vous pouvez soit les definir dans un fichier `.env` a la racine du projet, soit les definir dans votre environement d'os.
+
+Pour plus d'information sur les variables d'environnement, voir la section [Les variables d'environnement de l'api](#les-variables-denvironnement-de-lapi)
+
+Exemple de fichier `.env` :
+
+```.env
+DATABASE_USER_DATABASE="pguser"
+DATABASE_USER_PASSWORD="myPassword"
+AZURE_CLIENT_ID="myClientId"
+AZURE_CLIENT_SECRET="mySecret"
+AZURE_TENANT_ID="myTenantId"
+AZURE_KEY_VAULT_URI="https://myKeyVault.vault.azure.net/"
 ```
 
-#### - `build` : compiler le projet (ici npx compile de ts a js et effectuer les optims)
-
--   Commande yarn
-
-```bash
-yarn build
-```
-
--   Commande npm
-
-```bash
-
-```
-
--   Commande npm
-
-```bash
-npm run build
-```
-
-#### - `dev` : lancer le serveur d'application en mode dev
-
--   Commande yarn
-
-```bash
-yarn dev
-```
-
--   Commande npm
-
-```bash
-npm run dev
-```
-
-#### - `start` : lancer le serveur d'application a partir du build
-
--   Commande yarn
-
-```bash
-yarn start
-```
-
--   Commande npm
-
-```bash
-npm run start
-```
-
-#### - `build-clean` : supprimer l'ancienne version compile du projet et recrer un nouveau build
-
--   Commande yarn
-
-```bash
-yarn build-clean
-```
-
--   Commande npm
-
-```bash
-npm run build-clean
-```
-
-#### - `swagger-gendoc` : generer le fichier de documentation de open api
-
--   Commande yarn
+### 4. Genrer le fichier de documentation swagger
 
 ```bash
 yarn swagger-gendoc
 ```
 
--   Commande npm
+### 5. Lancer le serveur
 
 ```bash
-npm run swagger-gendoc
+yarn dev
 ```
+
+## Guide des commandes de gestion du projet
+
+#### - `install` : installer les dependance du projet
+
+#### - `build` : compiler le projet (ici npx compile de ts a js et effectuer les optims)
+
+#### - `dev` : lancer le serveur d'application en mode dev
+
+#### - `start` : lancer le serveur d'application a partir du build
+
+#### - `build-clean` : supprimer l'ancienne version compile du projet et recrer un nouveau build
+
+#### - `swagger-gendoc` : generer le fichier de documentation de open api
 
 #### - `lint` : verifier la quqlite du code
 
--   Commande yarn
-
-```bash
-yarn lint
-```
-
--   Commande npm
-
-```bash
-npm run lint
-```
-
 #### - `format` : formater le code avec pretier
 
--   Commande yarn
-
-```bash
-yarn format
-```
-
--   Commande npm
-
-```bash
-npm run format
-```
-
 #### - `lint-fix` : verifier et corriger si possible les problemes de lint
-
--   Commande yarn
-
-```bash
-yarn lint-fix
-```
-
--   Commande npm
-
-```bash
-npm run lint-fix
-```
 
 ## Les variables d'environnement de l'api
 
