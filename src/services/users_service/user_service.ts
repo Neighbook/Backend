@@ -51,12 +51,7 @@ export class UserService {
 		return users;
 	}
 
-	static async updateUser(
-		id: number,
-		firstName: string,
-		lastName: string,
-		age: number
-	) {
+	static async updateUser(id: number, firstName: string, lastName: string, age: number) {
 		const userRepository = UsersDataSource.manager.getRepository(User);
 		await userRepository
 			.findOne({
@@ -86,10 +81,7 @@ export class UserService {
 			});
 	}
 
-	static async addUserProfilePicture(
-		id: number,
-		profilePicture: string
-	): Promise<User | null> {
+	static async addUserProfilePicture(id: number, profilePicture: string): Promise<User | null> {
 		let updatedUser: User | null = null;
 		await userRepository
 			.findOne({

@@ -1,6 +1,5 @@
 import express from 'express';
 
-import { apiConfig } from '../../../config/api_config';
 import { ServiceException } from '../../../core/exeptions/base_exeption';
 import { User } from '../../../models/users/user';
 import { AuthService } from '../../../services/users_service/auth_service';
@@ -35,27 +34,27 @@ authRoutes.post('/auth/register', async (req: express.Request, res) => {
 	// #swagger.parameters['obj'] = { description: 'User object', in: 'body', required: true, type: 'object', schema: { prenom: 'string', nom: 'string', sexe: 'string', nom_utilisateur: 'string', date_naissance: 'string', email: 'string', password: 'string', telephone: 'string', code_pays: 'string', photo: 'string' } }
 	// #swagger.responses[200] = { description: 'User Created' }
 	// #swagger.responses[500] = { description: 'Internal Server Error' }
-	const user = new User();
-	user.prenom = req.body.prenom;
-	user.nom = req.body.nom;
-	user.sexe = req.body.sexe;
-	user.nom_utilisateur = req.body.nom_utilisateur;
-	user.date_naissance = req.body.date_naissance;
-	user.email = req.body.email;
-	user.password = req.body.password;
-	user.telephone = req.body.telephone;
-	user.code_pays = req.body.code_pays;
-	user.photo = req.body.photo;
-	await AuthService.resgiter(user)
-		.then((response) => {
-			if (response instanceof ServiceException) {
-				res.status(response.status).json({ message: response.message });
-			}
-			res.status(200).json(response);
-		})
-		.catch((error) => {
-			res.status(500).json(error);
-		});
+    const user = new User();
+    user.prenom = req.body.prenom;
+    user.nom = req.body.nom;
+    user.sexe = req.body.sexe;
+    user.nom_utilisateur = req.body.nom_utilisateur;
+    user.date_naissance = req.body.date_naissance;
+    user.email = req.body.email;
+    user.password = req.body.password;
+    user.telephone = req.body.telephone;
+    user.code_pays = req.body.code_pays;
+    user.photo = req.body.photo;
+    await AuthService.resgiter(user)
+        .then((response) => {
+            if (response instanceof ServiceException) {
+                res.status(response.status).json({ message: response.message });
+            }
+            res.status(200).json(response);
+        })
+        .catch((error) => {
+            res.status(500).json(error);
+        });
 });
 
 module.exports = authRoutes;

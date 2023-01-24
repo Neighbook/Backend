@@ -21,6 +21,8 @@ rules:
     prefer-spread: error
     no-duplicate-imports: off
     quotes: [error, single]
+    semi: [error, always]
+    max-len: [error, 120]
     "@typescript-eslint/no-unused-vars": warn
     "@typescript-eslint/prefer-interface": off
     "@typescript-eslint/no-explicit-any": off

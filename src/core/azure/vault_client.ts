@@ -22,10 +22,7 @@ try {
 
 export const vault_client = client;
 
-export async function generateSecret(
-	length: number,
-	type: 'hmac' | 'aes'
-): Promise<string> {
+export async function generateSecret(length: number, type: 'hmac' | 'aes'): Promise<string> {
 	const random_secret = generateKeySync(type, { length: length });
 	return random_secret.export().toString('hex');
 }

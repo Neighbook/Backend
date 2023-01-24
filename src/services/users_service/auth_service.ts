@@ -24,9 +24,7 @@ export class AuthService {
 		if (!(await argon.verify(user.password, password))) {
 			return new ServiceException('Invalid user credentials', 401);
 		}
-		const jwt_secret = await VaultService.getSecret(
-			environnement.jwt_secret_name
-		);
+		const jwt_secret = await VaultService.getSecret(environnement.jwt_secret_name);
 		if (jwt_secret == null) {
 			console.log('Error: JWT secret not found');
 			return new ServiceException('Internal server error', 500);
@@ -69,9 +67,7 @@ export class AuthService {
 	}
 
 	static async verifyToken(token: string) {
-		const jwt_secret = await VaultService.getSecret(
-			environnement.jwt_secret_name
-		);
+		const jwt_secret = await VaultService.getSecret(environnement.jwt_secret_name);
 		if (jwt_secret == null) {
 			console.log('Error: JWT secret not found');
 			throw new ServiceException('Internal server error', 500);

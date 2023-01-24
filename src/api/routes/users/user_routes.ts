@@ -12,7 +12,11 @@ userRoutes.get('/user', authMiddleware, async (req: express.Request, res) => {
 	// #swagger.tags = ['User']
 	// #swagger.description = 'Endpoint to get a user'
 	// #swagger.summary = 'Get a user'
-	// #swagger.parameters['obj'] = { description: 'User id', in: 'body', required: true, type: 'object', schema: { id: 'number' } }
+	/* #swagger.parameters['obj'] = {
+		description: 'User id',
+		in: 'body', required: true,
+		type: 'object',
+		schema: { id: 'number' } }*/
 	// #swagger.responses[200] = { description: 'Success' }
 	// #swagger.responses[500] = { description: 'Internal Server Error' }
 	await UserService.getUser(req.body.id)
@@ -45,7 +49,16 @@ userRoutes.post('/user', async (req, res) => {
 	// #swagger.tags = ['User']
 	// #swagger.summary = 'Create a user'
 	// #swagger.description = 'Endpoint
-	// #swagger.parameters['obj'] = { description: 'User object', in: 'body', required: true, type: 'object', schema: { prenom: 'string', nom: 'string', sexe: 'string', nom_utilisateur: 'string', date_naissance: 'string', email: 'string', password: 'string', telephone: 'string', code_pays: 'string', photo: 'string' } }
+	/* #swagger.parameters['obj'] = {
+		description: 'User object',
+		in: 'body', required: true,
+		type: 'object',
+		schema: { prenom: 'string',
+				  nom: 'string',
+				  sexe: 'string',
+				  nom_utilisateur: 'string',
+				  date_naissance: 'string', email: 'string', password: 'string',
+				  telephone: 'string', code_pays: 'string', photo: 'string' } } */
 	// #swagger.responses[200] = { description: 'User Created' }
 	// #swagger.responses[500] = { description: 'Internal Server Error' }
 	const user = new User();
@@ -70,12 +83,7 @@ userRoutes.post('/user', async (req, res) => {
 
 userRoutes.put('/user', (req: express.Request, res) => {
 	// #swagger.tags = ['User']
-	const response = UserService.updateUser(
-		req.body.id,
-		req.body.firstName,
-		req.body.lastName,
-		req.body.age
-	);
+	const response = UserService.updateUser(req.body.id, req.body.firstName, req.body.lastName, req.body.age);
 	res.status(202).json(response);
 });
 

@@ -12,11 +12,7 @@ const authRoutes = require('./api/routes/users/auth_routes');
 
 const app: Express = express();
 
-app.use(
-	morgan(
-		'[:date[web]] " :method :url " :status :response-time ms :res[content-length]'
-	)
-);
+app.use(morgan('[:date[web]] " :method :url " :status :response-time ms :res[content-length]'));
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());

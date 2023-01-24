@@ -17,12 +17,7 @@ export const metadata = {
 	},
 	servers: [
 		{
-			url:
-				'http://' +
-				environnement.api_host +
-				':' +
-				environnement.api_port +
-				'',
+			url: 'http://' + environnement.api_host + ':' + environnement.api_port + '',
 			description: 'Local server',
 		},
 	],
