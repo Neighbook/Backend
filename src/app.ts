@@ -9,6 +9,7 @@ import { cors_config } from './config/cors';
 const swaggerDocument = require('./doc/openapi.json');
 const userRoutes = require('./api/routes/users/user_routes');
 const authRoutes = require('./api/routes/users/auth_routes');
+import { fileUploadRoutes } from './api/routes/users/file_upload_routes';
 
 const app: Express = express();
 
@@ -27,5 +28,6 @@ app.get('/', (req: Request, res: Response) => {
 
 app.use('/', userRoutes);
 app.use('/', authRoutes);
+app.use('/', fileUploadRoutes);
 
 module.exports = app;
