@@ -33,6 +33,11 @@ jobs:
       - name: Setup Pages
         uses: actions/configure-pages@v2
 
+      - name: set Node to v18
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
       - name: Deps
         run: yarn add bootprint bootprint-openapi
 
