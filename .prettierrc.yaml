@@ -1,0 +1,13 @@
+trailingComma: es5
+singleAttributePerLine: true
+tabWidth: 2
+useTabs: true
+semi: true
+singleQuote: true
+printWidth: 120
+quoteProps: as-needed
+arrowParens: always
+endOfLine: auto
+importOrder: ["^components/(.*)$", "^[./]"]
+importOrderSeparation: true
+importOrderParserPlugins: ["decorators-legacy", "typescript"]

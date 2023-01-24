@@ -2,3 +2,11 @@
 build
 coverage
 dist
+node_modules
+*.log
+*.swp
+*.json
+*.lock
+*.md
+*.yml
+*.yaml
