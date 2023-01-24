@@ -41,7 +41,7 @@ export class VaultService {
 			logger.warn('Vault client not initialized');
 			return null;
 		}
-		let secret: KeyVaultSecret | null = null;
+		let secret = null;
 		await vault_client
 			.getSecret(secretName)
 			.then((value: KeyVaultSecret | null) => {

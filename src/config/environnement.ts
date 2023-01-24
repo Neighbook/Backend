@@ -31,7 +31,7 @@ export const environnement = {
 	},
 	vault_keys: [
 		{
-			name: process.env.KEY_VAULT_SECRET_NAME || 'jwt_secret_name',
+			name: process.env.KEY_VAULT_SECRET_NAME || 'jwtsecretname',
 			type: process.env.KEY_VAULT_SECRET_TYPE || 'hmac',
 			length: Number(process.env.KEY_VAULT_SECRET_LENGTH) || 32,
 		},

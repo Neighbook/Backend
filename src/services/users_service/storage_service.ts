@@ -19,7 +19,7 @@ export class StorageService {
         }
         let container = null;
         blob_storage_client
-            .createContainer(containerName.toUpperCase())
+            .createContainer(containerName.toLowerCase())
             .then((value) => {
                 container = value;
             })
@@ -27,6 +27,14 @@ export class StorageService {
                 logger.error(`Error while creating container ${containerName}: ${error}`);
             });
         return container != null;
+    }
+
+    static async getContainer(containerName: string): Promise<boolean> {
+        if (!blob_storage_client) {
+            logger.warn('Blob storage client not initialized');
+            return false;
+        }
+        return blob_storage_client.getContainerClient(containerName) == null;
     }
 
     static async deleteContainer(containerName: string): Promise<boolean> {
@@ -46,20 +54,20 @@ export class StorageService {
         return container != null;
     }
 
-    static async createFile(containerName: string, fileName: string, content: File): Promise<boolean> {
+    static async createFile(containerName: string, fileName: string, content: any): Promise<boolean> {
         if (!blob_storage_client) {
             logger.warn('Blob storage client not initialized');
             return false;
         }
         let file = null;
-        if (!environnement.storage_accepted_files_types.split(',').includes(content.type)) {
-            logger.warn(`File type ${content.type} not accepted`);
-            return false;
-        }
+        // if (!environnement.storage_accepted_files_types.split(',').includes(content.mimetype)) {
+        //     logger.warn(`File type ${content.originalname} not accepted`);
+        //     return false;
+        // }
         blob_storage_client
             .getContainerClient(containerName)
             .getBlockBlobClient(fileName)
-            .upload(content, content.length)
+            .upload(content.buffer, content.size)
             .then((value) => {
                 file = value;
             })

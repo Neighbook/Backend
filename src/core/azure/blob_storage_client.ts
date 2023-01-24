@@ -3,12 +3,12 @@ import { BlobServiceClient } from '@azure/storage-blob';
 
 import { environnement } from '../../config/environnement';
 
-const key_vault_uri = environnement.azure.storage_account_name;
+const storage_account_name = environnement.azure.storage_account_name;
 
 let client = null;
 try {
 	client = new BlobServiceClient(
-		key_vault_uri,
+        `https://${storage_account_name}.blob.core.windows.net`,
 		new ClientSecretCredential(
 			environnement.azure.tenant_id,
 			environnement.azure.client_id,
