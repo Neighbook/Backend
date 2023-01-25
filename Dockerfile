@@ -1,4 +1,4 @@
-FROM node:18.4.0-alpine
+FROM node:18.13.0-alpine
 WORKDIR /app
 ENV POSTGRES_PASSWORD=postgress\
     POSTGRES_USER=postgress\
