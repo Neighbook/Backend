@@ -28,6 +28,7 @@ export const environnement = {
 		tenant_id: process.env.AZURE_TENANT_ID || 'tenant_id',
         key_vault_uri: process.env.AZURE_KEY_VAULT_URI || 'key_vault_uri',
         storage_account_name: process.env.AZURE_STORAGE_ACCOUNT_NAME || 'storage_account_name',
+        storage_account_key: process.env.AZURE_STORAGE_ACCOUNT_KEY || 'storage_account_key',
 	},
 	vault_keys: [
 		{
