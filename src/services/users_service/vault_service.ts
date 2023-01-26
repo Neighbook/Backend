@@ -19,19 +19,17 @@ export class VaultService {
 			return;
 		}
 		for (const key of environnement.vault_keys) {
-			if (this.getSecret(key.name) === null) {
-				const random_secret = await generateSecret(key.length, key.type === 'hmac' ? 'hmac' : 'aes');
-				await vault_client
-					.setSecret(key.name, random_secret)
-					.then((value: KeyVaultSecret | null) => {
-						if (value != null) {
-							logger.trace(`Vault key ${key.name} created`);
-						}
-					})
-					.catch((error) => {
-						logger.trace(`Error while creating vault key ${key.name}: ${error}`);
-					});
-			}
+            const random_secret = await generateSecret(key.length, key.type === 'hmac' ? 'hmac' : 'aes');
+            await vault_client
+                .setSecret(key.name, random_secret)
+                .then((value: KeyVaultSecret | null) => {
+                    if (value != null) {
+                        logger.trace(`Vault key ${key.name} created`);
+                    }
+                })
+                .catch((error) => {
+                    logger.trace(`Error while creating vault key ${key.name}: ${error}`);
+                });
         }
         logger.info('Vault intialized')
 	}
@@ -50,7 +48,8 @@ export class VaultService {
 				}
 			})
 			.catch((error) => {
-				logger.error(`Error while getting secret ${secretName}: ${error}`);
+                logger.error(`Error while getting secret ${secretName}: ${error}`);
+                return null;
 			});
 
 		return secret;
