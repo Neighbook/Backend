@@ -39,8 +39,8 @@ export class FilesUploadController {
 	}
 
 	static async deleteFile(req: any, res: any): Promise<void> {
-		const containerName = req.params.containerName;
-		const fileName = req.params.fileName;
+        const containerName = req.params.container_name;
+        const fileName = req.params.file_name;
 		const result = await StorageService.deleteFile(containerName, fileName);
 		if (result) {
 			res.status(200).send();

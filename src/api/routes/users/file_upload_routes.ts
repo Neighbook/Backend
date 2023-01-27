@@ -4,7 +4,7 @@ import { FilesUploadController } from '../../controllers/filles_uploas_controlle
 
 const fileUploadRouter = express.Router();
 
-fileUploadRouter.post('/upload/:container_name/:file_name', async (req: express.Request, res) => {
+fileUploadRouter.post('/file/upload/:container_name/:file_name', async (req: express.Request, res) => {
 	// #swagger.tags = ['File']
 	// #swagger.summary = 'Uploade new file'
 	// #swagger.description = 'Endpoint to upload new files'
@@ -13,7 +13,7 @@ fileUploadRouter.post('/upload/:container_name/:file_name', async (req: express.
 	FilesUploadController.uploadFile(req, res);
 });
 
-fileUploadRouter.delete('/delete', async (req: express.Request, res) => {
+fileUploadRouter.delete('/file/delete/:container_name/:file_name', async (req: express.Request, res) => {
 	// #swagger.tags = ['File']
 	// #swagger.summary = 'Delete file'
 	// #swagger.description = 'Endpoint to delete files'
