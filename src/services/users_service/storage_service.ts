@@ -18,7 +18,7 @@ export class StorageService {
             return false;
         }
         let container = null;
-        blob_storage_client
+        await blob_storage_client
             .createContainer(containerName.toLowerCase())
             .then((value) => {
                 container = value;
@@ -34,7 +34,7 @@ export class StorageService {
             logger.warn('Blob storage client not initialized');
             return false;
         }
-        return blob_storage_client.getContainerClient(containerName) == null;
+        return await blob_storage_client.getContainerClient(containerName) == null;
     }
 
     static async deleteContainer(containerName: string): Promise<boolean> {
@@ -43,7 +43,7 @@ export class StorageService {
             return false;
         }
         let container = null;
-        blob_storage_client
+        await blob_storage_client
             .deleteContainer(containerName)
             .then((value) => {
                 container = value;
@@ -64,10 +64,10 @@ export class StorageService {
         //     logger.warn(`File type ${content.originalname} not accepted`);
         //     return false;
         // }
-        blob_storage_client
+        await blob_storage_client
             .getContainerClient(containerName)
-            .getBlockBlobClient(fileName)
-            .upload(content.buffer, content.size)
+            .getBlockBlobClient(`${fileName}.${content.originalname.split('.')[1]}`)
+            .uploadData(content.buffer, { blobHTTPHeaders: { blobContentType: content.mimetype } })
             .then((value) => {
                 file = value;
             })
@@ -83,7 +83,7 @@ export class StorageService {
             return false;
         }
         let file = null;
-        blob_storage_client
+        await blob_storage_client
             .getContainerClient(containerName)
             .getBlockBlobClient(fileName)
             .delete()
@@ -102,12 +102,14 @@ export class StorageService {
             return null;
         }
         let sas_url = null;
-        blob_storage_client.getContainerClient(containerName).getBlockBlobClient(fileName).generateSasUrl({
+        await blob_storage_client.getContainerClient(containerName).getBlockBlobClient(fileName).generateSasUrl({
             permissions: BlobSASPermissions.parse('r'),
             startsOn: new Date(),
-        }).then((value) => {
-            sas_url = value;
-        }).catch((error) => {
+            expiresOn: new Date()
+        })
+        .then((value) => {
+                sas_url = value;
+            }).catch((error) => {
             logger.error(`Error while getting sas url for file ${fileName}: ${error}`);
         });
         return sas_url;
