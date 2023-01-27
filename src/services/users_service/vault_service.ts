@@ -18,18 +18,20 @@ export class VaultService {
 			logger.warn('Vault client not initialized');
 			return;
 		}
-		for (const key of environnement.vault_keys) {
-            const random_secret = await generateSecret(key.length, key.type === 'hmac' ? 'hmac' : 'aes');
-            await vault_client
-                .setSecret(key.name, random_secret)
-                .then((value: KeyVaultSecret | null) => {
-                    if (value != null) {
-                        logger.trace(`Vault key ${key.name} created`);
-                    }
-                })
-                .catch((error) => {
-                    logger.trace(`Error while creating vault key ${key.name}: ${error}`);
-                });
+        for (const key of environnement.vault_keys) {
+            if (!await VaultService.getSecret(key.name)) {
+                const random_secret = await generateSecret(key.length, key.type === 'hmac' ? 'hmac' : 'aes');
+                await vault_client
+                    .setSecret(key.name, random_secret)
+                    .then((value: KeyVaultSecret | null) => {
+                        if (value != null) {
+                            logger.trace(`Vault key ${key.name} created`);
+                        }
+                    })
+                    .catch((error) => {
+                        logger.trace(`Error while creating vault key ${key.name}: ${error}`);
+                    });
+            }
         }
         logger.info('Vault intialized')
 	}
