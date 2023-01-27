@@ -1,8 +1,9 @@
-import * as argon from 'argon2';
+import { Logger } from 'tslog';
 
 import { UsersDataSource } from '../../core/datastores/typeorm_datastores';
 import { User } from '../../models/users/user';
 
+const logger = new Logger({ name: 'UserService' });
 export const userRepository = UsersDataSource.manager.getRepository(User);
 
 export class UserService {
@@ -14,7 +15,7 @@ export class UserService {
 				createdUser = result;
 			})
 			.catch((error) => {
-				console.log('Error: ' + error);
+				logger.error('Error: ' + error);
 			});
 		return createdUser;
 	}
@@ -32,7 +33,7 @@ export class UserService {
 				user = result;
 			})
 			.catch((error) => {
-				console.log('Error: ' + error);
+				logger.error('Error: ' + error);
 			});
 		return user;
 	}
@@ -46,7 +47,7 @@ export class UserService {
 				users = result;
 			})
 			.catch((error) => {
-				console.log('Error: ' + error);
+				logger.error('Error: ' + error);
 			});
 		return users;
 	}
@@ -98,7 +99,7 @@ export class UserService {
 				updatedUser = user;
 			})
 			.catch((error) => {
-				console.log('Error: ' + error);
+				logger.error('Error: ' + error);
 			});
 		return updatedUser;
 	}

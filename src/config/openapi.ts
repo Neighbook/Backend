@@ -22,15 +22,15 @@ export const metadata = {
 		},
 	],
 	security: [{ bearerAuth: [] }],
-    tags: [
-        {
-            name: 'Auth',
-            description: 'Authentication',
-        },
-        {
-            name: 'File',
-            description: 'File Uploas'
-        },
+	tags: [
+		{
+			name: 'Auth',
+			description: 'Authentication',
+		},
+		{
+			name: 'File',
+			description: 'File Uploas',
+		},
 		{
 			name: 'User',
 			description: 'User management',
