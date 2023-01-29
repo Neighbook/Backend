@@ -4,6 +4,7 @@ import express, { Express, Request, Response } from 'express';
 import morgan from 'morgan';
 import multer from 'multer';
 import swaggerUi from 'swagger-ui-express';
+import { apiConfig } from './config/api_config';
 
 import { fileUploadRoutes } from './api/routes/users/file_upload_routes';
 import { cors_config } from './config/cors';
@@ -21,13 +22,12 @@ app.use(bodyParser.urlencoded({ extended: true, limit: '50mb' }));
 app.use(bodyParser.json({ limit: '50mb' }));
 app.use(bodyParser.raw({ limit: '50mb' }));
 app.use(upload.single('file'));
-
 app.use(cors(cors_config));
 
-app.use('/documentation', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+app.use(apiConfig.base_path + '/documentation', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 app.get('/', (req: Request, res: Response) => {
-	res.redirect('/documentation');
+    res.redirect(apiConfig.base_path + '/documentation');
 });
 
 app.use('/', userRoutes);

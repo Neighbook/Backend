@@ -19,7 +19,8 @@ export class VaultService {
 			return;
 		}
 		for (const key of environnement.vault_keys) {
-			if (!(await VaultService.getSecret(key.name))) {
+            if (!(await VaultService.getSecret(key.name))) {
+
 				const random_secret = await generateSecret(key.length, key.type === 'hmac' ? 'hmac' : 'aes');
 				await vault_client
 					.setSecret(key.name, random_secret)
@@ -37,6 +38,7 @@ export class VaultService {
 	}
 
 	static async getSecret(secretName: string): Promise<KeyVaultSecret | null> {
+		logger.info()
 		if (!vault_client) {
 			logger.warn('Vault client not initialized');
 			return null;

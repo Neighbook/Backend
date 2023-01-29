@@ -33,16 +33,16 @@ export const environnement = {
 	},
 	vault_keys: [
 		{
-			name: process.env.KEY_VAULT_SECRET_NAME || 'jwtsecretname',
-			type: process.env.KEY_VAULT_SECRET_TYPE || 'hmac',
-			length: Number(process.env.KEY_VAULT_SECRET_LENGTH) || 32,
+			name: process.env.JWT_SECRET_NAME || 'jwtsecretname',
+			type: process.env.JWT_SECRET_TYPE || 'hmac',
+			length: Number(process.env.JWT_SECRET_LENGTH) || 32,
 		},
 	],
 	database: {
 		dialect: process.env.DATABASE_DIALECT || 'postgres',
 		host: process.env.DATABASE_HOST || 'localhost',
 		port: Number(process.env.DATABASE_PORT) || 5432,
-		username: process.env.DATABASE_USERNAME || 'postgres',
+		username: process.env.DATABASE_USER || 'postgres',
 		password: process.env.DATABASE_PASSWORD || 'postgres',
 		users_service_database: process.env.DATABASE_SERVICE_USER || 'postgres',
 	},

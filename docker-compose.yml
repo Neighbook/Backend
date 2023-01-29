@@ -3,22 +3,23 @@ services:
   db:
     image: postgres:14.1-alpine
     restart: always
-    environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
+    env_file:
+      - docker.env
     ports:
-      - '5432:5432'
-    volumes: 
-      - db:/var/lib/postgresql/data
-      - ./scripts/init_db.sql:/docker-entrypoint-initdb.d/init.sql
+      - '5433:5433'
+    volumes:
+      - ./scripts/sql/:/docker-entrypoint-initdb.d/
   server:
     build:
       context: ./
       dockerfile: Dockerfile
-    env_file: 
-      - .env
+    env_file:
+      - docker.env
     ports:
       - 3000:3000
+    restart: always
+    depends_on:
+      - db
 volumes:
   db:
     driver: local

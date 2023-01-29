@@ -178,7 +178,7 @@ yarn.lock
 .history
 .ionide
 .azure
-.env
+*.env
 
 # vim
 *~

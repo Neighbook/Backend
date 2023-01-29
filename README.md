@@ -44,6 +44,8 @@ AZURE_KEY_VAULT_URI="https://myKeyVault.vault.azure.net/"
 
 ### 4. Genrer le fichier de documentation swagger
 
+Cette commande n'est plus necessaire avant d'executer la commande de lancement du serveur en dev.
+
 ```bash
 yarn swagger-gendoc
 ```
@@ -54,25 +56,32 @@ yarn swagger-gendoc
 yarn dev
 ```
 
+##
+
 ## Guide des commandes de gestion du projet
 
 #### - `install` : installer les dependance du projet
 
-#### - `build` : compiler le projet (ici npx compile de ts a js et effectuer les optims)
-
-#### - `dev` : lancer le serveur d'application en mode dev
+#### - `build` : compiler le projet (ici npx compile de ts a js et effectuer les optim
+#### - `dev` : lancer le serveur d'application en mode dev (avec nodemon) et recompiler le projet a chaque modification ainsi que la documentation swagger
 
 #### - `start` : lancer le serveur d'application a partir du build
 
-#### - `build-clean` : supprimer l'ancienne version compile du projet et recrer un nouveau build
+#### - `build:clean` : supprimer l'ancienne version compile du projet et recrer un nouveau build
 
-#### - `swagger-gendoc` : generer le fichier de documentation de open api
+#### - `openapi:gen` : generer le fichier de documentation de open api
 
 #### - `lint` : verifier la quqlite du code
 
 #### - `format` : formater le code avec pretier
 
-#### - `lint-fix` : verifier et corriger si possible les problemes de lint
+#### - `format:check` : verifier si le code est bien formater
+
+#### - `lint:fix` : verifier et corriger si possible les problemes de lint
+
+#### - `spell:check` : verifier l'orthographe du code
+
+
 
 ## Les variables d'environnement de l'api
 
@@ -116,7 +125,7 @@ Toutes les variables d'environnement sont optionnelles, si aucune variable n'est
 | DATABASE_HOST             | Host de la base de données                                 | "localhost"                            |
 | DATABASE_PORT             | Port de la base de données                                 | 5432                                   |
 | DATABASE_SERVICE_USER     | Non de la base de donnee du service user                   | "pguser"                               |
-| DATABASE_USERNAME         | Nom d'utilisateur de la base de données                    | "postgres"                             |
+| DATABASE_USER             | Nom d'utilisateur de la base de données                    | "postgres"                             |
 | DATABASE_PASSWORD         | Mot de passe de la base de données                         | "postgres"                             |
 | LOGGING_LEVEL             | Niveau de log                                              | "info"                                 |
 | LOGGING_FORMAT            | Format de log                                              | "dev"                                  |

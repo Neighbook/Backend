@@ -5,14 +5,15 @@
 	"main": "app.ts",
 	"scripts": {
 		"start": "node dist/server.js",
-		"dev": "nodemon src/server.ts",
+		"dev": "concurrently \"nodemon --watch src --exec 'ts-node' src/server.ts\" \"nodemon --watch src/api/routes --exec 'ts-node' src/doc/swagger.ts \"",
 		"build": "tsc -p tsconfig.build.json && node dist/doc/swagger.js",
-		"build-clean": "rm -rf dist && tsc -p tsconfig.build.json && node dist/doc/swagger.js",
-		"swagger-gendoc": "tsc -p tsconfig.build.json && node dist/doc/swagger.js && cp dist/doc/openapi.json src/doc",
-		"lint-fix": "eslint . --fix",
+		"build:clean": "rm -rf dist && tsc -p tsconfig.build.json && node dist/doc/swagger.js",
+		"openapi:gen": "tsc -p tsconfig.build.json && node dist/doc/swagger.js && cp dist/doc/openapi.json src/doc",
+		"lint:fix": "eslint . --fix",
 		"format": "prettier --write .",
-		"format-check": "prettier --check .",
-		"lint": "eslint ."
+		"format:check": "prettier --check .",
+		"lint": "eslint .",
+		"spell:check": "cspell \"**/*.{js,ts,md}\""
 	},
 	"author": "",
 	"license": "ISC",
