@@ -19,7 +19,8 @@ export class VaultService {
 			return;
 		}
 		for (const key of environnement.vault_keys) {
-			if (this.getSecret(key.name) === null) {
+            if (!(await VaultService.getSecret(key.name))) {
+
 				const random_secret = await generateSecret(key.length, key.type === 'hmac' ? 'hmac' : 'aes');
 				await vault_client
 					.setSecret(key.name, random_secret)
@@ -33,14 +34,16 @@ export class VaultService {
 					});
 			}
 		}
+		logger.info('Vault intialized');
 	}
 
 	static async getSecret(secretName: string): Promise<KeyVaultSecret | null> {
+		logger.info()
 		if (!vault_client) {
 			logger.warn('Vault client not initialized');
 			return null;
 		}
-		let secret: KeyVaultSecret | null = null;
+		let secret = null;
 		await vault_client
 			.getSecret(secretName)
 			.then((value: KeyVaultSecret | null) => {
@@ -50,6 +53,7 @@ export class VaultService {
 			})
 			.catch((error) => {
 				logger.error(`Error while getting secret ${secretName}: ${error}`);
+				return null;
 			});
 
 		return secret;
@@ -67,11 +71,11 @@ export class VaultService {
 			.then((value: KeyVaultSecret | null) => {
 				if (value != null) {
 					secret = value;
-					console.log(`Key ${name} created`);
+					logger.info(`Key ${name} created`);
 				}
 			})
 			.catch((error) => {
-				console.log(`Error while creating key ${name}: ${error}`);
+				logger.error(`Error while creating key ${name}: ${error}`);
 			});
 
 		return secret;

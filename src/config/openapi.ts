@@ -24,12 +24,16 @@ export const metadata = {
 	security: [{ bearerAuth: [] }],
 	tags: [
 		{
-			name: 'User',
-			description: 'User management',
-		},
-		{
 			name: 'Auth',
 			description: 'Authentication',
+		},
+		{
+			name: 'File',
+			description: 'File Uploas',
+		},
+		{
+			name: 'User',
+			description: 'User management',
 		},
 	],
 };
