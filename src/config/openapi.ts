@@ -15,12 +15,13 @@ export const metadata = {
 			email: 'john.folly@utbm.fr',
 		},
 	},
+	host: environnement.api_host,
 	servers: [
 		{
-			url: 'http://' + environnement.api_host + ':' + environnement.api_port + '',
 			description: 'Local server',
 		},
 	],
+	schemes: ['http', 'https'],
 	security: [{ bearerAuth: [] }],
 	tags: [
 		{
