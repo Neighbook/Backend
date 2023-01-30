@@ -4,9 +4,9 @@ import express, { Express, Request, Response } from 'express';
 import morgan from 'morgan';
 import multer from 'multer';
 import swaggerUi from 'swagger-ui-express';
-import { apiConfig } from './config/api_config';
 
 import { fileUploadRoutes } from './api/routes/users/file_upload_routes';
+import { apiConfig } from './config/api_config';
 import { cors_config } from './config/cors';
 
 const swaggerDocument = require('./doc/openapi.json');
@@ -27,7 +27,7 @@ app.use(cors(cors_config));
 app.use(apiConfig.base_path + '/documentation', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 app.get('/', (req: Request, res: Response) => {
-    res.redirect(apiConfig.base_path + '/documentation');
+	res.redirect(apiConfig.base_path + '/documentation');
 });
 
 app.use('/', userRoutes);
