@@ -205,3 +205,6 @@ yalc.lock
 
 # openapi
 **openapi.json**
+
+*.pem
+*.cert
