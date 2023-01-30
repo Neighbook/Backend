@@ -14,13 +14,17 @@ export const metadata = {
 			url: 'https://github.com/Neighbook/Backend',
 			email: 'john.folly@utbm.fr',
 		},
-	},
+    },
+    host: environnement.api_host,
 	servers: [
 		{
-			url: 'http://' + environnement.api_host + ':' + environnement.api_port + '',
 			description: 'Local server',
 		},
-	],
+    ],
+    schemes: [
+        "http",
+        "https",
+    ],
 	security: [{ bearerAuth: [] }],
 	tags: [
 		{
