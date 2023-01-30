@@ -1,3 +1,5 @@
+[![Prettier format check](https://github.com/Neighbook/Backend/actions/workflows/prettier_format.yml/badge.svg)](https://github.com/Neighbook/Backend/actions/workflows/prettier_format.yml)
+
 # Projet tutoré _backend server_
 
 Bienvenue dans le _repository_ contenant le _backend_ du projet tutoré !
