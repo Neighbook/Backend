@@ -1,4 +1,4 @@
-name: Trigger auto deployment for api-nh-dev-server
+name: Auto deployment for api dev
 
 # When this action will be executed
 on:
