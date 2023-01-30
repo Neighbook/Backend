@@ -44,9 +44,9 @@ export const environnement = {
 		port: Number(process.env.DATABASE_PORT) || 5432,
 		username: process.env.DATABASE_USER || 'postgres',
 		password: process.env.DATABASE_PASSWORD || 'postgres',
-        users_service_database: process.env.DATABASE_SERVICE_USER || 'postgres',
-        use_ssl: Boolean(process.env.DATABASE_USE_SSL) || false,
-        logging: Boolean(process.env.DATABASE_LOGGING) || false,
+		users_service_database: process.env.DATABASE_SERVICE_USER || 'postgres',
+		use_ssl: Boolean(process.env.DATABASE_USE_SSL) || false,
+		logging: Boolean(process.env.DATABASE_LOGGING) || false,
 	},
 	logging: {
 		level: process.env.LOGGING_LEVEL || 'info',
