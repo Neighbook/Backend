@@ -28,7 +28,6 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'yarn'
-    
     - name: Check format
       run: yarn format:check
 
