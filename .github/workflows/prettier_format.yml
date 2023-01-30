@@ -10,7 +10,7 @@ on:
     branches: [ "dev" ]
 
 jobs:
-  build:
+  check_prettier_format:
 
     runs-on: ubuntu-latest
 
