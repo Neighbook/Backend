@@ -2,6 +2,8 @@
 
 [![Documentation OpenApi](https://github.com/Neighbook/Backend/actions/workflows/doc.yml/badge.svg)](https://github.com/Neighbook/Backend/actions/workflows/doc.yml)
 
+[![Auto deployment for api dev](https://github.com/Neighbook/Backend/actions/workflows/api-nh-dev-server-AutoDeployTrigger-21d2a4b3-bc36-48db-a917-073d48ac215a.yml/badge.svg)](https://github.com/Neighbook/Backend/actions/workflows/api-nh-dev-server-AutoDeployTrigger-21d2a4b3-bc36-48db-a917-073d48ac215a.yml)
+
 # Projet tutoré _backend server_
 
 Bienvenue dans le _repository_ contenant le _backend_ du projet tutoré !
