@@ -86,7 +86,7 @@ export class StorageService {
 		await blob_storage_client
 			.getContainerClient(containerName)
 			.getBlockBlobClient(fileName)
-            .deleteIfExists()
+			.deleteIfExists()
 			.then((value) => {
 				file = value;
 			})

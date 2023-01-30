@@ -45,7 +45,7 @@ jobs:
         run: yarn install
 
       - name: OpenApi spec
-        run: yarn swagger-gendoc
+        run: yarn openapi:gen
 
       - name: Static build
         run: ./node_modules/.bin/bootprint openapi src/doc/openapi.json target
