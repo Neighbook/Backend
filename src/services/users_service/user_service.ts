@@ -7,6 +7,16 @@ const logger = new Logger({ name: 'UserService' });
 export const userRepository = UsersDataSource.manager.getRepository(User);
 
 export class UserService {
+	static async healthCheck(): Promise<boolean> {
+		try {
+			await userRepository.find();
+			return true;
+		} catch (error) {
+			logger.error(`Error while listing users: ${error}`);
+			return false;
+		}
+	}
+
 	static async createUser(user: User): Promise<User | null> {
 		let createdUser: User | null = null;
 		await userRepository

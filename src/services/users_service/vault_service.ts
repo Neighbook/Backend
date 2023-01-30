@@ -12,6 +12,20 @@ import { vault_client, generateSecret } from '../../core/azure/vault_client';
 const logger = new Logger({ name: 'VaultService' });
 
 export class VaultService {
+	static async healthCheck(): Promise<boolean> {
+		if (!vault_client) {
+			logger.warn('Vault client not initialized');
+			return false;
+		}
+		try {
+			await vault_client.getSecret(environnement.vault_keys[0].name);
+			return true;
+		} catch (error) {
+			logger.error(`Error while getting secret ${environnement.vault_keys[0].name}: ${error}`);
+			return false;
+		}
+	}
+
 	static async initialize(): Promise<void> {
 		// create all vault keys
 		if (!vault_client) {

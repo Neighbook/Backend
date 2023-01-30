@@ -5,6 +5,7 @@ import morgan from 'morgan';
 import multer from 'multer';
 import swaggerUi from 'swagger-ui-express';
 
+import { healthRoutes } from './api/routes/health/health_routes';
 import { fileUploadRoutes } from './api/routes/users/file_upload_routes';
 import { apiConfig } from './config/api_config';
 import { cors_config } from './config/cors';
@@ -33,5 +34,6 @@ app.get('/', (req: Request, res: Response) => {
 app.use('/', userRoutes);
 app.use('/', authRoutes);
 app.use('/', fileUploadRoutes);
+app.use('/', healthRoutes);
 
 module.exports = app;

@@ -7,11 +7,22 @@ import { environnement } from '../../config/environnement';
 import { ServiceException } from '../../core/exeptions/base_exeption';
 import { User } from '../../models/users/user';
 import { userRepository } from './user_service';
+import { UserService } from './user_service';
 import { VaultService } from './vault_service';
 
 const logger = new Logger({ name: 'AuthService' });
 
 export class AuthService {
+	static async healthCheck(): Promise<boolean> {
+		if (!VaultService.healthCheck()) {
+			return false;
+		}
+		if (!UserService.healthCheck()) {
+			return false;
+		}
+		return true;
+	}
+
 	static async login(email: string, password: string) {
 		const user = await userRepository
 			.findOne({

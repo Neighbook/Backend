@@ -12,6 +12,20 @@ import { blob_storage_client } from '../../core/azure/blob_storage_client';
 const logger = new Logger({ name: 'StoragetService' });
 
 export class StorageService {
+	static async healthCheck(): Promise<boolean> {
+		if (!blob_storage_client) {
+			logger.warn('Blob storage client not initialized');
+			return false;
+		}
+		try {
+			await blob_storage_client.listContainers();
+			return true;
+		} catch (error) {
+			logger.error(`Error while listing containers: ${error}`);
+			return false;
+		}
+	}
+
 	static async createContainer(containerName: string): Promise<boolean> {
 		if (!blob_storage_client) {
 			logger.warn('Blob storage client not initialized');

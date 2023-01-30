@@ -24,6 +24,10 @@ export const metadata = {
 	security: [{ bearerAuth: [] }],
 	tags: [
 		{
+			name: 'Health',
+			description: 'Health check endpoint',
+		},
+		{
 			name: 'Auth',
 			description: 'Authentication',
 		},
