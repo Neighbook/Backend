@@ -8,6 +8,7 @@ import swaggerUi from 'swagger-ui-express';
 import { fileUploadRoutes } from './api/routes/users/file_upload_routes';
 import { apiConfig } from './config/api_config';
 import { cors_config } from './config/cors';
+import { healthRoutes } from './api/routes/health/health_routes';
 
 const swaggerDocument = require('./doc/openapi.json');
 const userRoutes = require('./api/routes/users/user_routes');
@@ -27,11 +28,12 @@ app.use(cors(cors_config));
 app.use(apiConfig.base_path + '/documentation', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 app.get('/', (req: Request, res: Response) => {
-	res.redirect(apiConfig.base_path + '/documentation');
+    res.redirect(apiConfig.base_path + '/documentation');
 });
 
 app.use('/', userRoutes);
 app.use('/', authRoutes);
 app.use('/', fileUploadRoutes);
+app.use('/', healthRoutes);
 
 module.exports = app;
