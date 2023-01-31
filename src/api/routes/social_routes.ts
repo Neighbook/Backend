@@ -2,6 +2,7 @@ import express from 'express';
 import {PostService} from '../../services/social/post_service';
 import {CommentService} from '../../services/social/comment_service';
 import {Comment} from '../../models/social/Comment';
+import {EventService} from '../../services/social/event_service';
 
 export const socialRoutes = express.Router();
 
@@ -127,6 +128,58 @@ socialRoutes.delete('/post', async (req: express.Request, res) => {
     res.status(400).json('invalid fields');
   }
 });
+
+// Events
+socialRoutes.get('/event', async (req: express.Request, res) => {
+    if(req.query.id) {
+        const event = await EventService.getEvent(Number(req.query.id));
+        if(event !== null){
+            const formattedGet = {
+                'id': event.id,
+                'titre': event.titre,
+                'addresse': event.addresse,
+                'dateEvenement': event.dateEvenement,
+            };
+            res.status(200).json(formattedGet);
+        }else{
+            res.status(404).send();
+        }
+    }else{
+        res.status(400).json('provide id');
+    }
+});
+
+socialRoutes.post('/event', async (req: express.Request, res) => {
+    console.log(req.body.titre);
+    console.log(req.body.dateEvenement);
+    console.log(req.body.addresse);
+    if(req.body.titre && req.body.dateEvenement && req.body.addresse !== undefined) {
+        EventService.createEvent(req.body.titre,
+            req.body.dateEvenement,
+            req.body.addresse)
+            .then(()=>res.status(200).send())
+            .catch(error=>{
+                console.log(error);
+                res.status(500).send();
+            });
+    }else{
+        res.status(400).json('invalid fields');
+    }
+});
+
+socialRoutes.delete('/event', async (req: express.Request, res) => {
+    if(req.query.id) {
+        EventService.deleteEvent(Number(req.query.id))
+            .then(()=>res.status(200).send())
+            .catch(error=>{
+                console.log(error);
+                res.status(500).send();
+            });
+    }else{
+        res.status(400).json('invalid fields');
+    }
+});
+
 
 
 module.exports = socialRoutes;

@@ -30,7 +30,6 @@ export class EventService {
     event.titre = title;
     event.dateEvenement = eventDate;
     event.addresse = location;
-    event.dateDeCreation = new Date();
     console.log('service log : ' + title);
 
     await this.repository.save(event).then((event) => {
