@@ -3,30 +3,30 @@ import {
   PrimaryGeneratedColumn,
   Column,
   CreateDateColumn, UpdateDateColumn, DeleteDateColumn
-} from 'typeorm'
+} from 'typeorm';
 
 @Entity('events')
 export class Event {
     @PrimaryGeneratedColumn()
-    id!: number
+    id!: number;
 
     @Column()
-    titre!: string
+    titre!: string;
 
     @Column()
-    dateEvenement!: Date
+    dateEvenement!: Date;
 
     @Column()
-    addresse!: string
+    addresse!: string;
 
     @CreateDateColumn()
-    dateDeCreation!: Date
+    dateDeCreation!: Date;
 
     @UpdateDateColumn()
-    dateDeModification!: Date
+    dateDeModification!: Date;
 
     @DeleteDateColumn()
-    dateDeSuppression?: Date
+    dateDeSuppression?: Date;
 
 
 }

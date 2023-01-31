@@ -6,26 +6,26 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   DeleteDateColumn, ManyToOne
-} from 'typeorm'
-import {Post} from "./Post";
+} from 'typeorm';
+import {Post} from './Post';
 
 @Entity('images')
 export class Image {
     @PrimaryGeneratedColumn()
-    id!: number
+    id!: number;
 
     @Column()
-    url!: string
+    url!: string;
 
     @CreateDateColumn()
-    dateDeCreation!: Date
+    dateDeCreation!: Date;
 
     @UpdateDateColumn()
-    dateDeModification!: Date
+    dateDeModification!: Date;
 
     @DeleteDateColumn()
-    dateDeSuppression?: Date
+    dateDeSuppression?: Date;
 
     @ManyToOne(()=>Post)@JoinColumn()
-    post!: Post
+    post!: Post;
 }

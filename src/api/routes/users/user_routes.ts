@@ -3,7 +3,7 @@ import express from 'express';
 import { authMiddleware, managedResourceMiddleware } from '../../../middlewares/auth/auth_middleware';
 import { UserService } from '../../../services/users_service/user_service';
 
-const userRoutes = express.Router();
+export const userRoutes = express.Router();
 
 userRoutes.get('/user/:user_id', authMiddleware, managedResourceMiddleware, async (req: express.Request, res) => {
 	// #swagger.tags = ['User']

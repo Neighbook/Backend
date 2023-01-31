@@ -1,9 +1,9 @@
-import {Entity, Column, PrimaryGeneratedColumn} from 'typeorm'
+import {Entity, Column, PrimaryGeneratedColumn} from 'typeorm';
 
 @Entity('UtilisateurBloques')
 export class Block {
     @PrimaryGeneratedColumn()
-    id!: number
+    id!: number;
 
     @Column()
     idUtilisateur!: string;

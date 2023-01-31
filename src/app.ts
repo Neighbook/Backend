@@ -12,7 +12,7 @@ import { userRoutes } from './api/routes/users/user_routes';
 import { apiConfig } from './config/api_config';
 import { cors_config } from './config/cors';
 
-const swaggerDocument = require('./doc/openapi.json');
+//const swaggerDocument = require('./doc/openapi.json');
 const userRoutes = require('./api/routes/users/user_routes');
 const authRoutes = require('./api/routes/users/auth_routes');
 const socialRoutes = require('./api/routes/social_routes');
@@ -28,7 +28,7 @@ app.use(bodyParser.raw({ limit: '50mb' }));
 app.use(upload.single('file'));
 app.use(cors(cors_config));
 
-app.use(apiConfig.base_path + '/documentation', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+//app.use(apiConfig.base_path + '/documentation', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 app.get('/', (req: Request, res: Response) => {
 	res.redirect(apiConfig.base_path + '/documentation');

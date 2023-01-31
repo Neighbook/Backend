@@ -5,16 +5,16 @@ import {
   JoinTable,
   CreateDateColumn,
   UpdateDateColumn, DeleteDateColumn, ManyToOne, JoinColumn
-} from 'typeorm'
-import { Post } from './Post'
+} from 'typeorm';
+import { Post } from './Post';
 
 @Entity('Commentaires')
 export class Comment {
     @PrimaryGeneratedColumn()
-    id!: number
+    id!: number;
 
     @Column()
-    contenu!: string
+    contenu!: string;
 
     @Column()
     idUtilisateur!: string;
@@ -30,11 +30,11 @@ export class Comment {
     idCommentaire!: number;
 
     @CreateDateColumn()
-    dateDeCreation!: Date
+    dateDeCreation!: Date;
 
     @UpdateDateColumn()
-    dateDeModification!: Date
+    dateDeModification!: Date;
 
     @DeleteDateColumn()
-    dateDeSuppression?: Date
+    dateDeSuppression?: Date;
 }

@@ -3,7 +3,7 @@ import express from 'express';
 import { User } from '../../../models/users/user';
 import { AuthService } from '../../../services/users_service/auth_service';
 
-const authRoutes = express.Router();
+export const authRoutes = express.Router();
 
 authRoutes.post('/auth/login', async (req: express.Request, res) => {
 	// #swagger.tags = ['Auth']

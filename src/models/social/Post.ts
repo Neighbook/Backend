@@ -7,55 +7,55 @@ import {
   JoinTable,
   OneToMany,
   CreateDateColumn, UpdateDateColumn, DeleteDateColumn
-} from 'typeorm'
-import {Event} from "./Evenement";
-import {Comment} from "./Comment";
-import {Image} from "./Image";
-import {PostReaction} from "./PostReaction";
+} from 'typeorm';
+import {Event} from './Evenement';
+import {Comment} from './Comment';
+import {Image} from './Image';
+import {PostReaction} from './PostReaction';
 
 
 @Entity('posts')
 export class Post {
     @PrimaryGeneratedColumn()
-    id!: number
+    id!: number;
 
     @Column()
-    titre!: string
+    titre!: string;
 
     @Column()
-    description!: string
+    description!: string;
 
     @Column()
-    estPartage!: boolean
+    estPartage!: boolean;
 
     @Column()
-    idUtilisateur!: string
+    idUtilisateur!: string;
 
     @OneToOne(() => Event) @JoinColumn()
-    evenement!: Event
+    evenement!: Event;
 
     @CreateDateColumn()
-    dateDeCreation!: Date
+    dateDeCreation!: Date;
 
     @UpdateDateColumn()
-    dateDeModification!: Date
+    dateDeModification!: Date;
 
     @DeleteDateColumn()
-    dateDeSuppression?: Date
+    dateDeSuppression?: Date;
 
     @OneToMany(() => Comment, (comment)=>comment.post) @JoinTable()
     commentaires!: Comment[];
 
     @OneToMany(() => Image, (image)=>image.post) @JoinTable()
-    images!: Image[]
+    images!: Image[];
 
     @OneToMany(() => PostReaction, postReaction=>postReaction.post) @JoinTable()
-    reactions!: PostReaction[]
+    reactions!: PostReaction[];
 
-    nlike!: number
-    nmdr!: number
-    nOo!: number
-    nsnif!: number
-    ngrr!: number
-    nok!: number
+    nlike!: number;
+    nmdr!: number;
+    nOo!: number;
+    nsnif!: number;
+    ngrr!: number;
+    nok!: number;
 }
