@@ -13,7 +13,7 @@ plugins:
 rules:
     no-eval: error
     no-debugger: error
-    no-console: warn
+    no-console: error
     no-var: error
     no-unsafe-finally: error
     prefer-const: error
@@ -28,7 +28,10 @@ rules:
     "@typescript-eslint/no-explicit-any": off
     "@typescript-eslint/no-non-null-assertion": off
     "@typescript-eslint/no-empty-function": off
-    "@typescript-eslint/explicit-module-boundary-types": off
+    "@typescript-eslint/explicit-module-boundary-types": error
+    "@typescript-eslint/explicit-function-return-type": error
+    "@typescript-eslint/typedef": error
+    "@typescript-eslint/no-inferrable-types": error
 ignorePatterns:
     - test/**/*.ts
     - dist/*
