@@ -48,7 +48,7 @@ export class StorageService {
 			logger.warn('Blob storage client not initialized');
 			return false;
 		}
-		return (blob_storage_client.getContainerClient(containerName)) == null;
+		return blob_storage_client.getContainerClient(containerName) == null;
 	}
 
 	static async deleteContainer(containerName: string): Promise<boolean> {
@@ -68,7 +68,7 @@ export class StorageService {
 		return container != null;
 	}
 
-    static async createFile(containerName: string, fileName: string, content: Express.Multer.File): Promise<boolean> {
+	static async createFile(containerName: string, fileName: string, content: Express.Multer.File): Promise<boolean> {
 		if (!blob_storage_client) {
 			logger.warn('Blob storage client not initialized');
 			return false;
