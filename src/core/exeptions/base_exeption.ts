@@ -1,5 +1,5 @@
 export class BaseException extends Error {
-	constructor(public message: string, public status: number, public data?: any) {
+	constructor(public message: string, public status: number, public data?: object) {
 		super();
 	}
 }
@@ -9,19 +9,19 @@ export class ExceptionCode {
 }
 
 export class ApiException extends BaseException {
-	constructor(public message: string, public status: number, public data?: any) {
+	constructor(public message: string, public status: number, public data?: object) {
 		super(message, status, data);
 	}
 }
 
 export class ValidationException extends BaseException {
-	constructor(public message: string, public status: number, public data?: any) {
+	constructor(public message: string, public status: number, public data?: object) {
 		super(message, status, data);
 	}
 }
 
 export class ServiceException extends BaseException {
-	constructor(public message: string, public status: number, public data?: any) {
+	constructor(public message: string, public status: number, public data?: object) {
 		super(message, status, data);
 	}
 }

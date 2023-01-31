@@ -58,12 +58,12 @@ export class User {
 	actif!: boolean;
 
 	@BeforeUpdate()
-	async hashPassword() {
+	async hashPassword(): Promise<void> {
 		this.password = await argon.hash(this.password);
 	}
 
 	@BeforeInsert()
-	async hashPasswordBeforeInsert() {
+	async hashPasswordBeforeInsert(): Promise<void> {
 		this.password = await argon.hash(this.password);
 	}
 }

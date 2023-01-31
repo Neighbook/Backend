@@ -1,17 +1,20 @@
+import dotenv from 'dotenv';
 import http from 'http';
+import { Logger } from 'tslog';
 
+import app from './app';
 import { UsersDataSource } from './core/datastores/typeorm_datastores';
 import { VaultService } from './services/users_service/vault_service';
 
-const app = require('./app');
+const logger = new Logger({ name: 'server' });
 
-require('dotenv').config();
+dotenv.config();
 
-const normalizePort = (val: string) => {
+const normalizePort = (val: string): number | boolean => {
 	const port = parseInt(val, 10);
 
 	if (isNaN(port)) {
-		return val;
+		return Number(val);
 	}
 	if (port >= 0) {
 		return port;
@@ -22,7 +25,7 @@ const normalizePort = (val: string) => {
 let port = normalizePort(process.env.PORT || '3000');
 app.set('port', port);
 
-const errorHandler = (error: { syscall: string; code: any }) => {
+const errorHandler = (error: { syscall: string; code: any }): void => {
 	if (error.syscall !== 'listen') {
 		throw error;
 	}
@@ -30,13 +33,13 @@ const errorHandler = (error: { syscall: string; code: any }) => {
 	const bind = typeof address === 'string' ? 'pipe ' + address : 'port: ' + port;
 	switch (error.code) {
 		case 'EACCES':
-			console.error(bind + ' requires elevated privileges.');
+			logger.error(bind + ' requires elevated privileges.');
 			process.exit(1);
 			break;
 		case 'EADDRINUSE':
-			console.error(bind + ' is already in use.');
+			logger.error(bind + ' is already in use.');
 			// Sugesstion: use a different port
-			console.log('We will try to use a different port');
+			logger.info('We will try to use a different port');
 			port = Number(port) + 1;
 			app.set('port', port);
 			server.listen(port);
@@ -54,13 +57,13 @@ server.listen(port);
 
 try {
 	UsersDataSource.initialize();
-	console.log('Connection with database has been established successfully.');
+	logger.info('Connection with database has been established successfully.');
 	server.on('error', errorHandler);
 	server.on('listening', () => {
 		const address = server.address();
-		const bind = typeof address === 'string' ? 'pipe ' + address : 'port ' + port;
-		console.log(`⚡️[server]: Server is running at http://localhost:${port}`);
+		const bind = typeof address === 'string' ? 'pipe ' + address : '' + port;
+		logger.info(`⚡️[server]: Server is running at http://localhost:${bind}`);
 	});
 } catch (error) {
-	console.error('Unable to connect to the database:', error);
+	logger.error('Unable to connect to the database:', error);
 }

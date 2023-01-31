@@ -1,6 +1,5 @@
 import express from 'express';
 
-import { ServiceException } from '../../../core/exeptions/base_exeption';
 import { User } from '../../../models/users/user';
 import { AuthService } from '../../../services/users_service/auth_service';
 
@@ -22,11 +21,7 @@ authRoutes.post('/auth/login', async (req: express.Request, res) => {
 	// #swagger.responses[500] = { description: 'Internal Server Error' }
 	await AuthService.login(req.body.email, req.body.password)
 		.then((response) => {
-			if (response instanceof ServiceException) {
-				res.status(response.status).json({ message: response.message });
-			} else {
-				res.status(200).json(response);
-			}
+			res.status(200).json(response);
 		})
 		.catch((error) => {
 			res.status(500).json(error);
@@ -70,9 +65,6 @@ authRoutes.post('/auth/register', async (req: express.Request, res) => {
 	user.photo = req.body.photo;
 	await AuthService.resgiter(user)
 		.then((response) => {
-			if (response instanceof ServiceException) {
-				res.status(response.status).json({ message: response.message });
-			}
 			res.status(200).json(response);
 		})
 		.catch((error) => {
@@ -80,4 +72,4 @@ authRoutes.post('/auth/register', async (req: express.Request, res) => {
 		});
 });
 
-module.exports = authRoutes;
+export { authRoutes };
