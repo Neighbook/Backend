@@ -62,7 +62,7 @@ export class UserService {
 		return users;
 	}
 
-	static async updateUser(id: number, firstName: string, lastName: string, age: number) {
+	static async updateUser(id: number, firstName: string, lastName: string): Promise<void> {
 		const userRepository = UsersDataSource.manager.getRepository(User);
 		await userRepository
 			.findOne({
@@ -72,12 +72,12 @@ export class UserService {
 			})
 			.then((user?) => {
 				if (user != null) {
-					userRepository.save(user);
+					userRepository.update(id, { prenom: firstName, nom: lastName });
 				}
 			});
 	}
 
-	static async deleteUser(id: number) {
+	static async deleteUser(id: number): Promise<void> {
 		const userRepository = UsersDataSource.manager.getRepository(User);
 		await userRepository
 			.findOne({

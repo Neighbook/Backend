@@ -74,7 +74,7 @@ export class VaultService {
 
 	static async createKey(name: string, length: number, type = 'hmac'): Promise<KeyVaultSecret | null> {
 		if (!vault_client) {
-			console.log('Vault client not initialized');
+			logger.info('Vault client not initialized');
 			return null;
 		}
 		let secret: KeyVaultSecret | null = null;

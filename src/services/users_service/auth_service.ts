@@ -23,7 +23,7 @@ export class AuthService {
 		return true;
 	}
 
-	static async login(email: string, password: string) {
+	static async login(email: string, password: string): Promise<string> {
 		const user = await userRepository
 			.findOne({
 				where: {
@@ -34,19 +34,19 @@ export class AuthService {
 				logger.error('Error - service: ' + error);
 			});
 		if (user == null) {
-			return new ServiceException('Invalid user credentials', 401);
+			throw new ServiceException('Invalid user credentials', 401);
 		}
 		if (!(await argon.verify(user.password, password))) {
-			return new ServiceException('Invalid user credentials', 401);
+			throw new ServiceException('Invalid user credentials', 401);
 		}
 		const jwt_secret = await VaultService.getSecret(environnement.jwt_secret_name);
 		if (jwt_secret == null) {
 			logger.error('Error: JWT secret not found');
-			return new ServiceException('Internal server error', 500);
+			throw new ServiceException('Internal server error', 500);
 		}
 		if (jwt_secret.value == null) {
 			logger.error('Error: JWT secret not found');
-			return new ServiceException('Internal server error', 500);
+			throw new ServiceException('Internal server error', 500);
 		}
 		const token = jwt.sign(
 			{
@@ -65,7 +65,7 @@ export class AuthService {
 		return token;
 	}
 
-	static async resgiter(user: User) {
+	static async resgiter(user: User): Promise<string> {
 		let createdUser: User | null = null;
 		await userRepository
 			.save(user)
@@ -76,12 +76,12 @@ export class AuthService {
 				logger.error('Error - service: ' + error);
 			});
 		if (createdUser == null) {
-			return new ServiceException('Internal server error', 500);
+			throw new ServiceException('Internal server error', 500);
 		}
 		return await this.login(user.email, user.password);
 	}
 
-	static async verifyToken(token: string) {
+	static async verifyToken(token: string): Promise<string> {
 		const jwt_secret = await VaultService.getSecret(environnement.jwt_secret_name);
 		if (jwt_secret == null) {
 			logger.error('Error: JWT secret not found');
@@ -98,11 +98,11 @@ export class AuthService {
 		return decoded;
 	}
 
-	static async refreshToken(token: string) {
+	static async refreshToken(token: string): Promise<string> {
 		const jwt_secret: KeyVaultSecret | null = await VaultService.getSecret(environnement.jwt_secret_name);
 		if (jwt_secret === null) {
 			logger.error('Error: JWT secret not found');
-			return new ServiceException('Internal server error', 500);
+			throw new ServiceException('Internal server error', 500);
 		}
 		let decoded: any = null;
 		decoded = AuthService.verifyToken(token);

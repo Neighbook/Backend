@@ -20,4 +20,4 @@ fileUploadRouter.delete('/file/delete/:container_name/:file_name', async (req: e
 	FilesUploadController.deleteFile(req, res);
 });
 
-export const fileUploadRoutes = fileUploadRouter;
+export { fileUploadRouter };

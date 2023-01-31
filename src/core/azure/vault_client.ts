@@ -1,9 +1,11 @@
 import { ClientSecretCredential } from '@azure/identity';
 import { SecretClient } from '@azure/keyvault-secrets';
 import { generateKeySync } from 'crypto';
+import { Logger } from 'tslog';
 
 import { environnement } from '../../config/environnement';
 
+const logger = new Logger({ name: 'SecretClient' });
 const key_vault_uri = environnement.azure.key_vault_uri;
 
 let client = null;
@@ -17,7 +19,7 @@ try {
 		)
 	);
 } catch (error) {
-	console.log(`Error while creating vault client: ${error}`);
+	logger.error(`Error while creating vault client: ${error}`);
 }
 
 export const vault_client = client;

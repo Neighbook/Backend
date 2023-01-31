@@ -83,7 +83,7 @@ userRoutes.post('/user', async (req, res) => {
 
 userRoutes.put('/user', (req: express.Request, res) => {
 	// #swagger.tags = ['User']
-	const response = UserService.updateUser(req.body.id, req.body.firstName, req.body.lastName, req.body.age);
+	const response = UserService.updateUser(req.body.id, req.body.firstName, req.body.lastName);
 	res.status(202).json(response);
 });
 
@@ -93,4 +93,4 @@ userRoutes.delete('/user', (req: express.Request, res) => {
 	res.status(204).json(response);
 });
 
-module.exports = userRoutes;
+export { userRoutes };

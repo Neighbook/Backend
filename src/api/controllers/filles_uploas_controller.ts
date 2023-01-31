@@ -1,3 +1,4 @@
+import { Request, Response } from 'express';
 import { Logger } from 'tslog';
 
 import { StorageService } from '../../services/users_service/storage_service';
@@ -5,7 +6,7 @@ import { StorageService } from '../../services/users_service/storage_service';
 const logger = new Logger({ name: 'FileUploadController' });
 
 export class FilesUploadController {
-	static async uploadFile(req: any, res: any): Promise<void> {
+	static async uploadFile(req: Request, res: Response): Promise<void> {
 		const containerName = req.params.container_name;
 		const fileName = req.params.file_name;
 		const content = req.file;
@@ -38,7 +39,7 @@ export class FilesUploadController {
 		});
 	}
 
-	static async deleteFile(req: any, res: any): Promise<void> {
+	static async deleteFile(req: Request, res: Response): Promise<void> {
 		const containerName = req.params.container_name;
 		const fileName = req.params.file_name;
 		const result = await StorageService.deleteFile(containerName, fileName);

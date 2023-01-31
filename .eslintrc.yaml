@@ -23,7 +23,7 @@ rules:
     quotes: [error, single]
     semi: [error, always]
     max-len: [error, 120]
-    "@typescript-eslint/no-unused-vars": warn
+    "@typescript-eslint/no-unused-vars": error
     "@typescript-eslint/prefer-interface": off
     "@typescript-eslint/no-explicit-any": off
     "@typescript-eslint/no-non-null-assertion": off
@@ -32,6 +32,7 @@ rules:
     "@typescript-eslint/explicit-function-return-type": error
     "@typescript-eslint/typedef": error
     "@typescript-eslint/no-inferrable-types": error
+    "@typescript-eslint/no-var-requires": warn
 ignorePatterns:
     - test/**/*.ts
     - dist/*
