@@ -6,7 +6,7 @@
 	"scripts": {
 		"start": "node dist/server.js",
 		"dev": "concurrently \"nodemon --watch src --exec 'ts-node' src/server.ts\" \"nodemon --watch src/api/routes --exec 'ts-node' src/doc/swagger.ts \"",
-		"dev-utbm": "nodemon src/server.ts",
+		"dev:deprecated": "nodemon src/server.ts",
 		"build": "tsc -p tsconfig.build.json && node dist/doc/swagger.js",
 		"build:clean": "rm -rf dist && tsc -p tsconfig.build.json && node dist/doc/swagger.js",
 		"openapi:gen": "tsc -p tsconfig.build.json && node dist/doc/swagger.js && cp dist/doc/openapi.json src/doc",
