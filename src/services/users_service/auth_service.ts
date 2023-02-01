@@ -79,7 +79,6 @@ export class AuthService {
 		if (createdUser == null) {
 			throw new ServiceException('Internal server error', 500);
 		}
-		logger.info('User created: ' + user.email + ' ' + _user_password);
 		return await this.login(user.email, _user_password);
 	}
 
