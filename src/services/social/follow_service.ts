@@ -1,5 +1,4 @@
 import {SocialDataSource} from '../../core/datastores/typeorm_datastores';
-import {Event} from '../../models/social/Evenement';
 import {DeleteResult, Repository, UpdateResult} from 'typeorm';
 import {Follow} from '../../models/social/Follow';
 
@@ -66,7 +65,6 @@ export class FollowService {
 
   static async deleteFollow(id: string, idFollowed: string) {
     let response: DeleteResult | null = null;
-
      this.getFollow(id,idFollowed).then(data => {
          if(data != null){
              this.repository.softDelete(data.id).then((res) => {

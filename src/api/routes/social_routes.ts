@@ -197,14 +197,11 @@ socialRoutes.get('/follows/mine', authMiddleware, async (req: express.Request, r
     }
 });
 
-socialRoutes.post('/event', async (req: express.Request, res) => {
-    console.log(req.body.titre);
-    console.log(req.body.dateEvenement);
-    console.log(req.body.addresse);
-    if(req.body.titre && req.body.dateEvenement && req.body.addresse !== undefined) {
-        EventService.createEvent(req.body.titre,
-            req.body.dateEvenement,
-            req.body.addresse)
+socialRoutes.post('/follow', authMiddleware, async (req: express.Request, res) => {
+    console.log(req.body.idToFollow);
+    if(req.body.idToFollow && req.body.user._user_id) {
+        FollowService.createFollow(req.body.user._user_id,
+            req.body.idToFollow)
             .then(()=>res.status(200).send())
             .catch(error=>{
                 console.log(error);
@@ -215,9 +212,9 @@ socialRoutes.post('/event', async (req: express.Request, res) => {
     }
 });
 
-socialRoutes.delete('/event', async (req: express.Request, res) => {
+socialRoutes.delete('/follow',authMiddleware, async (req: express.Request, res) => {
     if(req.query.id) {
-        EventService.deleteEvent(Number(req.query.id))
+        FollowService.deleteFollow(req.body.user._user_id,req.query.id.toString())
             .then(()=>res.status(200).send())
             .catch(error=>{
                 console.log(error);
