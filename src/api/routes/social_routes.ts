@@ -3,6 +3,8 @@ import {PostService} from '../../services/social/post_service';
 import {CommentService} from '../../services/social/comment_service';
 import {Comment} from '../../models/social/Comment';
 import {EventService} from '../../services/social/event_service';
+import {FollowService} from '../../services/social/follow_service';
+import {authMiddleware} from '../../middlewares/auth/auth_middleware';
 
 export const socialRoutes = express.Router();
 
@@ -180,6 +182,50 @@ socialRoutes.delete('/event', async (req: express.Request, res) => {
     }
 });
 
+// Follow
+socialRoutes.get('/follows/mine', authMiddleware, async (req: express.Request, res) => {
+    if(req.query.id) {
+        const follows = await FollowService.getFollows(req.body.user._user_id);
+        if(follows !== null){
+            const formattedGet = follows;
+            res.status(200).json(formattedGet);
+        }else{
+            res.status(404).send();
+        }
+    }else{
+        res.status(400).json('provide id');
+    }
+});
 
+socialRoutes.post('/event', async (req: express.Request, res) => {
+    console.log(req.body.titre);
+    console.log(req.body.dateEvenement);
+    console.log(req.body.addresse);
+    if(req.body.titre && req.body.dateEvenement && req.body.addresse !== undefined) {
+        EventService.createEvent(req.body.titre,
+            req.body.dateEvenement,
+            req.body.addresse)
+            .then(()=>res.status(200).send())
+            .catch(error=>{
+                console.log(error);
+                res.status(500).send();
+            });
+    }else{
+        res.status(400).json('invalid fields');
+    }
+});
+
+socialRoutes.delete('/event', async (req: express.Request, res) => {
+    if(req.query.id) {
+        EventService.deleteEvent(Number(req.query.id))
+            .then(()=>res.status(200).send())
+            .catch(error=>{
+                console.log(error);
+                res.status(500).send();
+            });
+    }else{
+        res.status(400).json('invalid fields');
+    }
+});
 
 module.exports = socialRoutes;
