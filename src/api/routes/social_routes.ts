@@ -4,10 +4,9 @@ import {CommentService} from '../../services/social/comment_service';
 import {Comment} from '../../models/social/Comment';
 import {EventService} from '../../services/social/event_service';
 import {FollowService} from '../../services/social/follow_service';
-import {authMiddleware} from '../../middlewares/auth/auth_middleware';
+import {ReactionService} from '../../services/social/reactions_service';
 import {Logger} from 'tslog';
 import {BlockService} from '../../services/social/block_service';
-import {Follow} from '../../models/social/Follow';
 
 export const socialRoutes = express.Router();
 const logger = new Logger({ name: 'SocialRoute' });
@@ -325,6 +324,51 @@ socialRoutes.delete('/block', async (req: express.Request, res) => {
             });
     }else{
         res.status(400).json('invalid fields');
+    }
+});
+
+// Reactions routes
+socialRoutes.get('/reaction', async (req: express.Request, res) => {
+    let apiRes;
+    if(req.query.postId) {
+        apiRes = await ReactionService.getPostReactions(Number(req.query.postId));
+    }else if (req.query.userId){
+        apiRes = await ReactionService.getUserReactions(req.query.userId.toString());
+    }else{
+        res.status(400).json('provide id');
+    }
+    if(apiRes){
+        res.status(200).json(apiRes);
+    }else{
+        res.status(404).send();
+    }
+});
+
+socialRoutes.post('/reaction', async (req: express.Request, res) => {
+    if(req.body.reactionId && req.body.postId) {
+        const apiRes = await ReactionService.modifyReaction(Number(req.body.postId),
+            req.body.user._user_id, Number(req.body.reactionId));
+        if(apiRes){
+            res.status(200).json(apiRes);
+        }else{
+            res.status(404).send();
+        }
+    }else{
+        res.status(400).json('provide id');
+    }
+});
+
+socialRoutes.patch('/reaction', async (req: express.Request, res) => {
+    if(req.body.reactionId && req.body.postId) {
+        const apiRes = await ReactionService.modifyReaction(Number(req.body.postId),
+            req.body.user._user_id, Number(req.body.reactionId));
+        if(apiRes){
+            res.status(200).json(apiRes);
+        }else{
+            res.status(404).send();
+        }
+    }else{
+        res.status(400).json('provide id');
     }
 });
 

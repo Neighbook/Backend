@@ -58,4 +58,5 @@ export class Post {
     nsnif!: number;
     ngrr!: number;
     nok!: number;
+    ncommentaires!: number;
 }
