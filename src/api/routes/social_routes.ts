@@ -5,8 +5,12 @@ import {Comment} from '../../models/social/Comment';
 import {EventService} from '../../services/social/event_service';
 import {FollowService} from '../../services/social/follow_service';
 import {authMiddleware} from '../../middlewares/auth/auth_middleware';
+import {Logger} from 'tslog';
+import {BlockService} from '../../services/social/block_service';
+import {Follow} from '../../models/social/Follow';
 
 export const socialRoutes = express.Router();
+const logger = new Logger({ name: 'SocialRoute' });
 
 // Comment routes
 socialRoutes.get('/comment', async (req: express.Request, res) => {
@@ -174,9 +178,10 @@ socialRoutes.delete('/event', async (req: express.Request, res) => {
 });
 
 // Follow
-socialRoutes.get('/follows/mine', authMiddleware, async (req: express.Request, res) => {
-    if(req.query.id) {
-        const follows = await FollowService.getFollows(req.body.user._user_id);
+socialRoutes.get('/follows', async (req: express.Request, res) => {
+    if(req.query.id){
+        const follows = await FollowService.getFollows(req.query.id.toString());
+        logger.info(follows)
         if(follows !== null){
             const formattedGet = follows;
             res.status(200).json(formattedGet);
@@ -184,12 +189,40 @@ socialRoutes.get('/follows/mine', authMiddleware, async (req: express.Request, r
             res.status(404).send();
         }
     }else{
-        res.status(400).json('provide id');
+        const follows = await FollowService.getFollows(req.body.user._user_id);
+        logger.info(follows)
+        if(follows !== null){
+            const formattedGet = follows;
+            res.status(200).json(formattedGet);
+        }else{
+            res.status(404).send();
+        }
     }
 });
 
-socialRoutes.post('/follow', authMiddleware, async (req: express.Request, res) => {
-    console.log(req.body.idToFollow);
+socialRoutes.get('/followers', async (req: express.Request, res) => {
+    if(req.query.id){
+        const followers = await FollowService.getFollowers(req.query.id.toString());
+        logger.info(followers)
+        if(followers !== null){
+            const formattedGet = followers;
+            res.status(200).json(formattedGet);
+        }else{
+            res.status(404).send();
+        }
+    }else{
+        const followers = await FollowService.getFollowers(req.body.user._user_id);
+        logger.info(followers)
+        if(followers !== null){
+            const formattedGet = followers;
+            res.status(200).json(formattedGet);
+        }else{
+            res.status(404).send();
+        }
+    }
+});
+
+socialRoutes.post('/follow', async (req: express.Request, res) => {
     if(req.body.idToFollow && req.body.user._user_id) {
         FollowService.createFollow(req.body.user._user_id,
             req.body.idToFollow)
@@ -203,9 +236,88 @@ socialRoutes.post('/follow', authMiddleware, async (req: express.Request, res) =
     }
 });
 
-socialRoutes.delete('/follow',authMiddleware, async (req: express.Request, res) => {
+socialRoutes.delete('/follow', async (req: express.Request, res) => {
     if(req.query.id) {
         FollowService.deleteFollow(req.body.user._user_id,req.query.id.toString())
+            .then(()=>res.status(200).send())
+            .catch(error=>{
+                console.log(error);
+                res.status(500).send();
+            });
+    }else{
+        res.status(400).json('invalid fields');
+    }
+});
+
+// Block
+socialRoutes.get('/blocks', async (req: express.Request, res) => {
+    if(req.query.id){
+        const blocks = await BlockService.getBlocks(req.query.id.toString());
+        logger.info(blocks)
+        if(blocks !== null){
+            const formattedGet = blocks;
+            res.status(200).json(formattedGet);
+        }else{
+            res.status(404).send();
+        }
+    }else{
+        const blocks = await BlockService.getBlocks(req.body.user._user_id);
+        logger.info(blocks)
+        if(blocks !== null){
+            const formattedGet = blocks;
+            res.status(200).json(formattedGet);
+        }else{
+            res.status(404).send();
+        }
+    }
+});
+
+socialRoutes.get('/blockers', async (req: express.Request, res) => {
+    if(req.query.id){
+        const blockers = await BlockService.getBlockers(req.query.id.toString());
+        logger.info(blockers)
+        if(blockers !== null){
+            const formattedGet = blockers;
+            res.status(200).json(formattedGet);
+        }else{
+            res.status(404).send();
+        }
+    }else{
+        const blockers = await BlockService.getBlockers(req.body.user._user_id);
+        logger.info(blockers)
+        if(blockers !== null){
+            const formattedGet = blockers;
+            res.status(200).json(formattedGet);
+        }else{
+            res.status(404).send();
+        }
+    }
+});
+
+socialRoutes.post('/block', async (req: express.Request, res) => {
+    if(req.body.idToBlock && req.body.user._user_id) {
+        BlockService.createBlock(req.body.user._user_id,
+            req.body.idToBlock)
+            .then(()=>res.status(200).send())
+            .catch(error=>{
+                console.log(error);
+                res.status(500).send();
+            });
+        FollowService.deleteFollow(req.body.user._user_id,
+            req.body.idToBlock)
+            .then(()=>res.status(200).send())
+            .catch(error=>{
+                console.log(error);
+                res.status(500).send();
+            });
+    }else{
+        res.status(400).json('invalid fields');
+    }
+});
+
+socialRoutes.delete('/block', async (req: express.Request, res) => {
+    if(req.body.idToUnBlock) {
+        BlockService.deleteBlock(req.body.user._user_id,req.body.idToUnBlock.toString())
             .then(()=>res.status(200).send())
             .catch(error=>{
                 console.log(error);

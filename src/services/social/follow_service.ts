@@ -1,8 +1,12 @@
 import {SocialDataSource} from '../../core/datastores/typeorm_datastores';
 import {DeleteResult, Repository, UpdateResult} from 'typeorm';
 import {Follow} from '../../models/social/Follow';
+import {User} from '../../models/users/user';
+import {UserService} from '../users_service/user_service';
+import {Logger} from 'tslog';
 
 export const followRepository: Repository<Follow> = SocialDataSource.manager.getRepository(Follow);
+const logger = new Logger({ name: 'SocialServ' });
 
 export class FollowService {
     static async getFollow(id: string, idToFollow: string): Promise<Follow | null> {
@@ -23,8 +27,8 @@ export class FollowService {
         return follow;
     }
 
-  static async getFollows(id: string): Promise<Follow[] | null> {
-    const follow = await followRepository
+  static async getFollows(id: string): Promise<User[] | null> {
+    const follows = await followRepository
       .find({
         where: {
           idUtilisateur : id
@@ -33,20 +37,22 @@ export class FollowService {
               idUtilisateurSuivi:true,
           }
       });
-    return follow;
+
+    return UserService.getUsersByIds(follows.map(follow => follow.idUtilisateurSuivi));
   }
 
-    static async getFollowers(id: string): Promise<Follow[] | null> {
-        const follow = await followRepository
+    static async getFollowers(id: string): Promise<User[] | null> {
+        const followers = await followRepository
             .find({
                 where: {
                     idUtilisateurSuivi : id
                 },
                 select:{
-                    id:true,
+                    idUtilisateur:true,
                 }
             });
-        return follow;
+        logger.info(followers);
+        return UserService.getUsersByIds(followers.map(follow => follow.idUtilisateur));
     }
 
   static async createFollow(id: string, idToFollow: string) {
@@ -66,7 +72,7 @@ export class FollowService {
     let response: DeleteResult | null = null;
      this.getFollow(id,idFollowed).then(data => {
          if(data != null){
-             followRepository.softDelete(data.id).then((res) => {
+             followRepository.delete(data.id).then((res) => {
                  response = res;
              }).catch((error) => {
                  console.log('Error: ' + error);
