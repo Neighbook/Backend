@@ -1,6 +1,8 @@
 import { Logger } from 'tslog';
+import { In } from 'typeorm';
 
 import { UsersDataSource } from '../../core/datastores/typeorm_datastores';
+import { ServiceException } from '../../core/exeptions/base_exeption';
 import { User } from '../../models/users/user';
 
 const logger = new Logger({ name: 'UserService' });
@@ -26,11 +28,12 @@ export class UserService {
 			})
 			.catch((error) => {
 				logger.error('Error: ' + error);
+				throw new ServiceException('Internal server error', 500);
 			});
 		return createdUser;
 	}
 
-	static async getUser(id: number): Promise<User | null> {
+	static async getUser(id: string): Promise<User | null> {
 		const userRepository = UsersDataSource.manager.getRepository(User);
 		let user: User | null = null;
 		await userRepository
@@ -48,6 +51,21 @@ export class UserService {
 		return user;
 	}
 
+	static async getUsersByIds(ids: string[]): Promise<User[]> {
+		const userRepository = UsersDataSource.manager.getRepository(User);
+		let users: User[] = [];
+		await userRepository
+			.findBy({ id: In(ids) })
+			.then((result) => {
+				users = result;
+			})
+			.catch((error) => {
+				logger.error('Error: ' + error);
+				throw new ServiceException('Internal server error', 500);
+			});
+		return users;
+	}
+
 	static async getUsers(): Promise<User[]> {
 		const userRepository = UsersDataSource.manager.getRepository(User);
 		let users: User[] = [];
@@ -58,11 +76,12 @@ export class UserService {
 			})
 			.catch((error) => {
 				logger.error('Error: ' + error);
+				throw new ServiceException('Internal server error', 500);
 			});
 		return users;
 	}
 
-	static async updateUser(id: number, firstName: string, lastName: string): Promise<void> {
+	static async updateUser(id: string, firstName: string, lastName: string): Promise<void> {
 		const userRepository = UsersDataSource.manager.getRepository(User);
 		await userRepository
 			.findOne({
@@ -77,7 +96,7 @@ export class UserService {
 			});
 	}
 
-	static async deleteUser(id: number): Promise<void> {
+	static async deleteUser(id: string): Promise<void> {
 		const userRepository = UsersDataSource.manager.getRepository(User);
 		await userRepository
 			.findOne({
@@ -86,13 +105,18 @@ export class UserService {
 				},
 			})
 			.then((user?) => {
-				if (user != null) {
+				logger.info('User: ' + user);
+				if (user) {
 					userRepository.remove(user);
 				}
+			})
+			.catch((error) => {
+				logger.error('Error: ' + error);
+				throw new ServiceException('Internal server error', 500);
 			});
 	}
 
-	static async addUserProfilePicture(id: number, profilePicture: string): Promise<User | null> {
+	static async addUserProfilePicture(id: string, profilePicture: string): Promise<User | null> {
 		let updatedUser: User | null = null;
 		await userRepository
 			.findOne({

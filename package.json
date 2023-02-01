@@ -48,6 +48,7 @@
 		"uuid": "^9.0.0"
 	},
 	"devDependencies": {
+		"@cspell/dict-fr-fr": "^2.2.0",
 		"@types/cors": "^2.8.13",
 		"@types/express": "^4.17.15",
 		"@types/jsonwebtoken": "^9.0.1",

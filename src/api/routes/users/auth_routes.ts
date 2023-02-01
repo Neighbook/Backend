@@ -31,7 +31,7 @@ authRoutes.post('/auth/login', async (req: express.Request, res) => {
 authRoutes.post('/auth/register', async (req: express.Request, res) => {
 	// #swagger.tags = ['Auth']
 	// #swagger.description = 'Endpoint to register'
-	// #swagger.summary = 'Register'
+	// #swagger.summary = 'Register new'
 	/*#swagger.parameters['obj'] = {
 		description: 'User object',
 		in: 'body',
@@ -52,6 +52,7 @@ authRoutes.post('/auth/register', async (req: express.Request, res) => {
 	}; */
 	// #swagger.responses[200] = { description: 'User Created' }
 	// #swagger.responses[500] = { description: 'Internal Server Error' }
+	// #swagger.responses[500] = { description: 'Invalid cresentials' }
 	const user = new User();
 	user.prenom = req.body.prenom;
 	user.nom = req.body.nom;
