@@ -67,6 +67,7 @@ export class AuthService {
 
 	static async resgiter(user: User): Promise<string> {
 		let createdUser: User | null = null;
+		const _user_password = user.password;
 		await userRepository
 			.save(user)
 			.then((result) => {
@@ -78,7 +79,7 @@ export class AuthService {
 		if (createdUser == null) {
 			throw new ServiceException('Internal server error', 500);
 		}
-		return await this.login(user.email, user.password);
+		return await this.login(user.email, _user_password);
 	}
 
 	static async verifyToken(token: string): Promise<string> {

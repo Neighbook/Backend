@@ -51,7 +51,6 @@ export class VaultService {
 	}
 
 	static async getSecret(secretName: string): Promise<KeyVaultSecret | null> {
-		logger.info();
 		if (!vault_client) {
 			logger.warn('Vault client not initialized');
 			return null;
