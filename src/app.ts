@@ -11,6 +11,7 @@ import { fileUploadRouter } from './api/routes/users/file_upload_routes';
 import { userRoutes } from './api/routes/users/user_routes';
 import { apiConfig } from './config/api_config';
 import { cors_config } from './config/cors';
+import {authMiddleware} from "./middlewares/auth/auth_middleware";
 
 //const swaggerDocument = require('./doc/openapi.json');
 const socialRoutes = require('./api/routes/social_routes');
@@ -36,6 +37,6 @@ app.use('/', userRoutes);
 app.use('/', authRoutes);
 app.use('/', fileUploadRouter);
 app.use('/', healthRoutes);
-app.use('/social', socialRoutes);
+app.use('/social', authMiddleware, socialRoutes);
 
 export default app;
