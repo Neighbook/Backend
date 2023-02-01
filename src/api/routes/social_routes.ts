@@ -1,5 +1,5 @@
 import express from 'express';
-import {PostService} from '../../services/social/post_service';
+import {PostService, formatPost} from '../../services/social/post_service';
 import {CommentService} from '../../services/social/comment_service';
 import {Comment} from '../../models/social/Comment';
 import {EventService} from '../../services/social/event_service';
@@ -67,35 +67,26 @@ socialRoutes.get('/post', async (req: express.Request, res) => {
   if(req.query.id) {
     const post = await PostService.getPost(Number(req.query.id));
     if(post !== null){
-      const formattedPost = {
-        'id': post.id,
-        'titre': post.titre,
-        'description': post.description,
-        'estPartage': post.estPartage,
-        'idUtilisateur': post.idUtilisateur,
-        'dateDeCreation': post.dateDeCreation,
-        'dateDeModification': post.dateDeModification,
-        'dateDeSuppression': null,
-        'commentaires': post.commentaires,
-        'images': post.images,
-        'evenement': post.evenement,
-        'nombreReactions':{
-          'like': post.nlike,
-          'mdr': post.nmdr,
-          'Oo': post.nOo,
-          'snif': post.nsnif,
-          'grr': post.ngrr,
-          'ok': post.nok,
-        }
-      };
-
-      res.status(200).json(formattedPost);
+      res.status(200).json(formatPost(post));
     }else{
       res.status(404).send();
     }
   }else{
     res.status(400).json('provide id');
   }
+});
+
+socialRoutes.get('/feed', async (req: express.Request, res) => {
+    if(req.query.id) {
+        const feed = await PostService.getFollowPost(req.query.id.toString());
+        if(feed !== null){
+            res.status(200).json(feed.map(post=>formatPost(post)));
+        }else{
+            res.status(404).send();
+        }
+    }else{
+        res.status(400).json('provide id');
+    }
 });
 
 socialRoutes.post('/post', async (req: express.Request, res) => {
