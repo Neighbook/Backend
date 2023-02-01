@@ -52,7 +52,7 @@ authRoutes.post('/auth/register', async (req: express.Request, res) => {
 	}; */
 	// #swagger.responses[200] = { description: 'User Created' }
 	// #swagger.responses[500] = { description: 'Internal Server Error' }
-	// #swagger.responses[500] = { description: 'Invalid cresentials' }
+	// #swagger.responses[500] = { description: 'Invalid credentials' }
 	const user = new User();
 	user.prenom = req.body.prenom;
 	user.nom = req.body.nom;
