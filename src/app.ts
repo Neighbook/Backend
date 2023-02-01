@@ -13,8 +13,6 @@ import { apiConfig } from './config/api_config';
 import { cors_config } from './config/cors';
 
 //const swaggerDocument = require('./doc/openapi.json');
-const userRoutes = require('./api/routes/users/user_routes');
-const authRoutes = require('./api/routes/users/auth_routes');
 const socialRoutes = require('./api/routes/social_routes');
 
 const upload = multer();
