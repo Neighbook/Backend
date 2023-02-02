@@ -1,7 +1,7 @@
 import {SocialDataSource} from '../../core/datastores/typeorm_datastores';
 import {Post} from '../../models/social/Post';
 import {PostReaction} from '../../models/social/PostReaction';
-import {DeleteResult} from "typeorm";
+import {DeleteResult} from 'typeorm';
 
 const ReactionRepository = SocialDataSource.manager.getRepository(PostReaction);
 
@@ -34,23 +34,16 @@ export class ReactionService {
             });
     }
 
-    static async createReaction(postId: number, userId: string, reactionId: number): Promise<any> {
+    static async upsertReaction(postId: number, userId: string, reactionId: number): Promise<any> {
         const newReaction = new PostReaction();
-        newReaction.post = new Post();
-        newReaction.post.id = postId;
+        newReaction.idPost = postId;
         newReaction.idUtilisateur = userId;
         newReaction.reactionId = reactionId;
 
-        return ReactionRepository.save(newReaction);
-    }
-
-    static async modifyReaction(postId: number, userId: string, reactionId: number): Promise<any> {
-        return ReactionRepository.createQueryBuilder()
-            .update(PostReaction)
-            .set({ reactionId: reactionId })
-            .where('idPost = :idPost', { idPost: postId })
-            .where('idUtilisateur = :idUtilisateur', { idUtilisateur: userId })
-            .execute();
+        return ReactionRepository.upsert(
+            newReaction,
+            ['idPost', 'idUtilisateur']
+        );
     }
 
     static async deleteReaction(postId: number, userId: string): Promise<DeleteResult> {

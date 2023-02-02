@@ -1,13 +1,10 @@
-import {Entity, Column, PrimaryGeneratedColumn} from 'typeorm';
+import {Entity, PrimaryColumn} from 'typeorm';
 
 @Entity('UtilisateurSuivis')
 export class Follow {
-    @PrimaryGeneratedColumn()
-    id!: number;
-
-    @Column()
+    @PrimaryColumn()
     idUtilisateur!: string;
 
-    @Column()
+    @PrimaryColumn()
     idUtilisateurSuivi!: string;
 }

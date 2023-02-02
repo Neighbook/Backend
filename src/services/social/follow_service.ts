@@ -1,5 +1,5 @@
 import {SocialDataSource} from '../../core/datastores/typeorm_datastores';
-import {DeleteResult, Repository, UpdateResult} from 'typeorm';
+import {DeleteResult, Repository} from 'typeorm';
 import {Follow} from '../../models/social/Follow';
 import {User} from '../../models/users/user';
 import {UserService} from '../users_service/user_service';
@@ -22,7 +22,7 @@ export class FollowService {
                 follow = result;
             })
             .catch((error: Error) => {
-                console.log('Error: ' + error);
+                logger.error(error);
             });
         return follow;
     }
@@ -55,33 +55,15 @@ export class FollowService {
         return UserService.getUsersByIds(followers.map(follow => follow.idUtilisateur));
     }
 
-  static async createFollow(id: string, idToFollow: string) {
+  static async createFollow(id: string, idToFollow: string): Promise<any> {
     const follow = new Follow();
-    let response: Follow | null = null;
     follow.idUtilisateur = id;
     follow.idUtilisateurSuivi = idToFollow;
-    console.log('service log : ' + idToFollow);
 
-    await followRepository.save(follow).then((follow) => {
-      response = follow;
-    });
-    return response;
+    return await followRepository.save(follow);
   }
 
-  static async deleteFollow(id: string, idFollowed: string) {
-    let response: DeleteResult | null = null;
-     this.getFollow(id,idFollowed).then(data => {
-         if(data != null){
-             followRepository.delete(data.id).then((res) => {
-                 response = res;
-             }).catch((error) => {
-                 console.log('Error: ' + error);
-             });
-         }else{
-             response = null;
-         }
-     });
-
-    return response;
+  static async deleteFollow(id: string, idFollowed: string): Promise<DeleteResult> {
+    return followRepository.delete({ idUtilisateur: id, idUtilisateurSuivi: idFollowed});
   }
 }

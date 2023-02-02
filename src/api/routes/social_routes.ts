@@ -8,11 +8,11 @@ import {ReactionService} from '../../services/social/reactions_service';
 import {Logger} from 'tslog';
 import {BlockService} from '../../services/social/block_service';
 
-export const socialRoutes = express.Router();
+export const _socialRoutes = express.Router();
 const logger = new Logger({ name: 'SocialRoute' });
 
 // Comment routes
-socialRoutes.get('/comment', async (req: express.Request, res) => {
+_socialRoutes.get('/comment', async (req: express.Request, res: express.Response) => {
   if(req.query.id) {
     const searchId = Number(req.query.id);
     const comments = await CommentService.getComment(searchId);
@@ -39,36 +39,28 @@ socialRoutes.get('/comment', async (req: express.Request, res) => {
   }
 });
 
-socialRoutes.post('/comment', async (req: express.Request, res) => {
+_socialRoutes.post('/comment', async (req: express.Request, res: express.Response) => {
   if(req.body.idUtilisateur && req.body.contenu && req.body.idPost) {
     CommentService.putComment(req.body.contenu, req.body.idPost, req.body.idUtilisateur, req.body.idCommentaire)
-      .then(()=>res.status(200).send())
-      .catch(error=>{
-        console.log(error);
-        res.status(500).send();
-    });
+      .then(()=>res.status(200).send());
   }else{
     res.status(400).json('invalid fields');
   }
 });
 
-socialRoutes.delete('/comment', async (req: express.Request, res) => {
+_socialRoutes.delete('/comment', async (req: express.Request, res: express.Response) => {
   if(req.query.id) {
     CommentService.deleteComment(Number(req.query.id))
-      .then(()=>res.status(200).send())
-      .catch(error=>{
-        console.log(error);
-        res.status(500).send();
-      });
+      .then(()=>res.status(200).send());
   }else{
     res.status(400).json('invalid fields');
   }
 });
 
 // Post routes
-socialRoutes.get('/post', async (req: express.Request, res) => {
+_socialRoutes.get('/post', async (req: express.Request, res: express.Response) => {
   if(req.query.id) {
-    const post = await PostService.getPost(Number(req.query.id));
+    const post = await PostService.getPost(Number(req.query.id), req.body.user._user_id);
     if(post !== null){
       res.status(200).json(formatPost(post));
     }else{
@@ -79,7 +71,7 @@ socialRoutes.get('/post', async (req: express.Request, res) => {
   }
 });
 
-socialRoutes.get('/feed', async (req: express.Request, res) => {
+_socialRoutes.get('/feed', async (req: express.Request, res: express.Response) => {
     if(req.query.id) {
         const feed = await PostService.getFollowPost(req.query.id.toString());
         if(feed !== null){
@@ -92,38 +84,30 @@ socialRoutes.get('/feed', async (req: express.Request, res) => {
     }
 });
 
-socialRoutes.post('/post', async (req: express.Request, res) => {
+_socialRoutes.post('/post', async (req: express.Request, res: express.Response) => {
   if(req.body.titre && req.body.description && req.body.estPartage !== undefined && req.body.idUtilisateur) {
     PostService.savePost(req.body.titre,
                          req.body.description,
                          req.body.estPartage,
                          req.body.idUtilisateur,
                          req.body.idEvenement)
-      .then(()=>res.status(200).send())
-      .catch(error=>{
-        console.log(error);
-        res.status(500).send();
-      });
+      .then(()=>res.status(200).send());
   }else{
     res.status(400).json('invalid fields');
   }
 });
 
-socialRoutes.delete('/post', async (req: express.Request, res) => {
+_socialRoutes.delete('/post', async (req: express.Request, res: express.Response) => {
   if(req.query.id) {
     CommentService.deleteComment(Number(req.query.id))
-      .then(()=>res.status(200).send())
-      .catch(error=>{
-        console.log(error);
-        res.status(500).send();
-      });
+      .then(()=>res.status(200).send());
   }else{
     res.status(400).json('invalid fields');
   }
 });
 
 // Events
-socialRoutes.get('/event', async (req: express.Request, res) => {
+_socialRoutes.get('/event', async (req: express.Request, res: express.Response) => {
     // #swagger.tags = ['Social']
     // #swagger.description = 'Endpoint to get an event details'
     // #swagger.summary = 'Get an event'
@@ -149,189 +133,137 @@ socialRoutes.get('/event', async (req: express.Request, res) => {
     }
 });
 
-socialRoutes.post('/event', async (req: express.Request, res) => {
+_socialRoutes.post('/event', async (req: express.Request, res: express.Response) => {
     if(req.body.titre && req.body.dateEvenement && req.body.addresse !== undefined) {
         EventService.createEvent(req.body.titre,
             req.body.dateEvenement,
             req.body.addresse)
-            .then(()=>res.status(200).send())
-            .catch(error=>{
-                console.log(error);
-                res.status(500).send();
-            });
+            .then(()=>res.status(200).send());
     }else{
         res.status(400).json('invalid fields');
     }
 });
 
-socialRoutes.delete('/event', async (req: express.Request, res) => {
+_socialRoutes.delete('/event', async (req: express.Request, res: express.Response) => {
     if(req.query.id) {
         EventService.deleteEvent(Number(req.query.id))
-            .then(()=>res.status(200).send())
-            .catch(error=>{
-                console.log(error);
-                res.status(500).send();
-            });
+            .then(()=>res.status(200).send());
     }else{
         res.status(400).json('invalid fields');
     }
 });
 
 // Follow
-socialRoutes.get('/follows', async (req: express.Request, res) => {
+_socialRoutes.get('/follows', async (req: express.Request, res: express.Response) => {
     // #swagger.tags = ['Social']
     // #swagger.description = 'Endpoint to get a user follows'
     // #swagger.summary = 'Get all follow'
     // #swagger.parameters['id'] = { description: 'User id' }
     // #swagger.responses[200] = { description: 'Success' }
     // #swagger.responses[500] = { description: 'Internal Server Error' }
+    let follows;
     if(req.query.id){
-        const follows = await FollowService.getFollows(req.query.id.toString());
-        logger.info(follows)
-        if(follows !== null){
-            const formattedGet = follows;
-            res.status(200).json(formattedGet);
-        }else{
-            res.status(500).send();
-        }
+        follows = await FollowService.getFollows(req.query.id.toString());
     }else{
-        const follows = await FollowService.getFollows(req.body.user._user_id);
-        logger.info(follows)
-        if(follows !== null){
-            const formattedGet = follows;
-            res.status(200).json(formattedGet);
-        }else{
-            res.status(500).send();
-        }
+        follows = await FollowService.getFollows(req.body.user._user_id);
+    }
+    if(follows !== null){
+        res.status(200).json(follows);
+    }else{
+        res.status(400).send();
     }
 });
 
-socialRoutes.get('/followers', async (req: express.Request, res) => {
+_socialRoutes.get('/followers', async (req: express.Request, res: express.Response) => {
     // #swagger.tags = ['Social']
     // #swagger.description = 'Endpoint to get a user followers'
     // #swagger.summary = 'Get all followers'
     // #swagger.parameters['id'] = { description: 'User id' }
     // #swagger.responses[200] = { description: 'Success' }
     // #swagger.responses[500] = { description: 'Internal Server Error' }
+    let followers;
     if(req.query.id){
-        const followers = await FollowService.getFollowers(req.query.id.toString());
-        logger.info(followers)
-        if(followers !== null){
-            const formattedGet = followers;
-            res.status(200).json(formattedGet);
-        }else{
-            res.status(500).send();
-        }
+        followers = await FollowService.getFollowers(req.query.id.toString());
     }else{
-        const followers = await FollowService.getFollowers(req.body.user._user_id);
-        logger.info(followers)
-        if(followers !== null){
-            const formattedGet = followers;
-            res.status(200).json(formattedGet);
-        }else{
-            res.status(500).send();
-        }
+        followers = await FollowService.getFollowers(req.body.user._user_id);
+    }
+
+    if(followers !== null){
+        res.status(200).json(followers);
+    }else{
+        res.status(400).send();
     }
 });
 
-socialRoutes.post('/follow', async (req: express.Request, res) => {
+_socialRoutes.post('/follow', async (req: express.Request, res: express.Response) => {
     if(req.body.idToFollow && req.body.user._user_id) {
         FollowService.createFollow(req.body.user._user_id,
             req.body.idToFollow)
-            .then(()=>res.status(200).send())
-            .catch(error=>{
-                console.log(error);
-                res.status(500).send();
-            });
+            .then(()=>res.status(200).send());
     }else{
         res.status(400).json('invalid fields');
     }
 });
 
-socialRoutes.delete('/follow', async (req: express.Request, res) => {
+_socialRoutes.delete('/follow', async (req: express.Request, res: express.Response) => {
     if(req.query.id) {
         FollowService.deleteFollow(req.body.user._user_id,req.query.id.toString())
-            .then(()=>res.status(200).send())
-            .catch(error=>{
-                console.log(error);
-                res.status(500).send();
-            });
+            .then(()=>res.status(200).send());
     }else{
         res.status(400).json('invalid fields');
     }
 });
 
 // Block
-socialRoutes.get('/blocks', async (req: express.Request, res) => {
+_socialRoutes.get('/blocks', async (req: express.Request, res: express.Response) => {
     // #swagger.tags = ['Social']
     // #swagger.description = 'Endpoint to get a user blocks'
     // #swagger.summary = 'Get all blocked users'
     // #swagger.parameters['id'] = { description: 'User id' }
     // #swagger.responses[200] = { description: 'Success' }
     // #swagger.responses[500] = { description: 'Internal Server Error' }
+
+    let blocks;
     if(req.query.id){
-        const blocks = await BlockService.getBlocks(req.query.id.toString());
-        logger.info(blocks)
-        if(blocks !== null){
-            const formattedGet = blocks;
-            res.status(200).json(formattedGet);
-        }else{
-            res.status(500).send();
-        }
+        blocks = await BlockService.getBlocks(req.query.id.toString());
     }else{
-        const blocks = await BlockService.getBlocks(req.body.user._user_id);
-        logger.info(blocks)
-        if(blocks !== null){
-            const formattedGet = blocks;
-            res.status(200).json(formattedGet);
-        }else{
-            res.status(500).send();
-        }
+        blocks = await BlockService.getBlocks(req.body.user._user_id);
+    }
+
+    if(blocks !== null){
+        res.status(200).json(blocks);
+    }else{
+        res.status(400).send();
     }
 });
 
-socialRoutes.get('/blockers', async (req: express.Request, res) => {
+_socialRoutes.get('/blockers', async (req: express.Request, res: express.Response) => {
     // #swagger.tags = ['Social']
     // #swagger.description = 'Endpoint to get a user blockers'
     // #swagger.summary = 'Get all users who blocked'
     // #swagger.parameters['id'] = { description: 'User id' }
     // #swagger.responses[200] = { description: 'Success' }
     // #swagger.responses[500] = { description: 'Internal Server Error' }
+    let blockers;
     if(req.query.id){
-        const blockers = await BlockService.getBlockers(req.query.id.toString());
-        logger.info(blockers)
-        if(blockers !== null){
-            const formattedGet = blockers;
-            res.status(200).json(formattedGet);
-        }else{
-            res.status(500).send();
-        }
+        blockers = await BlockService.getBlockers(req.query.id.toString());
     }else{
-        const blockers = await BlockService.getBlockers(req.body.user._user_id);
-        logger.info(blockers)
-        if(blockers !== null){
-            const formattedGet = blockers;
-            res.status(200).json(formattedGet);
-        }else{
-            res.status(500).send();
-        }
+        blockers = await BlockService.getBlockers(req.body.user._user_id);
+    }
+
+    if(blockers !== null){
+        res.status(200).json(blockers);
+    }else{
+        res.status(400).send();
     }
 });
 
-socialRoutes.post('/block', async (req: express.Request, res) => {
+_socialRoutes.post('/block', async (req: express.Request, res: express.Response) => {
     if(req.body.idToBlock && req.body.user._user_id) {
-        BlockService.createBlock(req.body.user._user_id,
-            req.body.idToBlock)
+        BlockService.createBlock(req.body.user._user_id, req.body.idToBlock)
             .then(()=>res.status(200).send())
             .catch(error=>{
-                console.log(error);
-                res.status(500).send();
-            });
-        FollowService.deleteFollow(req.body.user._user_id,
-            req.body.idToBlock)
-            .then(()=>res.status(200).send())
-            .catch(error=>{
-                console.log(error);
+                logger.error(error);
                 res.status(500).send();
             });
     }else{
@@ -339,21 +271,17 @@ socialRoutes.post('/block', async (req: express.Request, res) => {
     }
 });
 
-socialRoutes.delete('/block', async (req: express.Request, res) => {
+_socialRoutes.delete('/block', async (req: express.Request, res: express.Response) => {
     if(req.body.idToUnBlock) {
         BlockService.deleteBlock(req.body.user._user_id,req.body.idToUnBlock.toString())
-            .then(()=>res.status(200).send())
-            .catch(error=>{
-                console.log(error);
-                res.status(500).send();
-            });
+            .then(()=>res.status(200).send());
     }else{
         res.status(400).json('invalid fields');
     }
 });
 
 // Reactions routes
-socialRoutes.get('/reaction', async (req: express.Request, res) => {
+_socialRoutes.get('/reaction', async (req: express.Request, res: express.Response) => {
     let apiRes;
     if(req.query.postId) {
         apiRes = await ReactionService.getPostReactions(Number(req.query.postId));
@@ -369,32 +297,16 @@ socialRoutes.get('/reaction', async (req: express.Request, res) => {
     }
 });
 
-socialRoutes.post('/reaction', async (req: express.Request, res) => {
+
+_socialRoutes.patch('/reaction', async (req: express.Request, res: express.Response) => {
     if(req.body.reactionId && req.body.postId) {
-        const apiRes = await ReactionService.modifyReaction(Number(req.body.postId),
-            req.body.user._user_id, Number(req.body.reactionId));
-        if(apiRes){
-            res.status(200).json(apiRes);
-        }else{
-            res.status(404).send();
-        }
+        ReactionService.upsertReaction(Number(req.body.postId),
+            req.body.user._user_id, Number(req.body.reactionId)).then(()=>res.status(200).send);
     }else{
         res.status(400).json('provide id');
     }
 });
 
-socialRoutes.patch('/reaction', async (req: express.Request, res) => {
-    if(req.body.reactionId && req.body.postId) {
-        const apiRes = await ReactionService.modifyReaction(Number(req.body.postId),
-            req.body.user._user_id, Number(req.body.reactionId));
-        if(apiRes){
-            res.status(200).json(apiRes);
-        }else{
-            res.status(404).send();
-        }
-    }else{
-        res.status(400).json('provide id');
-    }
-});
 
-module.exports = socialRoutes;
+
+export const socialRoutes = _socialRoutes;

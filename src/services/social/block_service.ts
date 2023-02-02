@@ -1,9 +1,10 @@
 import {SocialDataSource} from '../../core/datastores/typeorm_datastores';
-import {DeleteResult, Repository, UpdateResult} from 'typeorm';
+import {DeleteResult, Repository} from 'typeorm';
 import {Block} from '../../models/social/Block';
 import {User} from '../../models/users/user';
 import {UserService} from '../users_service/user_service';
 import {Logger} from 'tslog';
+import {Follow} from '../../models/social/Follow';
 
 export const blockRepository: Repository<Block> = SocialDataSource.manager.getRepository(Block);
 const logger = new Logger({ name: 'SocialSer' });
@@ -22,7 +23,7 @@ export class BlockService {
                 block = result;
             })
             .catch((error: Error) => {
-                console.log('Error: ' + error);
+                logger.error(error);
             });
         return block;
     }
@@ -55,32 +56,18 @@ export class BlockService {
         return UserService.getUsersByIds(blockers.map(block => block.idUtilisateur));
     }
 
-  static async createBlock(id: string, idToBlock: string) {
+  static async createBlock(id: string, idToBlock: string) : Promise<any>{
     const block = new Block();
-    let response: Block | null = null;
     block.idUtilisateur = id;
     block.idUtilisateurBloque = idToBlock;
-    console.log('service log : ' + idToBlock);
 
-    await blockRepository.save(block).then((block) => {
-      response = block;
+    return SocialDataSource.manager.transaction(async (transactionalEntityManager) => {
+      await transactionalEntityManager.save(block);
+      await transactionalEntityManager.delete(Follow, { idUtilisateur: id, idUtilisateurSuivi: idToBlock});
     });
-    return response;
   }
 
-  static async deleteBlock(id: string, idBlocked: string) {
-    let response: DeleteResult | null = null;
-     this.getBlock(id,idBlocked).then(data => {
-         if(data != null){
-             blockRepository.delete(data.id).then((res) => {
-                 response = res;
-             }).catch((error) => {
-                 console.log('Error: ' + error);
-             });
-         }else{
-             response = null;
-         }
-     });
-    return response;
+  static async deleteBlock(id: string, idBlocked: string): Promise<DeleteResult>  {
+    return blockRepository.delete({idUtilisateur: id, idUtilisateurBloque: idBlocked});
   }
 }

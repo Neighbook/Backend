@@ -1,11 +1,8 @@
-import {Entity, Column, PrimaryGeneratedColumn, ManyToOne, JoinColumn} from 'typeorm';
+import {Entity, Column, ManyToOne, JoinColumn, PrimaryColumn} from 'typeorm';
 import {Post} from './Post';
 
 @Entity('postReactions')
 export class PostReaction {
-    @PrimaryGeneratedColumn()
-    id!: number;
-
     @Column({nullable: false})
     reactionId!: number;
 
@@ -13,9 +10,9 @@ export class PostReaction {
     @JoinColumn({ name: 'idPost' })
     post!: Post;
 
-    @Column({nullable: false})
+    @PrimaryColumn({nullable: false})
     idPost!: number;
 
-    @Column()
+    @PrimaryColumn()
     idUtilisateur!: string;
 }

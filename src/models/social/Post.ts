@@ -59,4 +59,5 @@ export class Post {
     ngrr!: number;
     nok!: number;
     ncommentaires!: number;
+    reactionUtilisateur!: PostReaction;
 }
