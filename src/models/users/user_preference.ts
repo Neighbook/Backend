@@ -13,7 +13,7 @@ import { User } from './user';
 @Entity('user_preferences')
 export class UserPreference {
 	@PrimaryGeneratedColumn('uuid')
-	id!: number;
+	id!: string;
 
 	@Column()
 	cle_preference!: string;

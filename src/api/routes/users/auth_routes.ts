@@ -1,11 +1,11 @@
-import express from 'express';
+import { Request, Response, Router } from 'express';
 
 import { User } from '../../../models/users/user';
 import { AuthService } from '../../../services/users_service/auth_service';
 
-const authRoutes = express.Router();
+const authRoutes = Router();
 
-authRoutes.post('/auth/login', async (req: express.Request, res) => {
+authRoutes.post('/auth/login', async (req: Request, res: Response) => {
 	// #swagger.tags = ['Auth']
 	// #swagger.description = 'Endpoint to login'
 	// #swagger.summary = 'Login'
@@ -28,7 +28,7 @@ authRoutes.post('/auth/login', async (req: express.Request, res) => {
 		});
 });
 
-authRoutes.post('/auth/register', async (req: express.Request, res) => {
+authRoutes.post('/auth/register', async (req: Request, res: Response) => {
 	// #swagger.tags = ['Auth']
 	// #swagger.description = 'Endpoint to register'
 	// #swagger.summary = 'Register new'

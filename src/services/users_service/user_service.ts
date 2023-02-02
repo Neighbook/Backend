@@ -34,7 +34,6 @@ export class UserService {
 	}
 
 	static async getUser(id: string): Promise<User | null> {
-		const userRepository = UsersDataSource.manager.getRepository(User);
 		let user: User | null = null;
 		await userRepository
 			.findOne({
@@ -52,7 +51,6 @@ export class UserService {
 	}
 
 	static async getUsersByIds(ids: string[]): Promise<User[]> {
-		const userRepository = UsersDataSource.manager.getRepository(User);
 		let users: User[] = [];
 		await userRepository
 			.findBy({ id: In(ids) })
@@ -67,7 +65,6 @@ export class UserService {
 	}
 
 	static async getUsers(): Promise<User[]> {
-		const userRepository = UsersDataSource.manager.getRepository(User);
 		let users: User[] = [];
 		await userRepository
 			.find()
@@ -81,17 +78,35 @@ export class UserService {
 		return users;
 	}
 
-	static async updateUser(id: string, firstName: string, lastName: string): Promise<void> {
-		const userRepository = UsersDataSource.manager.getRepository(User);
+	static async updateUser(
+		user_id: string,
+		nom?: string,
+		prenom?: string,
+		sexe?: string,
+		date_naissance?: string,
+		telephone?: string,
+		email?: string,
+		photo?: string,
+		code_pays?: string
+	): Promise<void> {
 		await userRepository
 			.findOne({
 				where: {
-					id: id,
+					id: user_id,
 				},
 			})
 			.then((user?) => {
 				if (user != null) {
-					userRepository.update(id, { prenom: firstName, nom: lastName });
+					userRepository.update(user_id, {
+						nom: nom ? nom : user.nom,
+						prenom: prenom ? prenom : user.prenom,
+						sexe: sexe ? sexe : user.sexe,
+						date_naissance: date_naissance ? date_naissance : user.date_naissance,
+						telephone: telephone ? telephone : user.telephone,
+						email: email ? email : user.email,
+						photo: photo ? photo : user.photo,
+						code_pays: code_pays ? code_pays : user.code_pays,
+					});
 				}
 			});
 	}
