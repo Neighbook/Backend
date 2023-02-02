@@ -1,6 +1,6 @@
 import { Request, Response, Router } from 'express';
 
-import { authMiddleware, managedResourceMiddleware } from '../../../middlewares/auth/auth_middleware';
+import { managedResourceMiddleware } from '../../../middlewares/auth/auth_middleware';
 import { UserService } from '../../../services/users_service/user_service';
 
 const userRoutes = Router();
@@ -89,7 +89,7 @@ userRoutes.put('/user', managedResourceMiddleware, async (req: Request, res: Res
 		req.body.photo ? req.body.photo : '',
 		req.body.code_pays ? req.body.code_pays : ''
 	)
-		.then((response) => {
+		.then(() => {
 			res.status(200).json({ message: 'User updated' });
 		})
 		.catch((error) => {

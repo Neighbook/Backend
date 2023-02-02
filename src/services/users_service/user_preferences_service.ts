@@ -21,7 +21,7 @@ export class UserPreferenceService {
 
 	static async initUserPreference(user_id: string): Promise<void> {
 		for (const preference of environnement.user_default_preferences) {
-			let userPreference: UserPreference = new UserPreference();
+			const userPreference: UserPreference = new UserPreference();
 			userPreference.id_utilisateur = user_id;
 			userPreference.cle_preference = preference.cle_preference;
 			userPreference.valeur_preference = preference.valeur_preference;

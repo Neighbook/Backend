@@ -15,7 +15,6 @@ export class UserPreferenceController {
 	}
 
 	static async updateUserPreference(req: Request, res: Response): Promise<void> {
-		const user_id = req.body.user._user_id;
 		const user_preference = req.body;
 		await UserPreferenceService.updateUserPreference(user_preference)
 			.then((user_preference) => {
