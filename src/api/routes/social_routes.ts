@@ -93,9 +93,6 @@ socialRoutes.get('/feed', async (req: express.Request, res) => {
 });
 
 socialRoutes.post('/post', async (req: express.Request, res) => {
-  console.log(req.body.titre);
-  console.log(req.body.description);
-  console.log(req.body.es);
   if(req.body.titre && req.body.description && req.body.estPartage !== undefined && req.body.idUtilisateur) {
     PostService.savePost(req.body.titre,
                          req.body.description,
@@ -127,6 +124,13 @@ socialRoutes.delete('/post', async (req: express.Request, res) => {
 
 // Events
 socialRoutes.get('/event', async (req: express.Request, res) => {
+    // #swagger.tags = ['Social']
+    // #swagger.description = 'Endpoint to get an event details'
+    // #swagger.summary = 'Get an event'
+    // #swagger.parameters['id'] = { description: 'User id' }
+    // #swagger.responses[200] = { description: 'Success' }
+    // #swagger.responses[500] = { description: 'Internal Server Error' }
+    // #swagger.responses[400] = { description: 'Wrong argument' }
     if(req.query.id) {
         const event = await EventService.getEvent(Number(req.query.id));
         if(event !== null){
@@ -138,7 +142,7 @@ socialRoutes.get('/event', async (req: express.Request, res) => {
             };
             res.status(200).json(formattedGet);
         }else{
-            res.status(404).send();
+            res.status(500).send();
         }
     }else{
         res.status(400).json('provide id');
@@ -146,9 +150,6 @@ socialRoutes.get('/event', async (req: express.Request, res) => {
 });
 
 socialRoutes.post('/event', async (req: express.Request, res) => {
-    console.log(req.body.titre);
-    console.log(req.body.dateEvenement);
-    console.log(req.body.addresse);
     if(req.body.titre && req.body.dateEvenement && req.body.addresse !== undefined) {
         EventService.createEvent(req.body.titre,
             req.body.dateEvenement,
@@ -178,6 +179,12 @@ socialRoutes.delete('/event', async (req: express.Request, res) => {
 
 // Follow
 socialRoutes.get('/follows', async (req: express.Request, res) => {
+    // #swagger.tags = ['Social']
+    // #swagger.description = 'Endpoint to get a user follows'
+    // #swagger.summary = 'Get all follow'
+    // #swagger.parameters['id'] = { description: 'User id' }
+    // #swagger.responses[200] = { description: 'Success' }
+    // #swagger.responses[500] = { description: 'Internal Server Error' }
     if(req.query.id){
         const follows = await FollowService.getFollows(req.query.id.toString());
         logger.info(follows)
@@ -185,7 +192,7 @@ socialRoutes.get('/follows', async (req: express.Request, res) => {
             const formattedGet = follows;
             res.status(200).json(formattedGet);
         }else{
-            res.status(404).send();
+            res.status(500).send();
         }
     }else{
         const follows = await FollowService.getFollows(req.body.user._user_id);
@@ -194,12 +201,18 @@ socialRoutes.get('/follows', async (req: express.Request, res) => {
             const formattedGet = follows;
             res.status(200).json(formattedGet);
         }else{
-            res.status(404).send();
+            res.status(500).send();
         }
     }
 });
 
 socialRoutes.get('/followers', async (req: express.Request, res) => {
+    // #swagger.tags = ['Social']
+    // #swagger.description = 'Endpoint to get a user followers'
+    // #swagger.summary = 'Get all followers'
+    // #swagger.parameters['id'] = { description: 'User id' }
+    // #swagger.responses[200] = { description: 'Success' }
+    // #swagger.responses[500] = { description: 'Internal Server Error' }
     if(req.query.id){
         const followers = await FollowService.getFollowers(req.query.id.toString());
         logger.info(followers)
@@ -207,7 +220,7 @@ socialRoutes.get('/followers', async (req: express.Request, res) => {
             const formattedGet = followers;
             res.status(200).json(formattedGet);
         }else{
-            res.status(404).send();
+            res.status(500).send();
         }
     }else{
         const followers = await FollowService.getFollowers(req.body.user._user_id);
@@ -216,7 +229,7 @@ socialRoutes.get('/followers', async (req: express.Request, res) => {
             const formattedGet = followers;
             res.status(200).json(formattedGet);
         }else{
-            res.status(404).send();
+            res.status(500).send();
         }
     }
 });
@@ -250,6 +263,12 @@ socialRoutes.delete('/follow', async (req: express.Request, res) => {
 
 // Block
 socialRoutes.get('/blocks', async (req: express.Request, res) => {
+    // #swagger.tags = ['Social']
+    // #swagger.description = 'Endpoint to get a user blocks'
+    // #swagger.summary = 'Get all blocked users'
+    // #swagger.parameters['id'] = { description: 'User id' }
+    // #swagger.responses[200] = { description: 'Success' }
+    // #swagger.responses[500] = { description: 'Internal Server Error' }
     if(req.query.id){
         const blocks = await BlockService.getBlocks(req.query.id.toString());
         logger.info(blocks)
@@ -257,7 +276,7 @@ socialRoutes.get('/blocks', async (req: express.Request, res) => {
             const formattedGet = blocks;
             res.status(200).json(formattedGet);
         }else{
-            res.status(404).send();
+            res.status(500).send();
         }
     }else{
         const blocks = await BlockService.getBlocks(req.body.user._user_id);
@@ -266,12 +285,18 @@ socialRoutes.get('/blocks', async (req: express.Request, res) => {
             const formattedGet = blocks;
             res.status(200).json(formattedGet);
         }else{
-            res.status(404).send();
+            res.status(500).send();
         }
     }
 });
 
 socialRoutes.get('/blockers', async (req: express.Request, res) => {
+    // #swagger.tags = ['Social']
+    // #swagger.description = 'Endpoint to get a user blockers'
+    // #swagger.summary = 'Get all users who blocked'
+    // #swagger.parameters['id'] = { description: 'User id' }
+    // #swagger.responses[200] = { description: 'Success' }
+    // #swagger.responses[500] = { description: 'Internal Server Error' }
     if(req.query.id){
         const blockers = await BlockService.getBlockers(req.query.id.toString());
         logger.info(blockers)
@@ -279,7 +304,7 @@ socialRoutes.get('/blockers', async (req: express.Request, res) => {
             const formattedGet = blockers;
             res.status(200).json(formattedGet);
         }else{
-            res.status(404).send();
+            res.status(500).send();
         }
     }else{
         const blockers = await BlockService.getBlockers(req.body.user._user_id);
@@ -288,7 +313,7 @@ socialRoutes.get('/blockers', async (req: express.Request, res) => {
             const formattedGet = blockers;
             res.status(200).json(formattedGet);
         }else{
-            res.status(404).send();
+            res.status(500).send();
         }
     }
 });
