@@ -2,10 +2,11 @@ import bodyParser from 'body-parser';
 import cors from 'cors';
 import express, { Express, Request, Response } from 'express';
 import { readFileSync } from 'fs';
+import moment from 'moment-timezone';
 import morgan from 'morgan';
 import multer from 'multer';
 import swaggerUi from 'swagger-ui-express';
-import moment from 'moment-timezone';
+
 import { healthRoutes } from './api/routes/health/health_routes';
 import { socialRoutes } from './api/routes/social/social_routes';
 import { authRoutes } from './api/routes/users/auth_routes';
@@ -22,9 +23,8 @@ const upload = multer();
 
 const app: Express = express();
 morgan.token('date', (req, res, tz) => {
-    return moment().tz(String(tz)).format('YYYY-MM-DD HH:mm:ss:SSS');
+	return moment().tz(String(tz)).format('YYYY-MM-DD HH:mm:ss:SSS');
 });
-
 
 app.use(morgan(':date[Asia/Taipei]\t:method\t:status\t:response-time ms \t:res[content-length]\t:url'));
 app.use(bodyParser.urlencoded({ extended: true, limit: '50mb' }));
