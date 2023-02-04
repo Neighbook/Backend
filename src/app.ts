@@ -5,7 +5,7 @@ import { readFileSync } from 'fs';
 import morgan from 'morgan';
 import multer from 'multer';
 import swaggerUi from 'swagger-ui-express';
-
+import moment from 'moment-timezone';
 import { healthRoutes } from './api/routes/health/health_routes';
 import { socialRoutes } from './api/routes/social/social_routes';
 import { authRoutes } from './api/routes/users/auth_routes';
@@ -21,8 +21,12 @@ const swaggerDocument = JSON.parse(readFileSync(__dirname + '/doc/openapi.json',
 const upload = multer();
 
 const app: Express = express();
+morgan.token('date', (req, res, tz) => {
+    return moment().tz(String(tz)).format('YYYY-MM-DD HH:mm:ss:SSS');
+});
 
-app.use(morgan('[:date[iso]] " :method :url " :status :response-time ms :res[content-length]'));
+
+app.use(morgan(':date[Asia/Taipei]\t:method\t:status\t:response-time ms \t:res[content-length]\t:url'));
 app.use(bodyParser.urlencoded({ extended: true, limit: '50mb' }));
 app.use(bodyParser.json({ limit: '50mb' }));
 app.use(bodyParser.raw({ limit: '50mb' }));
