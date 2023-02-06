@@ -1,4 +1,4 @@
-import {Entity, JoinColumn, OneToOne, PrimaryColumn} from 'typeorm';
+import { Entity, JoinColumn, OneToOne, PrimaryColumn } from 'typeorm';
 
 import { Event } from './Evenement';
 
@@ -8,9 +8,9 @@ export class Abonnement {
 	@JoinColumn({ name: 'idEvenement' })
 	evenement!: Event;
 
-    @PrimaryColumn()
+	@PrimaryColumn()
 	idUtilisateur!: string;
 
-    @PrimaryColumn({ nullable: false })
-    idEvenement!: string;
+	@PrimaryColumn({ nullable: false })
+	idEvenement!: string;
 }

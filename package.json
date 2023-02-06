@@ -19,7 +19,7 @@
 	"author": "",
 	"license": "ISC",
 	"engines": {
-		"node": "v18.13.0"
+		"node": "^v18.13.0"
 	},
 	"dependencies": {
 		"@azure/identity": "^3.1.3",

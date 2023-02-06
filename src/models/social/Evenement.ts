@@ -9,8 +9,8 @@ import {
 
 @Entity('events')
 export class Event {
-    @PrimaryGeneratedColumn('uuid')
-    id!: string;
+	@PrimaryGeneratedColumn('uuid')
+	id!: string;
 
 	@Column()
 	titre!: string;

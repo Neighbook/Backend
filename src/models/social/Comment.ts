@@ -14,8 +14,8 @@ import { Post } from './Post';
 
 @Entity('Commentaires')
 export class Comment {
-    @PrimaryGeneratedColumn('uuid')
-    id!: string;
+	@PrimaryGeneratedColumn('uuid')
+	id!: string;
 
 	@Column()
 	contenu!: string;

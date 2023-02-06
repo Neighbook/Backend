@@ -13,8 +13,8 @@ import { Post } from './Post';
 
 @Entity('images')
 export class Image {
-    @PrimaryGeneratedColumn('uuid')
-    id!: string;
+	@PrimaryGeneratedColumn('uuid')
+	id!: string;
 
 	@Column()
 	url!: string;
