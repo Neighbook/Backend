@@ -1,40 +1,46 @@
 import {
-  Entity,
-  PrimaryGeneratedColumn,
-  Column,
-  JoinTable,
-  CreateDateColumn,
-  UpdateDateColumn, DeleteDateColumn, ManyToOne, JoinColumn
+	Entity,
+	PrimaryGeneratedColumn,
+	Column,
+	JoinTable,
+	CreateDateColumn,
+	UpdateDateColumn,
+	DeleteDateColumn,
+	ManyToOne,
+	JoinColumn,
 } from 'typeorm';
+
 import { Post } from './Post';
 
 @Entity('Commentaires')
 export class Comment {
-    @PrimaryGeneratedColumn()
-    id!: number;
+	@PrimaryGeneratedColumn()
+	id!: number;
 
-    @Column()
-    contenu!: string;
+	@Column()
+	contenu!: string;
 
-    @Column()
-    idUtilisateur!: string;
+	@Column()
+	idUtilisateur!: string;
 
-    @ManyToOne(() => Post) @JoinTable()
-    post!: Post;
+	@ManyToOne(() => Post)
+	@JoinTable()
+	post!: Post;
 
-    @ManyToOne(() => Comment) @JoinTable()
-    @JoinColumn({ name: 'idCommentaire' })
-    commentaire!: Comment;
+	@ManyToOne(() => Comment)
+	@JoinTable()
+	@JoinColumn({ name: 'idCommentaire' })
+	commentaire!: Comment;
 
-    @Column({nullable: true})
-    idCommentaire!: number;
+	@Column({ nullable: true })
+	idCommentaire!: number;
 
-    @CreateDateColumn()
-    dateDeCreation!: Date;
+	@CreateDateColumn()
+	dateDeCreation!: Date;
 
-    @UpdateDateColumn()
-    dateDeModification!: Date;
+	@UpdateDateColumn()
+	dateDeModification!: Date;
 
-    @DeleteDateColumn()
-    dateDeSuppression?: Date;
+	@DeleteDateColumn()
+	dateDeSuppression?: Date;
 }

@@ -1,32 +1,25 @@
-import {
-  Entity,
-  PrimaryGeneratedColumn,
-  Column,
-  CreateDateColumn, UpdateDateColumn, DeleteDateColumn
-} from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, DeleteDateColumn } from 'typeorm';
 
 @Entity('events')
 export class Event {
-    @PrimaryGeneratedColumn()
-    id!: number;
+	@PrimaryGeneratedColumn()
+	id!: number;
 
-    @Column()
-    titre!: string;
+	@Column()
+	titre!: string;
 
-    @Column()
-    dateEvenement!: Date;
+	@Column()
+	dateEvenement!: Date;
 
-    @Column()
-    addresse!: string;
+	@Column()
+	addresse!: string;
 
-    @CreateDateColumn()
-    dateDeCreation!: Date;
+	@CreateDateColumn()
+	dateDeCreation!: Date;
 
-    @UpdateDateColumn()
-    dateDeModification!: Date;
+	@UpdateDateColumn()
+	dateDeModification!: Date;
 
-    @DeleteDateColumn()
-    dateDeSuppression?: Date;
-
-
+	@DeleteDateColumn()
+	dateDeSuppression?: Date;
 }

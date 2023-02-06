@@ -1,14 +1,16 @@
-import {Entity, Column, JoinColumn, PrimaryGeneratedColumn, OneToOne} from 'typeorm';
-import {Event} from './Evenement';
+import { Entity, Column, JoinColumn, PrimaryGeneratedColumn, OneToOne } from 'typeorm';
+
+import { Event } from './Evenement';
 
 @Entity('Abonnements')
 export class Abonnement {
-    @PrimaryGeneratedColumn()
-    id!: number;
+	@PrimaryGeneratedColumn()
+	id!: number;
 
-    @OneToOne(() => Event) @JoinColumn()
-    evenement!: Event;
+	@OneToOne(() => Event)
+	@JoinColumn()
+	evenement!: Event;
 
-    @Column()
-    idUtilisateur!: string;
+	@Column()
+	idUtilisateur!: string;
 }

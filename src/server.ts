@@ -57,7 +57,7 @@ server.listen(port);
 
 try {
 	UsersDataSource.initialize();
-    SocialDataSource.initialize();
+	SocialDataSource.initialize();
 	logger.info('Connection with database has been established successfully.');
 	server.on('error', errorHandler);
 	server.on('listening', () => {
