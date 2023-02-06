@@ -7,9 +7,10 @@ import { BlobSASPermissions } from '@azure/storage-blob';
 import { Logger } from 'tslog';
 
 import { environnement } from '../../config/environnement';
+import { ts_logconfig } from '../../config/logger';
 import { blob_storage_client } from '../../core/azure/blob_storage_client';
 
-const logger = new Logger({ name: 'StoragetService' });
+const logger = new Logger({ ...ts_logconfig, name: 'StoragetService' });
 
 export class StorageService {
 	static async healthCheck(): Promise<boolean> {

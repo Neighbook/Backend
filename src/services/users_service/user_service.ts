@@ -1,11 +1,12 @@
 import { Logger } from 'tslog';
 import { In } from 'typeorm';
+import { ts_logconfig } from '../../config/logger';
 
 import { UsersDataSource } from '../../core/datastores/typeorm_datastores';
 import { ServiceException } from '../../core/exeptions/base_exeption';
 import { User } from '../../models/users/user';
 
-const logger = new Logger({ name: 'UserService' });
+const logger = new Logger({ ...ts_logconfig, name: 'UserService' });
 export const userRepository = UsersDataSource.manager.getRepository(User);
 
 export class UserService {

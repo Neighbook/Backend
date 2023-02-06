@@ -4,13 +4,14 @@ import * as jwt from 'jsonwebtoken';
 import { Logger } from 'tslog';
 
 import { environnement } from '../../config/environnement';
+import { ts_logconfig } from '../../config/logger';
 import { ServiceException } from '../../core/exeptions/base_exeption';
 import { User } from '../../models/users/user';
 import { userRepository } from './user_service';
 import { UserService } from './user_service';
 import { VaultService } from './vault_service';
 
-const logger = new Logger({ name: 'AuthService' });
+const logger = new Logger({ ...ts_logconfig, name: 'AuthService' });
 
 export class AuthService {
 	static async healthCheck(): Promise<boolean> {

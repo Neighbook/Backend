@@ -26,7 +26,7 @@ morgan.token('date', (req, res, tz) => {
 	return moment().tz(String(tz)).format('YYYY-MM-DD HH:mm:ss:SSS');
 });
 
-app.use(morgan(':date[Asia/Taipei]\t:method\t:status\t:response-time ms \t:res[content-length]\t:url'));
+app.use(morgan(':date[Europe/Paris]\t:method\t:status\t:response-time ms \t:res[content-length]\t:url'));
 app.use(bodyParser.urlencoded({ extended: true, limit: '50mb' }));
 app.use(bodyParser.json({ limit: '50mb' }));
 app.use(bodyParser.raw({ limit: '50mb' }));

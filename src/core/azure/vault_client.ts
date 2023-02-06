@@ -4,8 +4,9 @@ import { generateKeySync } from 'crypto';
 import { Logger } from 'tslog';
 
 import { environnement } from '../../config/environnement';
+import { ts_logconfig } from '../../config/logger';
 
-const logger = new Logger({ name: 'SecretClient' });
+const logger = new Logger({ ...ts_logconfig, name: 'SecretClient' });
 const key_vault_uri = environnement.azure.key_vault_uri;
 
 let client = null;

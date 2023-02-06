@@ -1,11 +1,12 @@
 import { Logger } from 'tslog';
 
 import { environnement } from '../../config/environnement';
+import { ts_logconfig } from '../../config/logger';
 import { UsersDataSource } from '../../core/datastores/typeorm_datastores';
 import { ServiceException } from '../../core/exeptions/base_exeption';
 import { UserPreference } from '../../models/users/user_preference';
 
-const logger = new Logger({ name: 'UserService' });
+const logger = new Logger({ ...ts_logconfig, name: 'UserService' });
 export const UserPreferenceRepository = UsersDataSource.manager.getRepository(UserPreference);
 
 export class UserPreferenceService {
