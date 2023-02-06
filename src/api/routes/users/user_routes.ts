@@ -1,11 +1,11 @@
 import { Request, Response, Router } from 'express';
 
-import { managedResourceMiddleware } from '../../../middlewares/auth/auth_middleware';
-import { UserService } from '../../../services/users_service/user_service';
+import { managedResourceMiddleware, authMiddleware } from '../../../middlewares/auth/auth_middleware';
+import { UserController } from '../../controllers/user_controller';
 
 const userRoutes = Router();
 
-userRoutes.get('/user/:user_id', managedResourceMiddleware, async (req: Request, res: Response) => {
+userRoutes.get('/user/:user_id', authMiddleware, managedResourceMiddleware, async (req: Request, res: Response) => {
 	// #swagger.tags = ['User']
 	// #swagger.description = 'Endpoint to get a user details'
 	// #swagger.summary = 'Get a user'
@@ -14,37 +14,20 @@ userRoutes.get('/user/:user_id', managedResourceMiddleware, async (req: Request,
 	// #swagger.responses[500] = { description: 'Internal Server Error' }
 	// #swagger.responses[404] = { description: 'User not found' }
 	// #swagger.responses[401] = { description: 'Unauthorized' }
-	await UserService.getUser(req.params.user_id)
-		.then((response) => {
-			if (response === null) {
-				res.status(404).json({ message: 'User not found' });
-			}
-			res.status(200).json(response);
-		})
-		.catch((error) => {
-			res.status(404).json(error);
-		});
+	await UserController.getUser(req, res);
 });
 
-userRoutes.get('/users', async (req: Request, res: Response) => {
+userRoutes.get('/users', authMiddleware, async (req: Request, res: Response) => {
 	// #swagger.tags = ['User']
 	// #swagger.description = 'Endpoint to get all users'
 	// #swagger.summary = 'Get all users'
-	// #swagger.auth = true
-	// #swagger.security = [{ "bearerAuth": [] }]
 	// #swagger.responses[200] = { description: 'Success' }
 	// #swagger.responses[500] = { description: 'Internal Server Error' }
 	// #swagger.responses[401] = { description: 'Unauthorized' }
-	await UserService.getUsers()
-		.then((users) => {
-			res.status(200).json(users);
-		})
-		.catch((error) => {
-			res.status(404).json(error);
-		});
+	await UserController.getUsers(req, res);
 });
 
-userRoutes.delete('/user', managedResourceMiddleware, async (req: Request, res: Response) => {
+userRoutes.delete('/user', authMiddleware, managedResourceMiddleware, async (req: Request, res: Response) => {
 	// #swagger.tags = ['User']
 	// #swagger.description = 'Endpoint to delete a user'
 	// #swagger.summary = 'Delete a user'
@@ -54,16 +37,10 @@ userRoutes.delete('/user', managedResourceMiddleware, async (req: Request, res: 
 	// #swagger.responses[500] = { description: 'Internal Server Error' }
 	// #swagger.responses[404] = { description: 'User not found' }
 	// #swagger.responses[401] = { description: 'Unauthorized' }
-	await UserService.deleteUser(req.params.user_id)
-		.then(() => {
-			res.status(200).json({ message: 'User deleted' });
-		})
-		.catch((error) => {
-			res.status(500).json(error);
-		});
+	await UserController.deleteUser(req, res);
 });
 
-userRoutes.put('/user', managedResourceMiddleware, async (req: Request, res: Response) => {
+userRoutes.put('/user', authMiddleware, managedResourceMiddleware, async (req: Request, res: Response) => {
 	// #swagger.tags = ['Profile']
 	// #swagger.description = 'Endpoint to update a user'
 	// #swagger.summary = 'Update a user'
@@ -78,23 +55,7 @@ userRoutes.put('/user', managedResourceMiddleware, async (req: Request, res: Res
 	// #swagger.responses[500] = { description: 'Internal Server Error' }
 	// #swagger.responses[404] = { description: 'User not found' }
 	// #swagger.responses[401] = { description: 'Unauthorized' }
-	await UserService.updateUser(
-		req.body.user._user_id,
-		req.body.nom ? req.body.nom : '',
-		req.body.prenom ? req.body.prenom : '',
-		req.body.sexe ? req.body.sexe : '',
-		req.body.date_naissance ? req.body.date_naissance : '',
-		req.body.telephone ? req.body.telephone : '',
-		req.body.email ? req.body.email : '',
-		req.body.photo ? req.body.photo : '',
-		req.body.code_pays ? req.body.code_pays : ''
-	)
-		.then(() => {
-			res.status(200).json({ message: 'User updated' });
-		})
-		.catch((error) => {
-			res.status(500).json(error);
-		});
+	await UserController.updateUser(req, res);
 });
 
 export { userRoutes };

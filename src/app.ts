@@ -42,7 +42,7 @@ app.get('/', (req: Request, res: Response) => {
 app.use('/', authRoutes);
 app.use('/', healthRoutes);
 app.use('/', fileUploadRouter);
-app.use('/', authMiddleware, userRoutes);
+app.use('/', userRoutes);
 app.use('/', authMiddleware, managedResourceMiddleware, userPreferenceRoutes);
 app.use('/social', authMiddleware, socialRoutes);
 

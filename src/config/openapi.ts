@@ -51,6 +51,7 @@ export const metadata = {
 		{
 			name: 'User Preferences',
 			description: 'User preferences management',
+			prefix: 'user_preference',
 		},
 	],
 };

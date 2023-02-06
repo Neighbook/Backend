@@ -20,6 +20,28 @@ export class UserService {
 		}
 	}
 
+	static async userExist(email: string, user_name: string): Promise<boolean> {
+		let user: User | null = null;
+		await userRepository
+			.findOne({
+				where: [
+					{
+						email: email,
+					},
+					{
+						nom_utilisateur: user_name,
+					},
+				],
+			})
+			.then((result?) => {
+				user = result;
+			})
+			.catch((error) => {
+				logger.error('Error: ' + error);
+			});
+		return user != null;
+	}
+
 	static async createUser(user: User): Promise<User | null> {
 		let createdUser: User | null = null;
 		await userRepository
