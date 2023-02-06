@@ -69,24 +69,20 @@ export class StorageService {
 		return container != null;
 	}
 
-	static async createFile(
-		containerName: string,
-		fileName: string,
-		content: Express.Multer.File
-	): Promise<boolean> {
+    static async createFile(containerName: string, fileName: string, buffer: Buffer | Blob | ArrayBuffer | ArrayBufferView , mimetype: string, ): Promise<boolean> {
 		if (!blob_storage_client) {
 			logger.warn('Blob storage client not initialized');
 			return false;
 		}
 		let file = null;
-		if (!environnement.storage_accepted_files_types.split(',').includes(content.mimetype.toLowerCase())) {
-			logger.error(`File type ${content.originalname} not accepted`);
+		if (!environnement.storage_accepted_files_types.split(',').includes(mimetype.toLowerCase())) {
+            logger.error(`File type ${fileName} not accepted`);
 			return false;
 		}
 		await blob_storage_client
 			.getContainerClient(containerName)
-			.getBlockBlobClient(`${fileName}.${content.originalname.split('.')[1]}`)
-			.uploadData(content.buffer, { blobHTTPHeaders: { blobContentType: content.mimetype } })
+			.getBlockBlobClient(`${fileName.split('.')[1]}`)
+			.uploadData(buffer, { blobHTTPHeaders: { blobContentType: mimetype } })
 			.then((value) => {
 				file = value;
 			})

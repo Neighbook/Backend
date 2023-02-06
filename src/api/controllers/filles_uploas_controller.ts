@@ -29,7 +29,7 @@ export class FilesUploadController {
                     return;
                 });
         }
-        StorageService.createFile(containerName, fileName, content).then((value) => {
+        StorageService.createFile(containerName, fileName, content.buffer, content.mimetype).then((value) => {
             if (!value) {
                 res.status(500).json({ error: 'Error while creating file' });
                 return;
