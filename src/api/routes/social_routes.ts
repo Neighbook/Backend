@@ -42,9 +42,12 @@ _socialRoutes.get('/comment', async (req: express.Request, res: express.Response
 
 _socialRoutes.post('/comment', async (req: express.Request, res: express.Response) => {
 	if (req.body.idUtilisateur && req.body.contenu && req.body.idPost) {
-		CommentService.putComment(req.body.contenu, req.body.idPost, req.body.idUtilisateur, req.body.idCommentaire).then(
-			() => res.status(200).send()
-		);
+		CommentService.putComment(
+			req.body.contenu,
+			req.body.idPost,
+			req.body.idUtilisateur,
+			req.body.idCommentaire
+		).then(() => res.status(200).send());
 	} else {
 		res.status(400).json('invalid fields');
 	}
@@ -196,7 +199,9 @@ _socialRoutes.get('/followers', async (req: express.Request, res: express.Respon
 
 _socialRoutes.post('/follow', async (req: express.Request, res: express.Response) => {
 	if (req.body.idToFollow && req.body.user._user_id) {
-		FollowService.createFollow(req.body.user._user_id, req.body.idToFollow).then(() => res.status(200).send());
+		FollowService.createFollow(req.body.user._user_id, req.body.idToFollow).then(() =>
+			res.status(200).send()
+		);
 	} else {
 		res.status(400).json('invalid fields');
 	}
@@ -204,7 +209,9 @@ _socialRoutes.post('/follow', async (req: express.Request, res: express.Response
 
 _socialRoutes.delete('/follow', async (req: express.Request, res: express.Response) => {
 	if (req.query.id) {
-		FollowService.deleteFollow(req.body.user._user_id, req.query.id.toString()).then(() => res.status(200).send());
+		FollowService.deleteFollow(req.body.user._user_id, req.query.id.toString()).then(() =>
+			res.status(200).send()
+		);
 	} else {
 		res.status(400).json('invalid fields');
 	}
@@ -296,9 +303,11 @@ _socialRoutes.get('/reaction', async (req: express.Request, res: express.Respons
 
 _socialRoutes.patch('/reaction', async (req: express.Request, res: express.Response) => {
 	if (req.body.reactionId && req.body.postId) {
-		ReactionService.upsertReaction(Number(req.body.postId), req.body.user._user_id, Number(req.body.reactionId)).then(
-			() => res.status(200).send
-		);
+		ReactionService.upsertReaction(
+			Number(req.body.postId),
+			req.body.user._user_id,
+			Number(req.body.reactionId)
+		).then(() => res.status(200).send);
 	} else {
 		res.status(400).json('provide id');
 	}
