@@ -69,14 +69,19 @@ export class StorageService {
 		return container != null;
 	}
 
-    static async createFile(containerName: string, fileName: string, buffer: Buffer | Blob | ArrayBuffer | ArrayBufferView , mimetype: string, ): Promise<boolean> {
+	static async createFile(
+		containerName: string,
+		fileName: string,
+		buffer: Buffer | Blob | ArrayBuffer | ArrayBufferView,
+		mimetype: string
+	): Promise<boolean> {
 		if (!blob_storage_client) {
 			logger.warn('Blob storage client not initialized');
 			return false;
 		}
 		let file = null;
 		if (!environnement.storage_accepted_files_types.split(',').includes(mimetype.toLowerCase())) {
-            logger.error(`File type ${fileName} not accepted`);
+			logger.error(`File type ${fileName} not accepted`);
 			return false;
 		}
 		await blob_storage_client

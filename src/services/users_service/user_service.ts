@@ -1,7 +1,7 @@
 import { Logger } from 'tslog';
 import { In } from 'typeorm';
-import { ts_logconfig } from '../../config/logger';
 
+import { ts_logconfig } from '../../config/logger';
 import { UsersDataSource } from '../../core/datastores/typeorm_datastores';
 import { ServiceException } from '../../core/exeptions/base_exeption';
 import { User } from '../../models/users/user';
