@@ -6,7 +6,7 @@ import { Event } from '../../models/social/Evenement';
 export class EventService {
 	static repository: Repository<Event> = SocialDataSource.manager.getRepository(Event);
 
-	static async getEvent(id: number): Promise<Event | null> {
+	static async getEvent(id: string): Promise<Event | null> {
 		let event: Event | null = null;
 		await this.repository
 			.findOne({
@@ -54,7 +54,7 @@ export class EventService {
 		return response;
 	}
 
-	static async deleteEvent(id: number): Promise<DeleteResult | null> {
+	static async deleteEvent(id: string): Promise<DeleteResult | null> {
 		let response: DeleteResult | null = null;
 
 		await this.repository.softDelete(id).then((res) => {

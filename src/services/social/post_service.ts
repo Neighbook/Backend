@@ -71,7 +71,7 @@ export const formatPost = (post: Post): ObjectLiteral => {
 };
 
 export class PostService {
-	static async getPost(id: number, idUtilisateur: string): Promise<Post | null> {
+	static async getPost(id: string, idUtilisateur: string): Promise<Post | null> {
 		return await postRepository
 			.createQueryBuilder('post')
 			.leftJoinAndSelect('post.commentaires', 'commentaires')
@@ -106,7 +106,7 @@ export class PostService {
 		description: string,
 		estPartage: boolean,
 		idUtilisateur: string,
-		idEvenement: number | null
+		idEvenement: string | null
 	): Promise<Post> {
 		const post = new Post();
 		post.titre = titre;
@@ -120,7 +120,7 @@ export class PostService {
 		return await postRepository.save(post);
 	}
 
-	static async deletePost(id: number): Promise<UpdateResult> {
+	static async deletePost(id: string): Promise<UpdateResult> {
 		return await postRepository.softDelete(id);
 	}
 }

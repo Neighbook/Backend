@@ -7,7 +7,7 @@ import { PostReaction } from '../../models/social/PostReaction';
 const ReactionRepository = SocialDataSource.manager.getRepository(PostReaction);
 
 export class ReactionService {
-	static async getPostReactions(id: number): Promise<PostReaction[] | null> {
+	static async getPostReactions(id: string): Promise<PostReaction[] | null> {
 		const post = new Post();
 		post.id = id;
 		return ReactionRepository.find({
@@ -33,7 +33,7 @@ export class ReactionService {
 		});
 	}
 
-	static async upsertReaction(postId: number, userId: string, reactionId: number): Promise<any> {
+	static async upsertReaction(postId: string, userId: string, reactionId: number): Promise<any> {
 		const newReaction = new PostReaction();
 		newReaction.idPost = postId;
 		newReaction.idUtilisateur = userId;
@@ -42,7 +42,7 @@ export class ReactionService {
 		return ReactionRepository.upsert(newReaction, ['idPost', 'idUtilisateur']);
 	}
 
-	static async deleteReaction(postId: number, userId: string): Promise<DeleteResult> {
+	static async deleteReaction(postId: string, userId: string): Promise<DeleteResult> {
 		return ReactionRepository.delete({
 			idPost: postId,
 			idUtilisateur: userId,

@@ -18,8 +18,8 @@ import { PostReaction } from './PostReaction';
 
 @Entity('posts')
 export class Post {
-	@PrimaryGeneratedColumn()
-	id!: number;
+    @PrimaryGeneratedColumn('uuid')
+    id!: string;
 
 	@Column()
 	titre!: string;

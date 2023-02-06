@@ -46,8 +46,7 @@
 		"swagger-ui-express": "^4.6.0",
 		"tslog": "^4.7.1",
 		"typeorm": "^0.3.11",
-		"uuid": "^9.0.0",
-		"yarn": "^1.22.19"
+		"uuid": "^9.0.0"
 	},
 	"devDependencies": {
 		"@cspell/dict-fr-fr": "^2.2.0",

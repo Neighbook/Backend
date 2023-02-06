@@ -12,7 +12,7 @@ export class PostReaction {
 	post!: Post;
 
 	@PrimaryColumn({ nullable: false })
-	idPost!: number;
+	idPost!: string;
 
 	@PrimaryColumn()
 	idUtilisateur!: string;

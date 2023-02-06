@@ -18,7 +18,7 @@ _socialRoutes.get('/comment', async (req: express.Request, res: express.Response
 	// #swagger.description = 'Endpoint to get a comment.'
 	// #swagger.summary = 'Get a comment'
 	if (req.query.id) {
-		const searchId = Number(req.query.id);
+		const searchId = req.query.id.toString();
 		const comments = await CommentService.getComment(searchId);
 		if (comments !== null) {
 			let comment: Comment = new Comment();
@@ -64,7 +64,7 @@ _socialRoutes.delete('/comment', async (req: express.Request, res: express.Respo
 	// #swagger.description = 'Endpoint to delete a comment.'
 	// #swagger.summary = 'Delete a comment'
 	if (req.query.id) {
-		CommentService.deleteComment(Number(req.query.id)).then(() => res.status(200).send());
+		CommentService.deleteComment(req.query.id.toString()).then(() => res.status(200).send());
 	} else {
 		res.status(400).json('invalid fields');
 	}
@@ -76,7 +76,7 @@ _socialRoutes.get('/post', async (req: express.Request, res: express.Response) =
 	// #swagger.description = 'Endpoint to get a post details'
 	// #swagger.summary = 'Get a post'
 	if (req.query.id) {
-		const post = await PostService.getPost(Number(req.query.id), req.body.user._user_id);
+		const post = await PostService.getPost(req.query.id.toString(), req.body.user._user_id);
 		if (post !== null) {
 			res.status(200).json(formatPost(post));
 		} else {
@@ -125,7 +125,7 @@ _socialRoutes.delete('/post', async (req: express.Request, res: express.Response
 	// #swagger.description = 'Endpoint to delete a post.'
 	// #swagger.summary = 'Delete a post'
 	if (req.query.id) {
-		CommentService.deleteComment(Number(req.query.id)).then(() => res.status(200).send());
+		CommentService.deleteComment(req.query.id.toString()).then(() => res.status(200).send());
 	} else {
 		res.status(400).json('invalid fields');
 	}
@@ -141,7 +141,7 @@ _socialRoutes.get('/event', async (req: express.Request, res: express.Response) 
 	// #swagger.responses[500] = { description: 'Internal Server Error' }
 	// #swagger.responses[400] = { description: 'Wrong argument' }
 	if (req.query.id) {
-		const event = await EventService.getEvent(Number(req.query.id));
+		const event = await EventService.getEvent(req.query.id.toString());
 		if (event !== null) {
 			const formattedGet = {
 				id: event.id,
@@ -176,7 +176,7 @@ _socialRoutes.delete('/event', async (req: express.Request, res: express.Respons
 	// #swagger.description = 'Endpoint to delete an event.'
 	// #swagger.summary = 'Delete an event'
 	if (req.query.id) {
-		EventService.deleteEvent(Number(req.query.id)).then(() => res.status(200).send());
+		EventService.deleteEvent(req.query.id.toString()).then(() => res.status(200).send());
 	} else {
 		res.status(400).json('invalid fields');
 	}
@@ -330,7 +330,7 @@ _socialRoutes.get('/reaction', async (req: express.Request, res: express.Respons
 	// #swagger.summary = 'Get all reactions'
 	let apiRes;
 	if (req.query.postId) {
-		apiRes = await ReactionService.getPostReactions(Number(req.query.postId));
+		apiRes = await ReactionService.getPostReactions(req.query.postId.toString());
 	} else if (req.query.userId) {
 		apiRes = await ReactionService.getUserReactions(req.query.userId.toString());
 	} else {
@@ -349,9 +349,9 @@ _socialRoutes.patch('/reaction', async (req: express.Request, res: express.Respo
 	// #swagger.summary = 'Upsert a reaction'
 	if (req.body.reactionId && req.body.postId) {
 		ReactionService.upsertReaction(
-			Number(req.body.postId),
+			req.body.postId.toString(),
 			req.body.user._user_id,
-			Number(req.body.reactionId)
+			req.body.reactionId.toString()
 		).then(() => res.status(200).send);
 	} else {
 		res.status(400).json('provide id');

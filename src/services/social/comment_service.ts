@@ -5,7 +5,7 @@ import { Post } from '../../models/social/Post';
 const CommentRepository = SocialDataSource.manager.getRepository(Comment);
 
 export class CommentService {
-	static async getComment(id: number): Promise<Comment[] | null> {
+	static async getComment(id: string): Promise<Comment[] | null> {
 		const CommentQueryBuilder = CommentRepository.createQueryBuilder('comment');
 		return await CommentQueryBuilder.where(
 			'comment.post = ' +
@@ -19,9 +19,9 @@ export class CommentService {
 
 	static async putComment(
 		contenu: string,
-		postId: number,
+		postId: string,
 		idUtilisateur: string,
-		idCommentaire: number | null
+		idCommentaire: string | null
 	): Promise<any> {
 		const comment = new Comment();
 		comment.contenu = contenu;
@@ -35,7 +35,7 @@ export class CommentService {
 		return await CommentRepository.save(comment);
 	}
 
-	static async deleteComment(id: number): Promise<any> {
+	static async deleteComment(id: string): Promise<any> {
 		return await CommentRepository.softDelete(id);
 	}
 }

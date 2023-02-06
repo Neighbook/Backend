@@ -14,8 +14,8 @@ import { Post } from './Post';
 
 @Entity('Commentaires')
 export class Comment {
-	@PrimaryGeneratedColumn()
-	id!: number;
+    @PrimaryGeneratedColumn('uuid')
+    id!: string;
 
 	@Column()
 	contenu!: string;
@@ -33,7 +33,7 @@ export class Comment {
 	commentaire!: Comment;
 
 	@Column({ nullable: true })
-	idCommentaire!: number;
+	idCommentaire!: string;
 
 	@CreateDateColumn()
 	dateDeCreation!: Date;
