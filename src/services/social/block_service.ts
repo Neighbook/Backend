@@ -22,9 +22,6 @@ export class BlockService {
 			})
 			.then((result) => {
 				block = result;
-			})
-			.catch((error: Error) => {
-				logger.error(error);
 			});
 		return block;
 	}

@@ -21,9 +21,6 @@ export class FollowService {
 			})
 			.then((result) => {
 				follow = result;
-			})
-			.catch((error: Error) => {
-				logger.error(error);
 			});
 		return follow;
 	}
