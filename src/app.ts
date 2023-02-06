@@ -6,7 +6,7 @@ import multer from 'multer';
 import swaggerUi from 'swagger-ui-express';
 
 import { healthRoutes } from './api/routes/health/health_routes';
-import { socialRoutes } from './api/routes/social_routes';
+import { socialRoutes } from './api/routes/social/social_routes';
 import { authRoutes } from './api/routes/users/auth_routes';
 import { fileUploadRouter } from './api/routes/users/file_upload_routes';
 import { userRoutes } from './api/routes/users/user_routes';
@@ -30,7 +30,7 @@ app.use(cors(cors_config));
 app.use(apiConfig.base_path + '/documentation', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 app.get('/', (req: Request, res: Response) => {
-	res.redirect(apiConfig.base_path + '/documentation');
+    res.redirect(apiConfig.base_path + '/documentation');
 });
 
 app.use('/', userRoutes);

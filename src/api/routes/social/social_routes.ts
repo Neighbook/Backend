@@ -1,19 +1,22 @@
 import express from 'express';
 import { Logger } from 'tslog';
 
-import { Comment } from '../../models/social/Comment';
-import { BlockService } from '../../services/social/block_service';
-import { CommentService } from '../../services/social/comment_service';
-import { EventService } from '../../services/social/event_service';
-import { FollowService } from '../../services/social/follow_service';
-import { PostService, formatPost } from '../../services/social/post_service';
-import { ReactionService } from '../../services/social/reactions_service';
+import { Comment } from '../../../models/social/Comment';
+import { BlockService } from '../../../services/social/block_service';
+import { CommentService } from '../../../services/social/comment_service';
+import { EventService } from '../../../services/social/event_service';
+import { FollowService } from '../../../services/social/follow_service';
+import { PostService, formatPost } from '../../../services/social/post_service';
+import { ReactionService } from '../../../services/social/reactions_service';
 
 export const _socialRoutes = express.Router();
 const logger = new Logger({ name: 'SocialRoute' });
 
 // Comment routes
 _socialRoutes.get('/comment', async (req: express.Request, res: express.Response) => {
+    // #swagger.tags = ['Social']
+    // #swagger.description = 'Endpoint to get a comment.'
+    // #swagger.summary = 'Get a comment'
 	if (req.query.id) {
 		const searchId = Number(req.query.id);
 		const comments = await CommentService.getComment(searchId);
@@ -41,6 +44,9 @@ _socialRoutes.get('/comment', async (req: express.Request, res: express.Response
 });
 
 _socialRoutes.post('/comment', async (req: express.Request, res: express.Response) => {
+    // #swagger.tags = ['Social']
+    // #swagger.description = 'Endpoint to create a comment.'
+    // #swagger.summary = 'Create a comment'
 	if (req.body.idUtilisateur && req.body.contenu && req.body.idPost) {
 		CommentService.putComment(
 			req.body.contenu,
@@ -54,6 +60,9 @@ _socialRoutes.post('/comment', async (req: express.Request, res: express.Respons
 });
 
 _socialRoutes.delete('/comment', async (req: express.Request, res: express.Response) => {
+    // #swagger.tags = ['Social']
+    // #swagger.description = 'Endpoint to delete a comment.'
+    // #swagger.summary = 'Delete a comment'
 	if (req.query.id) {
 		CommentService.deleteComment(Number(req.query.id)).then(() => res.status(200).send());
 	} else {
@@ -63,6 +72,9 @@ _socialRoutes.delete('/comment', async (req: express.Request, res: express.Respo
 
 // Post routes
 _socialRoutes.get('/post', async (req: express.Request, res: express.Response) => {
+    // #swagger.tags = ['Social']
+    // #swagger.description = 'Endpoint to get a post details'
+    // #swagger.summary = 'Get a post'
 	if (req.query.id) {
 		const post = await PostService.getPost(Number(req.query.id), req.body.user._user_id);
 		if (post !== null) {
@@ -76,6 +88,9 @@ _socialRoutes.get('/post', async (req: express.Request, res: express.Response) =
 });
 
 _socialRoutes.get('/feed', async (req: express.Request, res: express.Response) => {
+    // #swagger.tags = ['Social']
+    // #swagger.description = 'Endpoint to get a feed'
+    // #swagger.summary = 'Get a feed'
 	if (req.query.id) {
 		const feed = await PostService.getFollowPost(req.query.id.toString());
 		if (feed !== null) {
@@ -89,6 +104,9 @@ _socialRoutes.get('/feed', async (req: express.Request, res: express.Response) =
 });
 
 _socialRoutes.post('/post', async (req: express.Request, res: express.Response) => {
+    // #swagger.tags = ['Social']
+    // #swagger.description = 'Endpoint to create a post.'
+    // #swagger.summary = 'Create a post'
 	if (req.body.titre && req.body.description && req.body.estPartage !== undefined && req.body.idUtilisateur) {
 		PostService.savePost(
 			req.body.titre,
@@ -103,6 +121,9 @@ _socialRoutes.post('/post', async (req: express.Request, res: express.Response) 
 });
 
 _socialRoutes.delete('/post', async (req: express.Request, res: express.Response) => {
+    // #swagger.tags = ['Social']
+    // #swagger.description = 'Endpoint to delete a post.'
+    // #swagger.summary = 'Delete a post'
 	if (req.query.id) {
 		CommentService.deleteComment(Number(req.query.id)).then(() => res.status(200).send());
 	} else {
@@ -138,6 +159,9 @@ _socialRoutes.get('/event', async (req: express.Request, res: express.Response) 
 });
 
 _socialRoutes.post('/event', async (req: express.Request, res: express.Response) => {
+    // #swagger.tags = ['Social']
+    // #swagger.description = 'Endpoint to create an event.'
+    // #swagger.summary = 'Create an event'
 	if (req.body.titre && req.body.dateEvenement && req.body.addresse !== undefined) {
 		EventService.createEvent(req.body.titre, req.body.dateEvenement, req.body.addresse).then(() =>
 			res.status(200).send()
@@ -148,6 +172,9 @@ _socialRoutes.post('/event', async (req: express.Request, res: express.Response)
 });
 
 _socialRoutes.delete('/event', async (req: express.Request, res: express.Response) => {
+    // #swagger.tags = ['Social']
+    // #swagger.description = 'Endpoint to delete an event.'
+    // #swagger.summary = 'Delete an event'
 	if (req.query.id) {
 		EventService.deleteEvent(Number(req.query.id)).then(() => res.status(200).send());
 	} else {
@@ -198,6 +225,9 @@ _socialRoutes.get('/followers', async (req: express.Request, res: express.Respon
 });
 
 _socialRoutes.post('/follow', async (req: express.Request, res: express.Response) => {
+    // #swagger.tags = ['Social']
+    // #swagger.description = 'Endpoint to follow a user.'
+    // #swagger.summary = 'Follow a user'
 	if (req.body.idToFollow && req.body.user._user_id) {
 		FollowService.createFollow(req.body.user._user_id, req.body.idToFollow).then(() =>
 			res.status(200).send()
@@ -208,6 +238,9 @@ _socialRoutes.post('/follow', async (req: express.Request, res: express.Response
 });
 
 _socialRoutes.delete('/follow', async (req: express.Request, res: express.Response) => {
+    // #swagger.tags = ['Social']
+    // #swagger.description = 'Endpoint to unfollow a user.'
+    // #swagger.summary = 'Unfollow a user'
 	if (req.query.id) {
 		FollowService.deleteFollow(req.body.user._user_id, req.query.id.toString()).then(() =>
 			res.status(200).send()
@@ -262,6 +295,9 @@ _socialRoutes.get('/blockers', async (req: express.Request, res: express.Respons
 });
 
 _socialRoutes.post('/block', async (req: express.Request, res: express.Response) => {
+    // #swagger.tags = ['Social']
+    // #swagger.description = 'Endpoint to block a user.'
+    // #swagger.summary = 'Block a user'
 	if (req.body.idToBlock && req.body.user._user_id) {
 		BlockService.createBlock(req.body.user._user_id, req.body.idToBlock)
 			.then(() => res.status(200).send())
@@ -275,6 +311,9 @@ _socialRoutes.post('/block', async (req: express.Request, res: express.Response)
 });
 
 _socialRoutes.delete('/block', async (req: express.Request, res: express.Response) => {
+    // #swagger.tags = ['Social']
+    // #swagger.description = 'Endpoint to unblock a user.'
+    // #swagger.summary = 'Unblock a user'
 	if (req.body.idToUnBlock) {
 		BlockService.deleteBlock(req.body.user._user_id, req.body.idToUnBlock.toString()).then(() =>
 			res.status(200).send()
@@ -286,6 +325,9 @@ _socialRoutes.delete('/block', async (req: express.Request, res: express.Respons
 
 // Reactions routes
 _socialRoutes.get('/reaction', async (req: express.Request, res: express.Response) => {
+    // #swagger.tags = ['Social']
+    // #swagger.description = 'Endpoint to get a user reactions'
+    // #swagger.summary = 'Get all reactions'
 	let apiRes;
 	if (req.query.postId) {
 		apiRes = await ReactionService.getPostReactions(Number(req.query.postId));
@@ -302,6 +344,9 @@ _socialRoutes.get('/reaction', async (req: express.Request, res: express.Respons
 });
 
 _socialRoutes.patch('/reaction', async (req: express.Request, res: express.Response) => {
+    // #swagger.tags = ['Social']
+    // #swagger.description = 'Endpoint to upsert a reaction.'
+    // #swagger.summary = 'Upsert a reaction'
 	if (req.body.reactionId && req.body.postId) {
 		ReactionService.upsertReaction(
 			Number(req.body.postId),
