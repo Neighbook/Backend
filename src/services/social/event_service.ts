@@ -34,8 +34,12 @@ export class EventService {
 		return response;
 	}
 
-	static async updateEvent(id: number, title?: string, eventDate?: Date, location?: string)
-        :Promise<UpdateResult | null> {
+	static async updateEvent(
+		id: number,
+		title?: string,
+		eventDate?: Date,
+		location?: string
+	): Promise<UpdateResult | null> {
 		const event = new Event();
 		let response: UpdateResult | null = null;
 
@@ -43,11 +47,9 @@ export class EventService {
 		event.dateEvenement = eventDate ? eventDate : event.dateEvenement;
 		event.addresse = location ? location : event.addresse;
 
-		await this.repository
-			.update(id, event)
-			.then((res) => {
-				response = res;
-			});
+		await this.repository.update(id, event).then((res) => {
+			response = res;
+		});
 
 		return response;
 	}
@@ -55,11 +57,9 @@ export class EventService {
 	static async deleteEvent(id: number): Promise<DeleteResult | null> {
 		let response: DeleteResult | null = null;
 
-		await this.repository
-			.softDelete(id)
-			.then((res) => {
-				response = res;
-			});
+		await this.repository.softDelete(id).then((res) => {
+			response = res;
+		});
 		return response;
 	}
 }

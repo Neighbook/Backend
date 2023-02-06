@@ -42,11 +42,7 @@ _socialRoutes.get('/comment', async (req: express.Request, res: express.Response
 
 _socialRoutes.post('/comment', async (req: express.Request, res: express.Response) => {
 	if (req.body.idUtilisateur && req.body.contenu && req.body.idPost) {
-		CommentService.putComment(
-            req.body.contenu,
-            req.body.idPost,
-            req.body.idUtilisateur,
-            req.body.idCommentaire).then(
+		CommentService.putComment(req.body.contenu, req.body.idPost, req.body.idUtilisateur, req.body.idCommentaire).then(
 			() => res.status(200).send()
 		);
 	} else {
@@ -300,8 +296,9 @@ _socialRoutes.get('/reaction', async (req: express.Request, res: express.Respons
 
 _socialRoutes.patch('/reaction', async (req: express.Request, res: express.Response) => {
 	if (req.body.reactionId && req.body.postId) {
-		ReactionService.upsertReaction(Number(req.body.postId), req.body.user._user_id, Number(req.body.reactionId))
-            .then(() => res.status(200).send);
+		ReactionService.upsertReaction(Number(req.body.postId), req.body.user._user_id, Number(req.body.reactionId)).then(
+			() => res.status(200).send
+		);
 	} else {
 		res.status(400).json('provide id');
 	}
