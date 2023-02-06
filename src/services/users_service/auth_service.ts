@@ -171,8 +171,8 @@ export class AuthService {
 		//     to: email,
 		//     subject: 'Reset password',
 		//     text: 'Reset password',
-        //     html: '<p>Reset password</p><a href="' +
-        // environnement.front_url + '/reset-password/' + token + '">Reset password</a>',
+		//     html: '<p>Reset password</p><a href="' +
+		// environnement.front_url + '/reset-password/' + token + '">Reset password</a>',
 		// };
 		// await MailService.sendMail(mail);
 		return true;
