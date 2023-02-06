@@ -31,11 +31,11 @@ export const metadata = {
 		{
 			name: 'Auth',
 			description: 'Authentication',
-        },
-        {
-            name: 'Social',
-            description: 'Social services',
-        },
+		},
+		{
+			name: 'Social',
+			description: 'Social services',
+		},
 		{
 			name: 'File',
 			description: 'File Uploas',

@@ -30,7 +30,7 @@ app.use(cors(cors_config));
 app.use(apiConfig.base_path + '/documentation', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 app.get('/', (req: Request, res: Response) => {
-    res.redirect(apiConfig.base_path + '/documentation');
+	res.redirect(apiConfig.base_path + '/documentation');
 });
 
 app.use('/', userRoutes);
