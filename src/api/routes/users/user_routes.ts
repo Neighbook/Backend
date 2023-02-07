@@ -5,17 +5,22 @@ import { UserController } from '../../controllers/user_controller';
 
 const userRoutes = Router();
 
-userRoutes.get('/user/:user_id', authMiddleware, managedResourceMiddleware, async (req: Request, res: Response) => {
-	// #swagger.tags = ['User']
-	// #swagger.description = 'Endpoint to get a user details'
-	// #swagger.summary = 'Get a user'
-	// #swagger.parameters['user_id'] = { description: 'User id' }
-	// #swagger.responses[200] = { description: 'Success' }
-	// #swagger.responses[500] = { description: 'Internal Server Error' }
-	// #swagger.responses[404] = { description: 'User not found' }
-	// #swagger.responses[401] = { description: 'Unauthorized' }
-	await UserController.getUser(req, res);
-});
+userRoutes.get(
+	'/user/:user_id',
+	authMiddleware,
+	managedResourceMiddleware,
+	async (req: Request, res: Response) => {
+		// #swagger.tags = ['User']
+		// #swagger.description = 'Endpoint to get a user details'
+		// #swagger.summary = 'Get a user'
+		// #swagger.parameters['user_id'] = { description: 'User id' }
+		// #swagger.responses[200] = { description: 'Success' }
+		// #swagger.responses[500] = { description: 'Internal Server Error' }
+		// #swagger.responses[404] = { description: 'User not found' }
+		// #swagger.responses[401] = { description: 'Unauthorized' }
+		await UserController.getUser(req, res);
+	}
+);
 
 userRoutes.get('/users', authMiddleware, async (req: Request, res: Response) => {
 	// #swagger.tags = ['User']
