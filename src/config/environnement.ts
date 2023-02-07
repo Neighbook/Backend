@@ -6,7 +6,7 @@ export const environnement = {
 	api_name: process.env.API_NAME || 'Neighbook API',
 	api_version: process.env.API_VERSION || '0.1.0',
 	api_description: process.env.API_DESCRIPTION || 'Neighbook : Tutored project of FISA 3 - A22',
-	api_port: process.env.API_PORT || 3001,
+	api_port: process.env.API_PORT || 3000,
 	api_host: process.env.API_HOST || 'localhost',
 	api_base_path: process.env.API_BASE_PATH || '/',
 	api_schemes: process.env.API_SCHEMES || 'http',
@@ -54,6 +54,16 @@ export const environnement = {
 		format: process.env.LOGGING_FORMAT || 'dev',
 		date_format: process.env.LOGGING_DATE_FORMAT || 'iso',
 	},
+	user_default_preferences: [
+		{
+			cle_preference: 'langue',
+			valeur_preference: 'fr',
+		},
+		{
+			cle_preference: 'theme',
+			valeur_preference: 'light',
+		},
+	],
 	licence_name: process.env.LICENCE_NAME || 'MIT',
 	licence_url: process.env.LICENCE_URL || 'https://spdx.org/licenses/MIT.html',
 };

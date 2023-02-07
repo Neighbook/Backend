@@ -4,13 +4,14 @@ import * as jwt from 'jsonwebtoken';
 import { Logger } from 'tslog';
 
 import { environnement } from '../../config/environnement';
+import { ts_logconfig } from '../../config/logger';
 import { ServiceException } from '../../core/exeptions/base_exeption';
 import { User } from '../../models/users/user';
 import { userRepository } from './user_service';
 import { UserService } from './user_service';
 import { VaultService } from './vault_service';
 
-const logger = new Logger({ name: 'AuthService' });
+const logger = new Logger({ ...ts_logconfig, name: 'AuthService' });
 
 export class AuthService {
 	static async healthCheck(): Promise<boolean> {
@@ -65,7 +66,7 @@ export class AuthService {
 		return token;
 	}
 
-	static async resgiter(user: User): Promise<string> {
+	static async register(user: User): Promise<string> {
 		let createdUser: User | null = null;
 		const _user_password = user.password;
 		await userRepository
@@ -125,5 +126,91 @@ export class AuthService {
 		);
 
 		return newToken;
+	}
+
+	static async forgotPassword(email: string): Promise<boolean> {
+		if (email == null) {
+			throw new ServiceException('Invalid email.', 400);
+		}
+		const user = await userRepository
+			.findOne({
+				where: {
+					email: email,
+				},
+			})
+			.catch((error) => {
+				logger.error('Error - service: ' + error);
+			});
+		if (user == null) {
+			throw new ServiceException('Invalid user credentials', 401);
+		}
+		const jwt_secret = await VaultService.getSecret(environnement.jwt_secret_name);
+		if (jwt_secret == null) {
+			logger.error('Error: JWT secret not found');
+			throw new ServiceException('Internal server error', 500);
+		}
+		if (jwt_secret.value == null) {
+			logger.error('Error: JWT secret not found');
+			throw new ServiceException('Internal server error', 500);
+		}
+		// const token = jwt.sign(
+		// 	{
+		// 		_user_id: user.id,
+		// 		_user_name: user.nom_utilisateur,
+		// 		_user_firstname: user.prenom,
+		// 		_user_lastname: user.nom,
+		// 	},
+		// 	jwt_secret.value,
+		// 	{
+		// 		expiresIn: environnement.jwt_token_expiration_time,
+		// 		issuer: environnement.jwt_token_issuer,
+		// 	}
+		// );
+		// const mail = {
+		//     from: environnement.mail_from,
+		//     to: email,
+		//     subject: 'Reset password',
+		//     text: 'Reset password',
+		//     html: '<p>Reset password</p><a href="' +
+		// environnement.front_url + '/reset-password/' + token + '">Reset password</a>',
+		// };
+		// await MailService.sendMail(mail);
+		return true;
+	}
+
+	static async resetPassword(token: string, password: string): Promise<boolean> {
+		const jwt_secret = await VaultService.getSecret(environnement.jwt_secret_name);
+		if (jwt_secret == null) {
+			logger.error('Error: JWT secret not found');
+			throw new ServiceException('Internal server error', 500);
+		}
+		let decoded: any = null;
+		jwt.verify(token, String(jwt_secret.value), (err, decodedToken) => {
+			if (err) {
+				logger.error('Error - verify: ' + err);
+				throw new ServiceException('Invalid token.', 400);
+			}
+			decoded = decodedToken;
+		});
+		if (decoded === null) {
+			throw new ServiceException('Invalid token.', 400);
+		}
+		const user = await userRepository
+			.findOne({
+				where: {
+					id: decoded._user_id,
+				},
+			})
+			.catch((error) => {
+				logger.error('Error - service: ' + error);
+			});
+		if (user == null) {
+			throw new ServiceException('Invalid user credentials', 401);
+		}
+		user.password = await argon.hash(password);
+		await userRepository.save(user).catch((error) => {
+			logger.error('Error - service: ' + error);
+		});
+		return true;
 	}
 }

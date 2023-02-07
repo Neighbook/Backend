@@ -15,7 +15,7 @@ export const metadata = {
 			email: 'john.folly@utbm.fr',
 		},
 	},
-	host: environnement.api_host,
+	host: environnement.api_host + ':' + environnement.api_port,
 	servers: [
 		{
 			description: 'Local server',
@@ -33,6 +33,10 @@ export const metadata = {
 			description: 'Authentication',
 		},
 		{
+			name: 'Profile',
+			description: 'User profile management',
+		},
+		{
 			name: 'Social',
 			description: 'Social services',
 		},
@@ -43,6 +47,11 @@ export const metadata = {
 		{
 			name: 'User',
 			description: 'User management',
+		},
+		{
+			name: 'User Preferences',
+			description: 'User preferences management',
+			prefix: 'user_preference',
 		},
 	],
 };

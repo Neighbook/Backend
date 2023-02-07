@@ -45,7 +45,7 @@ export async function managedResourceMiddleware(
 	if (!user) {
 		return res.status(401).send('Access denied. No token provided.');
 	}
-	const user_id = req.params.user_id ? req.params.user_id : req.body.user_id;
+	const user_id = req.params.user_id ? req.params.user_id : req.body.user._user_id;
 	if (!user_id) {
 		return res.status(400).send('Bad request. No user_id provided.');
 	}

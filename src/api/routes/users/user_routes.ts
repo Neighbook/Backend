@@ -1,15 +1,15 @@
-import express from 'express';
+import { Request, Response, Router } from 'express';
 
-import { authMiddleware, managedResourceMiddleware } from '../../../middlewares/auth/auth_middleware';
-import { UserService } from '../../../services/users_service/user_service';
+import { managedResourceMiddleware, authMiddleware } from '../../../middlewares/auth/auth_middleware';
+import { UserController } from '../../controllers/user_controller';
 
-const userRoutes = express.Router();
+const userRoutes = Router();
 
 userRoutes.get(
 	'/user/:user_id',
 	authMiddleware,
 	managedResourceMiddleware,
-	async (req: express.Request, res) => {
+	async (req: Request, res: Response) => {
 		// #swagger.tags = ['User']
 		// #swagger.description = 'Endpoint to get a user details'
 		// #swagger.summary = 'Get a user'
@@ -18,58 +18,49 @@ userRoutes.get(
 		// #swagger.responses[500] = { description: 'Internal Server Error' }
 		// #swagger.responses[404] = { description: 'User not found' }
 		// #swagger.responses[401] = { description: 'Unauthorized' }
-		await UserService.getUser(req.params.user_id)
-			.then((response) => {
-				if (response === null) {
-					res.status(404).json({ message: 'User not found' });
-				}
-				res.status(200).json(response);
-			})
-			.catch((error) => {
-				res.status(404).json(error);
-			});
+		await UserController.getUser(req, res);
 	}
 );
 
-userRoutes.get('/users', authMiddleware, async (req: express.Request, res) => {
+userRoutes.get('/users', authMiddleware, async (req: Request, res: Response) => {
 	// #swagger.tags = ['User']
 	// #swagger.description = 'Endpoint to get all users'
 	// #swagger.summary = 'Get all users'
-	// #swagger.auth = true
-	// #swagger.security = [{ "bearerAuth": [] }]
 	// #swagger.responses[200] = { description: 'Success' }
 	// #swagger.responses[500] = { description: 'Internal Server Error' }
 	// #swagger.responses[401] = { description: 'Unauthorized' }
-	await UserService.getUsers()
-		.then((users) => {
-			res.status(200).json(users);
-		})
-		.catch((error) => {
-			res.status(404).json(error);
-		});
+	await UserController.getUsers(req, res);
 });
 
-userRoutes.delete(
-	'/user/:user_id',
-	authMiddleware,
-	managedResourceMiddleware,
-	async (req: express.Request, res) => {
-		// #swagger.tags = ['User']
-		// #swagger.description = 'Endpoint to delete a user'
-		// #swagger.summary = 'Delete a user'
-		// #swagger.parameters['user_id'] = { description: 'User id' }
-		// #swagger.responses[200] = { description: 'Success' }
-		// #swagger.responses[500] = { description: 'Internal Server Error' }
-		// #swagger.responses[404] = { description: 'User not found' }
-		// #swagger.responses[401] = { description: 'Unauthorized' }
-		await UserService.deleteUser(req.params.user_id)
-			.then(() => {
-				res.status(200).json({ message: 'User deleted' });
-			})
-			.catch((error) => {
-				res.status(500).json(error);
-			});
-	}
-);
+userRoutes.delete('/user', authMiddleware, managedResourceMiddleware, async (req: Request, res: Response) => {
+	// #swagger.tags = ['User']
+	// #swagger.description = 'Endpoint to delete a user'
+	// #swagger.summary = 'Delete a user'
+	// #swagger.parameters['user_id'] = { description: 'User id' }
+	/* #swagger.parameters['user_id'] = {'in': 'body', 'required': true, 'schema': {'user_id': 'string'}} */
+	// #swagger.responses[200] = { description: 'Success' }
+	// #swagger.responses[500] = { description: 'Internal Server Error' }
+	// #swagger.responses[404] = { description: 'User not found' }
+	// #swagger.responses[401] = { description: 'Unauthorized' }
+	await UserController.deleteUser(req, res);
+});
+
+userRoutes.put('/user', authMiddleware, managedResourceMiddleware, async (req: Request, res: Response) => {
+	// #swagger.tags = ['Profile']
+	// #swagger.description = 'Endpoint to update a user'
+	// #swagger.summary = 'Update a user'
+	/* #swagger.parameters['user_id'] = {'in': 'body', 'required': true,
+    'schema': {'user_id': 'string',
+    'nom': 'string', 'prenom': 'string',
+    'sexe': 'string', 'date_naissance': 'string',
+    'telephone': 'string', 'email': 'string',
+    'photo': 'string', 'code_pays': 'string'}}
+    */
+	// #swagger.responses[200] = { description: 'Success' }
+	// #swagger.responses[500] = { description: 'Internal Server Error' }
+	// #swagger.responses[404] = { description: 'User not found' }
+	// #swagger.responses[401] = { description: 'Unauthorized' }
+	await UserController.updateUser(req, res);
+});
 
 export { userRoutes };

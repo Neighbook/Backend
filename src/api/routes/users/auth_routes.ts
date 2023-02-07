@@ -1,11 +1,11 @@
-import express from 'express';
+import { Request, Response, Router } from 'express';
 
-import { User } from '../../../models/users/user';
-import { AuthService } from '../../../services/users_service/auth_service';
+import { authMiddleware } from '../../../middlewares/auth/auth_middleware';
+import { AuthController } from '../../controllers/auth_controller';
 
-const authRoutes = express.Router();
+const authRoutes = Router();
 
-authRoutes.post('/auth/login', async (req: express.Request, res) => {
+authRoutes.post('/auth/login', async (req: Request, res: Response) => {
 	// #swagger.tags = ['Auth']
 	// #swagger.description = 'Endpoint to login'
 	// #swagger.summary = 'Login'
@@ -19,16 +19,10 @@ authRoutes.post('/auth/login', async (req: express.Request, res) => {
 	// #swagger.responses[200] = { description: 'User logged in' }
 	// #swagger.responses[401] = { description: 'Invalid user credentials' }
 	// #swagger.responses[500] = { description: 'Internal Server Error' }
-	await AuthService.login(req.body.email, req.body.password)
-		.then((response) => {
-			res.status(200).json(response);
-		})
-		.catch((error) => {
-			res.status(500).json(error);
-		});
+	await AuthController.login(req, res);
 });
 
-authRoutes.post('/auth/register', async (req: express.Request, res) => {
+authRoutes.post('/auth/register', async (req: Request, res: Response) => {
 	// #swagger.tags = ['Auth']
 	// #swagger.description = 'Endpoint to register'
 	// #swagger.summary = 'Register new'
@@ -53,24 +47,17 @@ authRoutes.post('/auth/register', async (req: express.Request, res) => {
 	// #swagger.responses[200] = { description: 'User Created' }
 	// #swagger.responses[500] = { description: 'Internal Server Error' }
 	// #swagger.responses[500] = { description: 'Invalid credentials' }
-	const user = new User();
-	user.prenom = req.body.prenom;
-	user.nom = req.body.nom;
-	user.sexe = req.body.sexe;
-	user.nom_utilisateur = req.body.nom_utilisateur;
-	user.date_naissance = req.body.date_naissance;
-	user.email = req.body.email;
-	user.password = req.body.password;
-	user.telephone = req.body.telephone;
-	user.code_pays = req.body.code_pays;
-	user.photo = req.body.photo;
-	await AuthService.resgiter(user)
-		.then((response) => {
-			res.status(200).json(response);
-		})
-		.catch((error) => {
-			res.status(500).json(error);
-		});
+	await AuthController.register(req, res);
+});
+
+authRoutes.post('/auth/refresh_token', authMiddleware, async (req: Request, res: Response) => {
+	// #swagger.tags = ['Auth']
+	// #swagger.description = 'Endpoint to refresh token'
+	// #swagger.summary = 'Login'
+	// #swagger.responses[200] = { description: 'User logged in' }
+	// #swagger.responses[401] = { description: 'Invalid user credentials' }
+	// #swagger.responses[500] = { description: 'Internal Server Error' }
+	await AuthController.refreshTokens(req, res);
 });
 
 export { authRoutes };

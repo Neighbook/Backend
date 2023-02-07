@@ -2,8 +2,9 @@ import { BlobServiceClient } from '@azure/storage-blob';
 import { Logger } from 'tslog';
 
 import { environnement } from '../../config/environnement';
+import { ts_logconfig } from '../../config/logger';
 
-const logger = new Logger({ name: 'BlobServiceClient' });
+const logger = new Logger({ ...ts_logconfig, name: 'BlobServiceClient' });
 
 const account_connection_string = environnement.azure.storage_connection_string;
 

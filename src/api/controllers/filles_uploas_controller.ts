@@ -1,9 +1,10 @@
 import { Request, Response } from 'express';
 import { Logger } from 'tslog';
 
+import { ts_logconfig } from '../../config/logger';
 import { StorageService } from '../../services/users_service/storage_service';
 
-const logger = new Logger({ name: 'FileUploadController' });
+const logger = new Logger({ ...ts_logconfig, name: 'FileUploadController' });
 
 export class FilesUploadController {
 	static async uploadFile(req: Request, res: Response): Promise<void> {
@@ -28,7 +29,7 @@ export class FilesUploadController {
 					return;
 				});
 		}
-		StorageService.createFile(containerName, fileName, content).then((value) => {
+		StorageService.createFile(containerName, fileName, content.buffer, content.mimetype).then((value) => {
 			if (!value) {
 				res.status(500).json({ error: 'Error while creating file' });
 				return;
