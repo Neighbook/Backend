@@ -6,11 +6,13 @@ import multer from 'multer';
 import swaggerUi from 'swagger-ui-express';
 
 import { healthRoutes } from './api/routes/health/health_routes';
+import { socialRoutes } from './api/routes/social/social_routes';
 import { authRoutes } from './api/routes/users/auth_routes';
 import { fileUploadRouter } from './api/routes/users/file_upload_routes';
 import { userRoutes } from './api/routes/users/user_routes';
 import { apiConfig } from './config/api_config';
 import { cors_config } from './config/cors';
+import { authMiddleware } from './middlewares/auth/auth_middleware';
 
 const swaggerDocument = require('./doc/openapi.json');
 
@@ -35,5 +37,6 @@ app.use('/', userRoutes);
 app.use('/', authRoutes);
 app.use('/', fileUploadRouter);
 app.use('/', healthRoutes);
+app.use('/social', authMiddleware, socialRoutes);
 
 export default app;

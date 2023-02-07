@@ -4,7 +4,7 @@ tabWidth: 2
 useTabs: true
 semi: true
 singleQuote: true
-printWidth: 120
+printWidth: 110
 quoteProps: as-needed
 arrowParens: always
 endOfLine: auto

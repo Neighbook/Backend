@@ -3,7 +3,7 @@ import http from 'http';
 import { Logger } from 'tslog';
 
 import app from './app';
-import { UsersDataSource } from './core/datastores/typeorm_datastores';
+import { UsersDataSource, SocialDataSource } from './core/datastores/typeorm_datastores';
 import { VaultService } from './services/users_service/vault_service';
 
 const logger = new Logger({ name: 'server' });
@@ -57,6 +57,7 @@ server.listen(port);
 
 try {
 	UsersDataSource.initialize();
+	SocialDataSource.initialize();
 	logger.info('Connection with database has been established successfully.');
 	server.on('error', errorHandler);
 	server.on('listening', () => {

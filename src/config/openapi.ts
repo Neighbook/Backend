@@ -33,6 +33,10 @@ export const metadata = {
 			description: 'Authentication',
 		},
 		{
+			name: 'Social',
+			description: 'Social services',
+		},
+		{
 			name: 'File',
 			description: 'File Uploas',
 		},

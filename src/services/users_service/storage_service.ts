@@ -68,7 +68,11 @@ export class StorageService {
 		return container != null;
 	}
 
-	static async createFile(containerName: string, fileName: string, content: Express.Multer.File): Promise<boolean> {
+	static async createFile(
+		containerName: string,
+		fileName: string,
+		content: Express.Multer.File
+	): Promise<boolean> {
 		if (!blob_storage_client) {
 			logger.warn('Blob storage client not initialized');
 			return false;
