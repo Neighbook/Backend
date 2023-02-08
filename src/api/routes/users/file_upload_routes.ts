@@ -4,6 +4,14 @@ import { FilesUploadController } from '../../controllers/filles_uploas_controlle
 
 const fileUploadRouter = Router();
 
+fileUploadRouter.get('/file/:container_name/:file_name', async (req: Request, res: Response) => {
+	// #swagger.tags = ['File']
+	// #swagger.summary = 'Get file signed url'
+	// #swagger.description = 'Endpoint to get files'
+
+	FilesUploadController.getFile(req, res);
+});
+
 fileUploadRouter.post('/file/upload/:container_name/:file_name', async (req: Request, res: Response) => {
 	// #swagger.tags = ['File']
 	// #swagger.summary = 'Uploade new file'
