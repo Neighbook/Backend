@@ -86,7 +86,7 @@ export class StorageService {
 		}
 		await blob_storage_client
 			.getContainerClient(containerName)
-			.getBlockBlobClient(`${fileName.split('.')[1]}`)
+			.getBlockBlobClient(fileName)
 			.uploadData(buffer, { blobHTTPHeaders: { blobContentType: mimetype } })
 			.then((value) => {
 				file = value;
@@ -122,13 +122,15 @@ export class StorageService {
 			return null;
 		}
 		let sas_url = null;
+		const expire = new Date();
+		expire.setDate(expire.getDate() + 50);
 		await blob_storage_client
 			.getContainerClient(containerName)
 			.getBlockBlobClient(fileName)
 			.generateSasUrl({
 				permissions: BlobSASPermissions.parse('r'),
 				startsOn: new Date(),
-				expiresOn: new Date(),
+				expiresOn: expire,
 			})
 			.then((value) => {
 				sas_url = value;

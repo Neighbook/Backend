@@ -44,6 +44,23 @@ export class FilesUploadController {
 		});
 	}
 
+	static async getFile(req: Request, res: Response): Promise<void> {
+		const containerName = req.params.container_name;
+		const fileName = req.params.file_name;
+
+		if (!(await StorageService.isContainerExist(containerName))) {
+			res.status(500).json({ error: 'Container doesnt exist' });
+			return;
+		}
+		StorageService.get_sas_url(containerName, fileName).then((value) => {
+			if (!value) {
+				res.status(500).json({ error: 'Error while getting file url' });
+				return;
+			}
+			res.status(200).json({ file_url: value });
+		});
+	}
+
 	static async deleteFile(req: Request, res: Response): Promise<void> {
 		const containerName = req.params.container_name;
 		const fileName = req.params.file_name;
