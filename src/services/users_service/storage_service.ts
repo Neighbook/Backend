@@ -123,7 +123,7 @@ export class StorageService {
 		}
 		let sas_url = null;
 		const expire = new Date();
-		expire.setDate(expire.getDate() + 2);
+		expire.setDate(expire.getDate() + 50);
 		await blob_storage_client
 			.getContainerClient(containerName)
 			.getBlockBlobClient(fileName)
