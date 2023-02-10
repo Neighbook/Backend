@@ -8,10 +8,12 @@ import { EventService } from '../../../services/social/event_service';
 import { FollowService } from '../../../services/social/follow_service';
 import { PostService, formatPost } from '../../../services/social/post_service';
 import { ReactionService } from '../../../services/social/reactions_service';
+import { imageRoutes } from './image_routes';
 
 export const _socialRoutes = express.Router();
 const logger = new Logger({ name: 'SocialRoute' });
 
+_socialRoutes.use(imageRoutes);
 // Comment routes
 _socialRoutes.get('/comment', async (req: express.Request, res: express.Response) => {
 	// #swagger.tags = ['Social']
@@ -80,7 +82,7 @@ _socialRoutes.get('/post', async (req: express.Request, res: express.Response) =
 	if (req.query.id) {
 		const post = await PostService.getPost(req.query.id.toString(), req.body.user._user_id);
 		if (post !== null) {
-			res.status(200).json(formatPost(post));
+			res.status(200).json(await formatPost(post));
 		} else {
 			res.status(404).send();
 		}
@@ -95,7 +97,7 @@ _socialRoutes.get('/feed', async (req: express.Request, res: express.Response) =
 	// #swagger.summary = 'Get logged in user feed'
 	const feed = await PostService.getFollowPost(req.body.user._user_id);
 	if (feed !== null) {
-		res.status(200).json(feed.map((post) => formatPost(post)));
+		res.status(200).json(feed.map(async (post) => await formatPost(post)));
 	} else {
 		res.status(404).send();
 	}
@@ -112,7 +114,7 @@ _socialRoutes.post('/post', async (req: express.Request, res: express.Response) 
 			req.body.estPartage,
 			req.body.user._user_id,
 			req.body.idEvenement
-		).then(() => res.status(200).send());
+		).then((post) => res.status(200).send(post));
 	} else {
 		res.status(400).json('invalid fields');
 	}

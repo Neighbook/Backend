@@ -19,8 +19,8 @@ export class Image {
 	@Column()
 	url!: string;
 
-    @Column()
-    idUtilisateur!: string;
+	@Column()
+	idUtilisateur!: string;
 
 	@CreateDateColumn()
 	dateDeCreation!: Date;
@@ -32,6 +32,9 @@ export class Image {
 	dateDeSuppression?: Date;
 
 	@ManyToOne(() => Post)
-	@JoinColumn()
+	@JoinColumn({ name: 'idPost' })
 	post!: Post;
+
+	@Column({ nullable: false })
+	idPost!: string;
 }
