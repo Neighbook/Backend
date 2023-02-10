@@ -91,12 +91,12 @@ _socialRoutes.get('/feed', async (req: express.Request, res: express.Response) =
 	// #swagger.tags = ['Social']
 	// #swagger.description = 'Endpoint to get a feed'
 	// #swagger.summary = 'Get logged in user feed'
-    const feed = await PostService.getFollowPost(req.body.user._user_id);
-    if (feed !== null) {
-        res.status(200).json(feed.map((post) => formatPost(post)));
-    } else {
-        res.status(404).send();
-    }
+	const feed = await PostService.getFollowPost(req.body.user._user_id);
+	if (feed !== null) {
+		res.status(200).json(feed.map((post) => formatPost(post)));
+	} else {
+		res.status(404).send();
+	}
 });
 
 _socialRoutes.post('/post', async (req: express.Request, res: express.Response) => {
