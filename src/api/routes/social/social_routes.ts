@@ -97,7 +97,7 @@ _socialRoutes.get('/feed', async (req: express.Request, res: express.Response) =
 	// #swagger.summary = 'Get logged in user feed'
 	const feed = await PostService.getFollowPost(req.body.user._user_id);
 	if (feed !== null) {
-		res.status(200).json(feed.map(async (post) => await formatPost(post)));
+		res.status(200).json(await Promise.all(feed.map(async (post) => await formatPost(post))));
 	} else {
 		res.status(404).send();
 	}
