@@ -19,6 +19,9 @@ export class Image {
 	@Column()
 	url!: string;
 
+    @Column()
+    idUtilisateur!: string;
+
 	@CreateDateColumn()
 	dateDeCreation!: Date;
 

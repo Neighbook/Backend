@@ -7,6 +7,7 @@ import { Follow } from '../../models/social/Follow';
 import { Post } from '../../models/social/Post';
 import { followRepository } from './follow_service';
 import { reactionsIds } from './reactions_mapping';
+import * as queryString from "querystring";
 
 const postRepository = SocialDataSource.manager.getRepository(Post);
 
@@ -46,6 +47,12 @@ SelectQueryBuilder.prototype.countReactions = function <Entity extends ObjectLit
 
 export const formatPost = (post: Post): ObjectLiteral => {
 	const reactionUtilisateur = post.reactions.length === 1 ? post.reactions[0].reactionId : null;
+    post.images.forEach(image=>{
+        const query = queryString.decode(image.url);
+        if(query.st){
+            console.log(query.st);
+        }
+    });
 	return {
 		id: post.id,
 		titre: post.titre,
