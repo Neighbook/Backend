@@ -120,7 +120,11 @@ export class PostService {
 		return await postRepository.save(post);
 	}
 
-	static async deletePost(id: string): Promise<UpdateResult> {
-		return await postRepository.softDelete(id);
+	static async deletePost(id: string, idUtilisateur: string): Promise<UpdateResult> {
+		return await postRepository
+			.createQueryBuilder()
+			.softDelete()
+			.where('id = :id and idUtilisateur = :idUtilisateur', { id, idUtilisateur })
+			.execute();
 	}
 }

@@ -47,11 +47,11 @@ _socialRoutes.post('/comment', async (req: express.Request, res: express.Respons
 	// #swagger.tags = ['Social']
 	// #swagger.description = 'Endpoint to create a comment.'
 	// #swagger.summary = 'Create a comment'
-	if (req.body.idUtilisateur && req.body.contenu && req.body.idPost) {
+	if (req.body.contenu && req.body.idPost) {
 		CommentService.putComment(
 			req.body.contenu,
 			req.body.idPost,
-			req.body.idUtilisateur,
+			req.body.user._user_id,
 			req.body.idCommentaire
 		).then(() => res.status(200).send());
 	} else {
@@ -64,7 +64,9 @@ _socialRoutes.delete('/comment', async (req: express.Request, res: express.Respo
 	// #swagger.description = 'Endpoint to delete a comment.'
 	// #swagger.summary = 'Delete a comment'
 	if (req.query.id) {
-		CommentService.deleteComment(req.query.id.toString()).then(() => res.status(200).send());
+		CommentService.deleteComment(req.query.id.toString(), req.body.user._user_id).then(() =>
+			res.status(200).send()
+		);
 	} else {
 		res.status(400).json('invalid fields');
 	}
@@ -103,12 +105,12 @@ _socialRoutes.post('/post', async (req: express.Request, res: express.Response) 
 	// #swagger.tags = ['Social']
 	// #swagger.description = 'Endpoint to create a post.'
 	// #swagger.summary = 'Create a post'
-	if (req.body.titre && req.body.description && req.body.estPartage !== undefined && req.body.idUtilisateur) {
+	if (req.body.titre && req.body.description && req.body.estPartage !== undefined) {
 		PostService.savePost(
 			req.body.titre,
 			req.body.description,
 			req.body.estPartage,
-			req.body.idUtilisateur,
+			req.body.user._user_id,
 			req.body.idEvenement
 		).then(() => res.status(200).send());
 	} else {
@@ -121,7 +123,9 @@ _socialRoutes.delete('/post', async (req: express.Request, res: express.Response
 	// #swagger.description = 'Endpoint to delete a post.'
 	// #swagger.summary = 'Delete a post'
 	if (req.query.id) {
-		CommentService.deleteComment(req.query.id.toString()).then(() => res.status(200).send());
+		PostService.deletePost(req.query.id.toString(), req.body.user._user_id).then(() =>
+			res.status(200).send()
+		);
 	} else {
 		res.status(400).json('invalid fields');
 	}
