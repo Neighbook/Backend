@@ -35,7 +35,10 @@ export class CommentService {
 		return await CommentRepository.save(comment);
 	}
 
-	static async deleteComment(id: string): Promise<any> {
-		return await CommentRepository.softDelete(id);
+	static async deleteComment(id: string, idUtilisateur: string): Promise<any> {
+		return await CommentRepository.createQueryBuilder()
+			.softDelete()
+			.where('id = :id and idUtilisateur = :idUtilisateur', { id, idUtilisateur })
+			.execute();
 	}
 }
