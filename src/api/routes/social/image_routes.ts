@@ -6,8 +6,8 @@ const _imageRoutes = express.Router();
 
 _imageRoutes.post('/image/:idPost', async (req: express.Request, res: express.Response) => {
 	// #swagger.tags = ['Social']
-	// #swagger.description = 'Endpoint to create a comment.'
-	// #swagger.summary = 'Create a comment'
+	// #swagger.description = 'Endpoint to upload an image.'
+	// #swagger.summary = 'upload an image related to a post'
 	if (req.file && req.params.idPost) {
 		ImageService.putImage(req.body.user._user_id, req.params.idPost, req.file).then((image) =>
 			res.status(200).send(image)
@@ -19,8 +19,8 @@ _imageRoutes.post('/image/:idPost', async (req: express.Request, res: express.Re
 
 _imageRoutes.delete('/image', async (req: express.Request, res: express.Response) => {
 	// #swagger.tags = ['Social']
-	// #swagger.description = 'Endpoint to delete a comment.'
-	// #swagger.summary = 'Delete a comment'
+	// #swagger.description = 'Endpoint to delete an image.'
+	// #swagger.summary = 'Delete an image'
 	if (req.query.id) {
 		ImageService.deleteImage(req.query.id.toString(), req.body.user._user_id).then(() =>
 			res.status(200).send()
