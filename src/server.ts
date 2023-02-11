@@ -1,13 +1,16 @@
 import dotenv from 'dotenv';
 import http from 'http';
+import { Server as SocketServer } from 'socket.io';
 import { Logger } from 'tslog';
 import { DataSource } from 'typeorm';
 
 import app from './app';
 import { environnement } from './config/environnement';
+import { StorageService } from './services/users_service/storage_service';
+import { cors_config } from './config/cors';
 import { ts_logconfig } from './config/logger';
 import { UsersDataSource, SocialDataSource } from './core/datastores/typeorm_datastores';
-import { StorageService } from './services/users_service/storage_service';
+import { initializeSocketEvents } from './services/messagerie/socket';
 
 const logger = new Logger({ ...ts_logconfig, name: 'Server' });
 
@@ -53,6 +56,15 @@ const errorHandler = (error: { syscall: string; code: any }): void => {
 };
 
 const server = http.createServer(app);
+const io = new SocketServer(server, {
+	cors: {
+		...cors_config,
+	},
+});
+
+io.on('connection', (socket) => {
+	initializeSocketEvents(socket);
+});
 
 server.listen(port);
 
