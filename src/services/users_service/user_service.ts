@@ -65,6 +65,13 @@ export class UserService {
 				},
 			})
 			.then((result?) => {
+				if (result) {
+					result.password = '';
+					result.date_naissance = '';
+					result.email = '';
+					result.telephone = '';
+					result.code_pays = '';
+				}
 				user = result;
 			})
 			.catch((error) => {
@@ -78,6 +85,13 @@ export class UserService {
 		await userRepository
 			.findBy({ id: In(ids) })
 			.then((result) => {
+				result.forEach((user) => {
+					user.password = '';
+					user.date_naissance = '';
+					user.email = '';
+					user.telephone = '';
+					user.code_pays = '';
+				});
 				users = result;
 			})
 			.catch((error) => {
@@ -92,6 +106,13 @@ export class UserService {
 		await userRepository
 			.find()
 			.then((result) => {
+				result.forEach((user) => {
+					user.password = '';
+					user.date_naissance = '';
+					user.email = '';
+					user.telephone = '';
+					user.code_pays = '';
+				});
 				users = result;
 			})
 			.catch((error) => {
