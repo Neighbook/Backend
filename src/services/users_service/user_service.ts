@@ -4,6 +4,7 @@ import { In } from 'typeorm';
 import { ts_logconfig } from '../../config/logger';
 import { UsersDataSource } from '../../core/datastores/typeorm_datastores';
 import { ServiceException } from '../../core/exeptions/base_exeption';
+import { ReadebaleUser } from '../../dto/user/user_dto';
 import { User } from '../../models/users/user';
 
 const logger = new Logger({ ...ts_logconfig, name: 'UserService' });
@@ -56,8 +57,8 @@ export class UserService {
 		return createdUser;
 	}
 
-	static async getUser(id: string): Promise<User | null> {
-		let user: User | null = null;
+	static async getDUser(id: string): Promise<ReadebaleUser | null> {
+		let user: ReadebaleUser | null = null;
 		await userRepository
 			.findOne({
 				where: {
@@ -66,11 +67,39 @@ export class UserService {
 			})
 			.then((result?) => {
 				user = result;
+				if (user) {
+					delete user.password;
+					delete user.date_naissance;
+					delete user.email;
+					delete user.telephone;
+					delete user.code_pays;
+				}
 			})
 			.catch((error) => {
 				logger.error('Error: ' + error);
 			});
 		return user;
+	}
+
+	static async getDUsersByIds(ids: string[]): Promise<ReadebaleUser[]> {
+		let users: ReadebaleUser[] = [];
+		await userRepository
+			.findBy({ id: In(ids) })
+			.then((result) => {
+				users = result;
+				users.forEach((user) => {
+					delete user.password;
+					delete user.date_naissance;
+					delete user.email;
+					delete user.telephone;
+					delete user.code_pays;
+				});
+			})
+			.catch((error) => {
+				logger.error('Error: ' + error);
+				throw new ServiceException('Internal server error', 500);
+			});
+		return users;
 	}
 
 	static async getUsersByIds(ids: string[]): Promise<User[]> {
@@ -87,12 +116,19 @@ export class UserService {
 		return users;
 	}
 
-	static async getUsers(): Promise<User[]> {
-		let users: User[] = [];
+	static async getDUsers(): Promise<ReadebaleUser[]> {
+		let users: ReadebaleUser[] = [];
 		await userRepository
 			.find()
 			.then((result) => {
 				users = result;
+				users.forEach((user) => {
+					delete user.password;
+					delete user.date_naissance;
+					delete user.email;
+					delete user.telephone;
+					delete user.code_pays;
+				});
 			})
 			.catch((error) => {
 				logger.error('Error: ' + error);

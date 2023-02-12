@@ -30,7 +30,7 @@ export async function authMiddleware(
 		return res.status(400).send('Invalid token.');
 	}
 	logger.info('User: ' + req.body.user);
-	if ((await UserService.getUser(req.body.user._user_id)) === null) {
+	if ((await UserService.getDUser(req.body.user._user_id)) === null) {
 		return res.status(400).send('Invalid token.');
 	}
 	next();

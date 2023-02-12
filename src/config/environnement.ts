@@ -48,6 +48,7 @@ export const environnement = {
 		social_service_database: process.env.DATABASE_SERVICE_SOCIAL || 'social',
 		use_ssl: Boolean(process.env.DATABASE_USE_SSL) || false,
 		logging: Boolean(process.env.DATABASE_LOGGING) || false,
+		synchronize: Boolean(process.env.DATABASE_SYNCHRONIZE) || false,
 	},
 	logging: {
 		level: process.env.LOGGING_LEVEL || 'info',
@@ -65,5 +66,5 @@ export const environnement = {
 		},
 	],
 	licence_name: process.env.LICENCE_NAME || 'MIT',
-	licence_url: process.env.LICENCE_URL || 'https://spdx.org/licenses/MIT.html',
+	licence_url: process.env.LICENCE_URL || 'https:github.com/Neighbook/Neighbook/blob/master/LICENSE',
 };

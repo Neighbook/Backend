@@ -4,7 +4,7 @@ import { UserService } from '../../services/users_service/user_service';
 
 export class UserController {
 	static async getUser(req: Request, res: Response): Promise<void> {
-		await UserService.getUser(req.params.user_id)
+		await UserService.getDUser(req.params.user_id)
 			.then((response) => {
 				if (response === null) {
 					res.status(404).json({ message: 'User not found' });
@@ -17,7 +17,7 @@ export class UserController {
 	}
 
 	static async getUsers(req: Request, res: Response): Promise<void> {
-		await UserService.getUsers()
+		await UserService.getDUsers()
 			.then((users) => {
 				res.status(200).json(users);
 			})

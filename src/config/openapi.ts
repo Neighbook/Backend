@@ -10,7 +10,7 @@ export const metadata = {
 			url: environnement.licence_url,
 		},
 		contact: {
-			name: 'John Folly',
+			name: 'Belfort-Montbeliard University of Technology (UTBM) Computer science apprenticeship students',
 			url: 'https://github.com/Neighbook/Backend',
 			email: 'john.folly@utbm.fr',
 		},
