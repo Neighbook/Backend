@@ -22,7 +22,7 @@ export class CommentService {
 		postId: string,
 		idUtilisateur: string,
 		idCommentaire: string | null
-	): Promise<any> {
+	): Promise<Comment> {
 		const comment = new Comment();
 		comment.contenu = contenu;
 		comment.idUtilisateur = idUtilisateur;

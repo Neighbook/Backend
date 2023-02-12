@@ -55,7 +55,7 @@ _socialRoutes.post('/comment', async (req: express.Request, res: express.Respons
 			req.body.idPost,
 			req.body.user._user_id,
 			req.body.idCommentaire
-		).then(() => res.status(200).send());
+		).then((comment) => res.status(200).send(comment));
 	} else {
 		res.status(400).json('invalid fields');
 	}
