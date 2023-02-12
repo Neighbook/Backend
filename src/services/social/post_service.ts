@@ -32,13 +32,13 @@ SelectQueryBuilder.prototype.countReactions = function <Entity extends ObjectLit
 			qb.where('reactions.reactionId = :id', { id: reactionsIds.Oo })
 		)
 		.loadRelationCountAndMap('post.nsnif', 'post.reactions', 'reactions', (qb) =>
-			qb.where('reactions.reactionId = :id', { id: reactionsIds.Oo })
+			qb.where('reactions.reactionId = :id', { id: reactionsIds.snif })
 		)
 		.loadRelationCountAndMap('post.ngrr', 'post.reactions', 'reactions', (qb) =>
-			qb.where('reactions.reactionId = :id', { id: reactionsIds.Oo })
+			qb.where('reactions.reactionId = :id', { id: reactionsIds.grr })
 		)
 		.loadRelationCountAndMap('post.nok', 'post.reactions', 'reactions', (qb) =>
-			qb.where('reactions.reactionId = :id', { id: reactionsIds.Oo })
+			qb.where('reactions.reactionId = :id', { id: reactionsIds.ok })
 		)
 		.loadRelationCountAndMap('post.ncommentaires', 'post.commentaires', 'commentaires')
 		.leftJoinAndSelect('post.reactions', 'reaction', 'reaction.idUtilisateur = :idUtilisateur', {
