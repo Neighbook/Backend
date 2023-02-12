@@ -66,5 +66,5 @@ export const environnement = {
 		},
 	],
 	licence_name: process.env.LICENCE_NAME || 'MIT',
-	licence_url: process.env.LICENCE_URL || 'https://spdx.org/licenses/MIT.html',
+	licence_url: process.env.LICENCE_URL || 'https:github.com/Neighbook/Neighbook/blob/master/LICENSE',
 };
