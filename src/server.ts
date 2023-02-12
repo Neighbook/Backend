@@ -10,6 +10,7 @@ import { StorageService } from './services/users_service/storage_service';
 import { cors_config } from './config/cors';
 import { ts_logconfig } from './config/logger';
 import { UsersDataSource, SocialDataSource } from './core/datastores/typeorm_datastores';
+import { ClientToServerEvents, InterServerEvents, ServerToClientEvents } from './models/messagerie/events';
 import { initializeSocketEvents } from './services/messagerie/socket';
 
 const logger = new Logger({ ...ts_logconfig, name: 'Server' });
@@ -56,7 +57,8 @@ const errorHandler = (error: { syscall: string; code: any }): void => {
 };
 
 const server = http.createServer(app);
-const io = new SocketServer(server, {
+
+const io = new SocketServer<ClientToServerEvents, ServerToClientEvents, InterServerEvents, any>(server, {
 	cors: {
 		...cors_config,
 	},

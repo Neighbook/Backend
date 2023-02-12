@@ -1,23 +1,35 @@
 import { Socket } from 'socket.io';
 
-import { ConnectionEventData, MessageEventData } from '../../models/messagerie/events';
+import {
+	ClientToServerEvents,
+	ConnectionEventData,
+	InterServerEvents,
+	MessageEventData,
+	ServerToClientEvents,
+} from '../../models/messagerie/events';
 import { joinRoom } from './events';
 
-export const initializeSocketEvents = (socket: Socket): void => {
-	socket.on('connectToOther', (event: ConnectionEventData) => {
+export const initializeSocketEvents = (
+	socket: Socket<ClientToServerEvents, ServerToClientEvents, InterServerEvents, any>
+): void => {
+	socket.on('connectToSomeone', (event: ConnectionEventData) => {
 		if (!event.senderId || !event.receiverId) return;
 
-		const idRoom = joinRoom(event, socket);
-		socket.send('roomJoined', {
+		const roomId = joinRoom(event, socket);
+
+		socket.emit('roomJoined', {
 			senderId: event.senderId,
 			receiverId: event.receiverId,
-			idRoom,
+			roomId,
 		});
 	});
 
-	socket.on('message', (event: MessageEventData) => {
+	socket.on('messageSended', (event: MessageEventData) => {
 		if (!event.roomId || !event.message) return;
 
-		socket.to(event.roomId).emit('message', event.message);
+		socket.to(event.roomId).emit('messageReceived', {
+			roomId: event.roomId,
+			message: event.message,
+		});
 	});
 };
