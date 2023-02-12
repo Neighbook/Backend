@@ -354,7 +354,11 @@ _socialRoutes.patch('/reaction', async (req: express.Request, res: express.Respo
 			req.body.postId.toString(),
 			req.body.user._user_id,
 			req.body.reactionId.toString()
-		).then(() => res.status(200).send);
+		).then(() => res.status(200).send());
+	} else if (req.body.postId) {
+		ReactionService.deleteReaction(req.body.postId.toString(), req.body.user._user_id).then(() =>
+			res.status(200).send()
+		);
 	} else {
 		res.status(400).json('provide id');
 	}
