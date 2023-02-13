@@ -148,7 +148,7 @@ _socialRoutes.get('/event', async (req: express.Request, res: express.Response) 
 			const formattedGet = {
 				id: event.id,
 				titre: event.titre,
-				addresse: event.addresse,
+				addresse: event.adresse,
 				dateEvenement: event.dateEvenement,
 			};
 			res.status(200).json(formattedGet);

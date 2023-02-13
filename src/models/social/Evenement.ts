@@ -18,8 +18,13 @@ export class Event {
 	@Column()
 	dateEvenement!: Date;
 
-	@Column()
-	addresse!: string;
+	@Column('decimal', { nullable: true })
+	longitude!: number;
+
+	@Column('decimal', { nullable: true })
+	latitude!: number;
+
+	adresse!: string;
 
 	@CreateDateColumn()
 	dateDeCreation!: Date;
