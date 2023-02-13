@@ -103,6 +103,23 @@ _socialRoutes.get('/feed', async (req: express.Request, res: express.Response) =
 	}
 });
 
+_socialRoutes.get('/localisationFeed', async (req: express.Request, res: express.Response) => {
+	// #swagger.tags = ['Social']
+	// #swagger.description = 'Endpoint to get a feed'
+	// #swagger.summary = 'Get logged in user feed'
+	const feed = await PostService.getEventsByLocalisation(
+		req.body.distance,
+		req.body.longitude,
+		req.body.latitude,
+		req.body.user._user_id
+	);
+	if (feed !== null) {
+		res.status(200).json(await Promise.all(feed.map(async (post) => await formatPost(post))));
+	} else {
+		res.status(404).send();
+	}
+});
+
 _socialRoutes.post('/post', async (req: express.Request, res: express.Response) => {
 	// #swagger.tags = ['Social']
 	// #swagger.description = 'Endpoint to create a post.'
