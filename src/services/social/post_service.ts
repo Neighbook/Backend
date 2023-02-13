@@ -47,7 +47,7 @@ SelectQueryBuilder.prototype.countReactions = function <Entity extends ObjectLit
 };
 
 export const formatPost = async (post: Post): Promise<ObjectLiteral> => {
-	const reactionUtilisateur = post.reactions.length === 1 ? post.reactions[0].reactionId : null;
+	const reactionUtilisateur = post.reactions?.length === 1 ? post.reactions[0].reactionId : null;
 	for (const image of post.images) {
 		const query = queryString.decode(image.url);
 		const id = (image.url.split('?')[0].split('/').pop() ?? '').substring('social_img_'.length);
@@ -113,6 +113,25 @@ export class PostService {
 				{ idUtilisateur }
 			)
 			.orderBy('post.dateDeModification', 'DESC')
+			.getMany();
+	}
+
+	static async getEventsByLocalisation(
+		distance: number,
+		longitude: number,
+		latitude: number,
+		idUtilisateur: string
+	): Promise<Post[]> {
+		// distance in m
+		return await postRepository
+			.createQueryBuilder('post')
+			.leftJoinAndSelect('post.images', 'images')
+			.leftJoinAndSelect('post.evenement', 'evenement')
+			.countReactions(idUtilisateur)
+			.where(
+				`ST_DistanceSphere(ST_MakePoint(evenement.longitude, evenement.latitude),
+                ST_MakePoint(${longitude}, ${latitude})) <= ${distance}`
+			)
 			.getMany();
 	}
 
