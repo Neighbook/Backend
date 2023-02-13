@@ -109,7 +109,8 @@ export class PostService {
 						.from(Follow, 'follow')
 						.where(`follow.idUtilisateur = '${idUtilisateur}'`)
 						.getQuery()
-			)
+                + ' OR post.idUtilisateur = :idUtilisateur', {idUtilisateur}
+			).orderBy('post.dateDeModification', 'DESC')
 			.getMany();
 	}
 
