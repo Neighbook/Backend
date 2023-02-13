@@ -1,1 +1,4 @@
-CREATE DATABASE pguser;
+CREATE DATABASE users;
+CREATE DATABASE social;
+CREATE DATABASE marketpalce;
+CREATE DATABASE messagerie;

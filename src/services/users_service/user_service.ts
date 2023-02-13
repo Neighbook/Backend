@@ -70,8 +70,8 @@ export class UserService {
 				if (user) {
 					delete user.password;
 					delete user.date_naissance;
-					delete user.email;
-					delete user.telephone;
+					// delete user.email;
+					// delete user.telephone;
 					delete user.code_pays;
 				}
 			})
