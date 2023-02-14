@@ -57,7 +57,7 @@ const server = http.createServer(app);
 server.listen(port);
 
 try {
-	(async () => {
+	(async (): Promise<void> => {
 		await UsersDataSource.initialize();
 		await SocialDataSource.initialize();
 	})();
