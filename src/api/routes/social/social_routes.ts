@@ -120,6 +120,18 @@ _socialRoutes.get('/localisationFeed', async (req: express.Request, res: express
 	}
 });
 
+_socialRoutes.get('/posts', async (req: express.Request, res: express.Response) => {
+	// #swagger.tags = ['Social']
+	// #swagger.description = 'Endpoint to get a user posts'
+	// #swagger.summary = 'Get posts of the user'
+	if (req.query.userId) {
+		const posts = await PostService.getPosts(req.query.userId.toString());
+		res.status(200).json(await Promise.all(posts.map(async (post) => await formatPost(post))));
+	} else {
+		res.status(400).send();
+	}
+});
+
 _socialRoutes.post('/post', async (req: express.Request, res: express.Response) => {
 	// #swagger.tags = ['Social']
 	// #swagger.description = 'Endpoint to create a post.'

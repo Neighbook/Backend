@@ -98,6 +98,19 @@ export class PostService {
 			.getOne();
 	}
 
+	static async getPosts(idUtilisateur: string): Promise<Post[]> {
+		return await postRepository
+			.createQueryBuilder('post')
+			.leftJoinAndSelect('post.images', 'images')
+			.leftJoinAndSelect('post.evenement', 'evenement')
+			.leftJoinAndSelect('post.repost', 'repost')
+			.leftJoinAndSelect('repost.images', 'repostimages')
+			.countReactions(idUtilisateur)
+			.where('post.idUtilisateur = :idUtilisateur', { idUtilisateur })
+			.orderBy('post.dateDeModification', 'DESC')
+			.getMany();
+	}
+
 	static async getFollowPost(idUtilisateur: string): Promise<Post[]> {
 		const followQueryBuilder = followRepository.createQueryBuilder('follow');
 		return await postRepository
