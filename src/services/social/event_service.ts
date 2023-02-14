@@ -1,7 +1,7 @@
 import { DeleteResult, Repository, UpdateResult } from 'typeorm';
 
 import { SocialDataSource } from '../../core/datastores/typeorm_datastores';
-import { geoCode, reverseGeoCode } from '../../core/utils/geolocalisation_utils';
+import { geoCode } from '../../core/utils/geolocalisation_utils';
 import { Coordonate } from '../../models/social/Coordonate';
 import { Event } from '../../models/social/Evenement';
 
@@ -18,9 +18,6 @@ export class EventService {
 			})
 			.then(async (result) => {
 				event = result;
-				if (event?.latitude && event?.longitude) {
-					event.adresse = await reverseGeoCode(event?.latitude, event?.longitude);
-				}
 			});
 		return event;
 	}
@@ -33,6 +30,7 @@ export class EventService {
 		event.dateEvenement = eventDate;
 		event.longitude = coordinate.longitude;
 		event.latitude = coordinate.latitude;
+		event.adresse = location;
 		await this.repository.save(event).then((event) => {
 			response = event;
 		});
