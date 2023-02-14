@@ -51,6 +51,7 @@ export class EventService {
 			const coordinate: Coordonate = await geoCode(location);
 			event.latitude = coordinate.latitude;
 			event.longitude = coordinate.longitude;
+			event.adresse = location;
 		}
 		event.titre = title ? title : event.titre;
 		event.dateEvenement = eventDate ? eventDate : event.dateEvenement;
