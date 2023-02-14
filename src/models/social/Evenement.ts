@@ -24,6 +24,7 @@ export class Event {
 	@Column('decimal', { nullable: true })
 	latitude!: number;
 
+	@Column()
 	adresse!: string;
 
 	@CreateDateColumn()
