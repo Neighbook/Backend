@@ -36,12 +36,26 @@ Pour plus d'information sur les variables d'environnement, voir la section [Les 
 Exemple de fichier `.env` :
 
 ```.env
-DATABASE_USER_DATABASE="pguser"
-DATABASE_USER_PASSWORD="myPassword"
-AZURE_CLIENT_ID="myClientId"
-AZURE_CLIENT_SECRET="mySecret"
-AZURE_TENANT_ID="myTenantId"
-AZURE_KEY_VAULT_URI="https://myKeyVault.vault.azure.net/"
+LOGGING_LEVEL="debug"
+DATABASE_HOST="db"
+DATABASE_USER="postgres"
+POSTGRES_PASSWORD="postgres"
+DATABASE_PASSWORD="postgres"
+DATABASE_SERVICE_USER="users"
+DATABASE_SERVICE_SOCIAL="social"
+DATABASE_SERVICE_MESSAGE="messagerie"
+DATABASE_SERVICE_MARKETPLACE="marketplace"
+AZURE_CLIENT_ID="a4505804-6243-4213-b96f-6b3ea3f76c4b"
+AZURE_CLIENT_SECRET="ZPB8Q~Z-9LRjc2kAQ4Gd-zcIive59hfAlDZi_bEj"
+AZURE_TENANT_ID="d745e710-9232-4097-924b-1e475cd27f72"
+AZURE_KEY_VAULT_URI="https://vault-nh-dev.vault.azure.net/"
+AZURE_STORAGE_ACCOUNT_NAME="hstorageb"
+AZURE_STORAGE_ACCOUNT_KEY="1OzqJ0PlEZ14rN2cfCh39Cs9FECHzCzMM62W0ChGpR6yaDZahnktatyD7jQWE93D3D1Icri4KM9K+AStgxBcjw=="
+AZURE_STORAGE_CONNECTION_STRING="DefaultEndpointsProtocol=https;AccountName=hstorageb;AccountKey=34HiDZA8H4JZmcL6GCG17CZq3uvnwV+iuSl5+tE6wcyUZ3HBBrmBFdbhhFT/8iyleAuSJvp8lxqS+AStK4KSwA==;EndpointSuffix=core.windows.net"
+API_HOST="localhost"
+API_PORT="3000"
+DATABASE_SYNCHRONIZE="true"
+DATABASE_LOGGING="true"
 ```
 
 ### 4. Genrer le fichier de documentation swagger
@@ -126,9 +140,13 @@ Toutes les variables d'environnement sont optionnelles, si aucune variable n'est
 | DATABASE_DIALECT          | Type de base de données                                    | "postgres"                             |
 | DATABASE_HOST             | Host de la base de données                                 | "localhost"                            |
 | DATABASE_PORT             | Port de la base de données                                 | 5432                                   |
-| DATABASE_SERVICE_USER     | Non de la base de donnee du service user                   | "pguser"                               |
+| DATABASE_SERVICE_USER     | Non de la base de donnee du service user                   | "user"                                 |
 | DATABASE_USER             | Nom d'utilisateur de la base de données                    | "postgres"                             |
 | DATABASE_PASSWORD         | Mot de passe de la base de données                         | "postgres"                             |
+| DATABASE_SERVICE_SOCIAL	  | Nom de la base de donnee du service social                 | "social"                               |
+| DATABASE_SYNCHRONIZE      | Synchroniser la base de données                            | true                                   |
+| DATABASE_LOGGING          | Activer le log de la base de données                       | false                                  |
+| DATABASE_USE_SSL          | Activer l'utilisation de ssl                               | false                                  |
 | LOGGING_LEVEL             | Niveau de log                                              | "info"                                 |
 | LOGGING_FORMAT            | Format de log                                              | "dev"                                  |
 | LOGGING_DATE_FORMAT       | Format de date de log                                      | "iso"                                  |

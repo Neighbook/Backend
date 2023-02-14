@@ -57,8 +57,18 @@ const server = http.createServer(app);
 server.listen(port);
 
 try {
-	UsersDataSource.initialize();
-	SocialDataSource.initialize();
+    (async () => {
+        await UsersDataSource.initialize();
+        await SocialDataSource.initialize();
+    })();
+    if (!UsersDataSource.isInitialized) {
+        logger.error('Unable to connect to the database ' + UsersDataSource.options.database);
+        throw new Error('Unable to connect to the database ' + UsersDataSource.options.database);
+    }
+    if (!SocialDataSource.isInitialized) {
+        logger.error('Unable to connect to the database ' + SocialDataSource.options.database);
+        throw new Error('Unable to connect to the database ' + SocialDataSource.options.database);
+    }
 	logger.info('Connection with database has been established successfully.');
 	server.on('error', errorHandler);
 	server.on('listening', () => {
@@ -67,5 +77,5 @@ try {
 		logger.info(`⚡️[server]: Server is running at http://localhost:${bind}`);
 	});
 } catch (error) {
-	logger.error('Unable to connect to the database:', error);
+	logger.error('Unable to connect to the databases:\n', error);
 }
