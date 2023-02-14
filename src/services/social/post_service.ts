@@ -47,8 +47,8 @@ SelectQueryBuilder.prototype.countReactions = function <Entity extends ObjectLit
 };
 
 export const formatPost = async (post: Post): Promise<ObjectLiteral> => {
-	const reactionUtilisateur = post.reactions?.length === 1 ? post.reactions[0].reactionId : null;
-	for (const image of post.images) {
+	const reactionUtilisateur = post?.reactions?.length === 1 ? post.reactions[0].reactionId : null;
+	for (const image of post?.images ?? []) {
 		const query = queryString.decode(image.url);
 		const id = (image.url.split('?')[0].split('/').pop() ?? '').substring('social_img_'.length);
 		if (query.se && id && new Date(query.se.toString()) < new Date()) {
@@ -62,14 +62,16 @@ export const formatPost = async (post: Post): Promise<ObjectLiteral> => {
 		id: post.id,
 		titre: post.titre,
 		description: post.description,
-		estPartage: post.estPartage,
+		repost: post.repost ? await formatPost(post.repost) : null,
 		idUtilisateur: post.idUtilisateur,
 		dateDeCreation: post.dateDeCreation,
 		dateDeModification: post.dateDeModification,
 		commentaires: post.commentaires,
 		ncommentaires: post.ncommentaires,
 		reactionUtilisateur: reactionUtilisateur,
-		images: post.images,
+		images: (post.images ?? []).sort(
+			(a, b) => new Date(a.dateDeCreation).getTime() - new Date(b.dateDeCreation).getTime()
+		),
 		evenement: post.evenement,
 		nombreReactions: {
 			like: post.nlike,
@@ -89,6 +91,8 @@ export class PostService {
 			.leftJoinAndSelect('post.commentaires', 'commentaires')
 			.leftJoinAndSelect('post.images', 'images')
 			.leftJoinAndSelect('post.evenement', 'evenement')
+			.leftJoinAndSelect('post.repost', 'repost')
+			.leftJoinAndSelect('repost.images', 'repostimages')
 			.countReactions(idUtilisateur)
 			.where('post.id = :id', { id: id })
 			.getOne();
@@ -100,6 +104,8 @@ export class PostService {
 			.createQueryBuilder('post')
 			.leftJoinAndSelect('post.images', 'images')
 			.leftJoinAndSelect('post.evenement', 'evenement')
+			.leftJoinAndSelect('post.repost', 'repost')
+			.leftJoinAndSelect('repost.images', 'repostimages')
 			.countReactions(idUtilisateur)
 			.where(
 				'post.idUtilisateur IN ' +
@@ -138,14 +144,14 @@ export class PostService {
 	static async savePost(
 		titre: string,
 		description: string,
-		estPartage: boolean,
+		idRepost: string,
 		idUtilisateur: string,
 		idEvenement: string | null
 	): Promise<Post> {
 		const post = new Post();
 		post.titre = titre;
 		post.description = description;
-		post.estPartage = estPartage;
+		post.idRepost = idRepost;
 		post.idUtilisateur = idUtilisateur;
 		if (idEvenement) {
 			post.evenement = new Event();

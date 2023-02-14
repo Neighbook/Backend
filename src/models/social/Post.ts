@@ -9,6 +9,7 @@ import {
 	CreateDateColumn,
 	UpdateDateColumn,
 	DeleteDateColumn,
+	ManyToOne,
 } from 'typeorm';
 
 import { Comment } from './Comment';
@@ -27,8 +28,12 @@ export class Post {
 	@Column()
 	description!: string;
 
-	@Column()
-	estPartage!: boolean;
+	@ManyToOne(() => Post)
+	@JoinColumn({ name: 'idRepost' })
+	repost!: Post;
+
+	@Column({ nullable: true })
+	idRepost!: string;
 
 	@Column()
 	idUtilisateur!: string;
