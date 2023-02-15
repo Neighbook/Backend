@@ -49,6 +49,7 @@ export const environnement = {
 		use_ssl: Boolean(process.env.DATABASE_USE_SSL) || false,
 		logging: Boolean(process.env.DATABASE_LOGGING) || false,
 		synchronize: Boolean(process.env.DATABASE_SYNCHRONIZE) || false,
+		timeout: Number(process.env.DATABASE_TIMEOUT) || 2000,
 	},
 	logging: {
 		level: process.env.LOGGING_LEVEL || 'info',

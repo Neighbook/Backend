@@ -36,12 +36,26 @@ Pour plus d'information sur les variables d'environnement, voir la section [Les 
 Exemple de fichier `.env` :
 
 ```.env
-DATABASE_USER_DATABASE="pguser"
-DATABASE_USER_PASSWORD="myPassword"
-AZURE_CLIENT_ID="myClientId"
-AZURE_CLIENT_SECRET="mySecret"
-AZURE_TENANT_ID="myTenantId"
-AZURE_KEY_VAULT_URI="https://myKeyVault.vault.azure.net/"
+LOGGING_LEVEL="debug"
+DATABASE_HOST="localhost"
+DATABASE_USER="postgres"
+POSTGRES_PASSWORD="postgres"
+DATABASE_PASSWORD="postgres"
+DATABASE_SERVICE_USER="users"
+DATABASE_SERVICE_SOCIAL="social"
+DATABASE_SERVICE_MESSAGE="messagerie"
+DATABASE_SERVICE_MARKETPLACE="marketplace"
+DATABASE_SYNCHRONIZE="true"
+DATABASE_USE_SSL="true"
+AZURE_CLIENT_ID="tttttt-tttt-tttt-tttt-tttttttttttt"
+AZURE_CLIENT_SECRET="ssss-ssssss-ssssss-ssssss-ssssssssssss"
+AZURE_TENANT_ID="dddd-dddddd-dddddd-dddddd-dddddddddddd"
+AZURE_KEY_VAULT_URI="https://my.vault.azure.net/"
+AZURE_STORAGE_ACCOUNT_NAME="storagename"
+AZURE_STORAGE_ACCOUNT_KEY="key6446464646546546546546"
+AZURE_STORAGE_CONNECTION_STRING="DefaultEndpointsProtocol=https;AccountName=storagename;AccountKey=key6446464646546546546546;EndpointSuffix=core.windows.net"
+API_HOST="localhost"
+API_PORT="3000"
 ```
 
 ### 4. Genrer le fichier de documentation swagger

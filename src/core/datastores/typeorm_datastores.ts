@@ -24,6 +24,7 @@ export const UsersDataSource = new DataSource({
 	synchronize: environnement.database.synchronize,
 	logging: environnement.database.logging,
 	entities: [User, UserPreference],
+	connectTimeoutMS: environnement.database.timeout,
 	ssl: environnement.database.use_ssl,
 	migrations: [],
 	subscribers: [],
@@ -41,6 +42,7 @@ export const SocialDataSource = new DataSource({
 	logging: environnement.database.logging,
 	ssl: environnement.database.use_ssl,
 	entities: [Abonnement, Block, Comment, Event, Follow, Image, Post, PostReaction],
+	connectTimeoutMS: environnement.database.timeout,
 	migrations: [],
 	subscribers: [],
 });

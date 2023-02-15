@@ -4,14 +4,14 @@ name: Auto deployment for api dev
 on:
   # Automatically trigger it when detected changes in repo
   push:
-    branches: 
+    branches:
       [ dev ]
     paths:
     - '**'
     - '.github/workflows/api-nh-dev-server-AutoDeployTrigger-21d2a4b3-bc36-48db-a917-073d48ac215a.yml'
 
-  # Allow mannually trigger 
-  workflow_dispatch:      
+  # Allow mannually trigger
+  workflow_dispatch:
 
 jobs:
   build:
@@ -43,7 +43,7 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     needs: build
-    
+
     steps:
       - name: Azure Login
         uses: azure/login@v1

@@ -1,6 +1,7 @@
 import dotenv from 'dotenv';
 import http from 'http';
 import { Logger } from 'tslog';
+import { DataSource } from 'typeorm';
 
 import app from './app';
 import { ts_logconfig } from './config/logger';
@@ -56,16 +57,31 @@ const server = http.createServer(app);
 
 server.listen(port);
 
+const initializeDatabase = async (database: DataSource, name: string): Promise<any> => {
+	try {
+		await database.initialize();
+		if (!database.isInitialized) {
+			throw new Error(`Unable to connect to the database ${name}`);
+		}
+		logger.info(`Connection with ${name} database has been established successfully.`);
+	} catch (error) {
+		logger.error(`Unable to connect to the ${name} database:\n`, error);
+		throw error;
+	}
+};
+
 try {
-	UsersDataSource.initialize();
-	SocialDataSource.initialize();
-	logger.info('Connection with database has been established successfully.');
+	Promise.all([
+		initializeDatabase(UsersDataSource, 'UsersDataSource'),
+		initializeDatabase(SocialDataSource, 'SocialDataSource'),
+	]);
+
 	server.on('error', errorHandler);
 	server.on('listening', () => {
 		const address = server.address();
-		const bind = typeof address === 'string' ? 'pipe ' + address : '' + port;
-		logger.info(`⚡️[server]: Server is running at http://localhost:${bind}`);
+		const bind = typeof address === 'string' ? `pipe ${address}` : `http://localhost:${address?.port}`;
+		logger.info(`⚡️[server]: Server is running at ${bind}`);
 	});
 } catch (error) {
-	logger.error('Unable to connect to the database:', error);
+	logger.error('Unable to start the server');
 }
