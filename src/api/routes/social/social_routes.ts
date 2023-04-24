@@ -195,9 +195,9 @@ _socialRoutes.post('/event', async (req: express.Request, res: express.Response)
 	// #swagger.tags = ['Social']
 	// #swagger.description = 'Endpoint to create an event.'
 	// #swagger.summary = 'Create an event'
-	if (req.body.titre && req.body.dateEvenement && req.body.addresse !== undefined) {
-		EventService.createEvent(req.body.titre, req.body.dateEvenement, req.body.addresse).then(() =>
-			res.status(200).send()
+	if (req.body.titre && req.body.dateEvenement && req.body.adresse) {
+		EventService.createEvent(req.body.titre, req.body.dateEvenement, req.body.adresse).then((event) =>
+			res.status(200).json(event)
 		);
 	} else {
 		res.status(400).json('invalid fields');
