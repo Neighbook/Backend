@@ -39,11 +39,11 @@ app.get('/', (req: Request, res: Response) => {
 	res.redirect(apiConfig.base_path + '/documentation');
 });
 
-app.use('/', authRoutes);
-app.use('/', healthRoutes);
-app.use('/', fileUploadRouter);
-app.use('/', userRoutes);
-app.use('/', authMiddleware, managedResourceMiddleware, userPreferenceRoutes);
-app.use('/social', authMiddleware, socialRoutes);
+app.use(apiConfig.base_path + '/', authRoutes);
+app.use(apiConfig.base_path + '/', healthRoutes);
+app.use(apiConfig.base_path + '/', fileUploadRouter);
+app.use(apiConfig.base_path + '/', userRoutes);
+app.use(apiConfig.base_path + '/', authMiddleware, managedResourceMiddleware, userPreferenceRoutes);
+app.use(apiConfig.base_path + '/social', authMiddleware, socialRoutes);
 
 export default app;
