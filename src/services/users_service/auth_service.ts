@@ -24,7 +24,6 @@ export class AuthService {
 			return false;
 		}
 		return await UserService.healthCheck();
-
 	}
 
 	static async login(email: string, password: string): Promise<string> {
