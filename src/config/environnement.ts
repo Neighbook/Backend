@@ -42,7 +42,6 @@ export const environnement = {
 	},
 	storage: {
 		host: process.env.MINIO_HOST || 'localhost',
-		publicUrl: process.env.MINIO_PUBLIC_URL || 'http://localhost:9000',
 		port: Number(process.env.MINIO_PORT) || 9000,
 		bucket: process.env.MINIO_BUCKET || 'neighbook',
 		accessKey: process.env.MINIO_ACCESS_KEY || 'minio',

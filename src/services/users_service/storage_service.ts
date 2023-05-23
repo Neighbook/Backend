@@ -18,11 +18,7 @@ const minioClient = new Client({
 	accessKey: environnement.storage.accessKey,
 	secretKey: environnement.storage.secretKey,
 });
-const internalUrl =
-	(environnement.storage.useSSL ? 'https://' : 'http://') +
-	environnement.storage.host +
-	':' +
-	environnement.storage.port;
+
 export class StorageService {
 	static async healthCheck(): Promise<boolean> {
 		if (!(await minioClient.bucketExists('neighbook'))) {
@@ -68,10 +64,7 @@ export class StorageService {
 	}
 
 	static async get_sas_url(containerName: string, fileName: string): Promise<string | null> {
-		return (await minioClient.presignedGetObject(containerName, fileName)).replace(
-			internalUrl,
-			environnement.storage.publicUrl
-		);
+		return await minioClient.presignedGetObject(containerName, fileName);
 	}
 
 	static async isContainerExist(containerName: string): Promise<boolean> {
