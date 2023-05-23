@@ -1,4 +1,5 @@
 import * as argon from 'argon2';
+import * as fs from 'fs';
 import * as jwt from 'jsonwebtoken';
 import { Logger } from 'tslog';
 
@@ -8,25 +9,22 @@ import { ServiceException } from '../../core/exeptions/base_exeption';
 import { User } from '../../models/users/user';
 import { userRepository } from './user_service';
 import { UserService } from './user_service';
-import * as fs from 'fs';
 
 const logger = new Logger({ ...ts_logconfig, name: 'AuthService' });
 let jwt_secret = environnement.jwt_secret;
 try {
-    const data = fs.readFileSync(environnement.jwt_secret_file, 'utf8');
-    jwt_secret = data.trim();
+	const data = fs.readFileSync(environnement.jwt_secret_file, 'utf8');
+	jwt_secret = data.trim();
 } catch (e) {
-    logger.warn('An error occurred while reading the jwt secret file');
+	logger.warn('An error occurred while reading the jwt secret file');
 }
 export class AuthService {
 	static async healthCheck(): Promise<boolean> {
 		if (!jwt_secret) {
 			return false;
 		}
-		if (! (await UserService.healthCheck())) {
-			return false;
-		}
-		return true;
+		return await UserService.healthCheck();
+
 	}
 
 	static async login(email: string, password: string): Promise<string> {
@@ -46,7 +44,7 @@ export class AuthService {
 			throw new ServiceException('Invalid user credentials', 401);
 		}
 
-        return jwt.sign(
+		return jwt.sign(
 			{
 				_user_id: user.id,
 				_user_name: user.nom_utilisateur,
@@ -104,7 +102,7 @@ export class AuthService {
 		if (decoded === null) {
 			throw new ServiceException('Invalid token.', 400);
 		}
-		const newToken = jwt.sign(
+		return jwt.sign(
 			{
 				_user_id: decoded._user_id,
 				_user_name: decoded._user_name,
@@ -117,8 +115,6 @@ export class AuthService {
 				issuer: environnement.jwt_token_issuer,
 			}
 		);
-
-		return newToken;
 	}
 
 	static async forgotPassword(email: string): Promise<boolean> {

@@ -3,28 +3,33 @@
 /**
  * @summary Manage container and file of azure storage blob
  */
+import { Client } from 'minio';
 import { Logger } from 'tslog';
 
 import { environnement } from '../../config/environnement';
 import { ts_logconfig } from '../../config/logger';
-import {Client} from 'minio';
+
 const logger = new Logger({ ...ts_logconfig, name: 'StoragetService' });
 
 const minioClient = new Client({
-    endPoint: environnement.storage.host,
-    port: environnement.storage.port,
-    useSSL: environnement.storage.useSSL,
-    accessKey: environnement.storage.accessKey,
-    secretKey: environnement.storage.secretKey,
+	endPoint: environnement.storage.host,
+	port: environnement.storage.port,
+	useSSL: environnement.storage.useSSL,
+	accessKey: environnement.storage.accessKey,
+	secretKey: environnement.storage.secretKey,
 });
-const internalUrl = (environnement.storage.useSSL ? 'http://' : 'https://') + environnement.storage.host + ':' + environnement.storage.port;
+const internalUrl =
+	(environnement.storage.useSSL ? 'https://' : 'http://') +
+	environnement.storage.host +
+	':' +
+	environnement.storage.port;
 export class StorageService {
 	static async healthCheck(): Promise<boolean> {
 		if (!(await minioClient.bucketExists('neighbook'))) {
 			logger.warn('Blob storage client not initialized');
 			return false;
 		}
-        return true;
+		return true;
 	}
 
 	static async createContainer(containerName: string): Promise<boolean> {
@@ -53,30 +58,29 @@ export class StorageService {
 		return container != null;
 	}
 
-	static async createFile(
-		containerName: string,
-		fileName: string,
-		buffer: Buffer,
-	): Promise<boolean> {
+	static async createFile(containerName: string, fileName: string, buffer: Buffer): Promise<boolean> {
 		const result = await minioClient.putObject(containerName, fileName, buffer);
-        return result.etag != null;
+		return result.etag != null;
 	}
 
 	static async deleteFile(containerName: string, fileName: string): Promise<boolean> {
-		return await minioClient.removeObject(containerName, fileName) == null;
+		return (await minioClient.removeObject(containerName, fileName)) == null;
 	}
 
 	static async get_sas_url(containerName: string, fileName: string): Promise<string | null> {
-        return (await minioClient.presignedGetObject(containerName, fileName)).replace(internalUrl, environnement.storage.publicUrl);
+		return (await minioClient.presignedGetObject(containerName, fileName)).replace(
+			internalUrl,
+			environnement.storage.publicUrl
+		);
 	}
 
 	static async isContainerExist(containerName: string): Promise<boolean> {
 		return await minioClient.bucketExists(containerName);
 	}
 
-    static async initialize(containerName: string): Promise<void> {
-        if (!(await StorageService.isContainerExist(containerName))) {
-            await StorageService.createContainer(containerName);
-        }
-    }
+	static async initialize(containerName: string): Promise<void> {
+		if (!(await StorageService.isContainerExist(containerName))) {
+			await StorageService.createContainer(containerName);
+		}
+	}
 }

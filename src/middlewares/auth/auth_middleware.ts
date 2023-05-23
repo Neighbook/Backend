@@ -1,9 +1,9 @@
 import { Request, Response, NextFunction } from 'express';
+import { Logger } from 'tslog';
 
+import { ts_logconfig } from '../../config/logger';
 import { AuthService } from '../../services/users_service/auth_service';
 import { UserService } from '../../services/users_service/user_service';
-import {ts_logconfig} from '../../config/logger';
-import {Logger} from 'tslog';
 
 const logger = new Logger({ ...ts_logconfig, name: 'AuthMiddleWare' });
 export async function authMiddleware(

@@ -1,8 +1,9 @@
+import { extension } from 'mime-types';
+
+import { environnement } from '../../config/environnement';
 import { SocialDataSource } from '../../core/datastores/typeorm_datastores';
 import { Image } from '../../models/social/Image';
 import { StorageService } from '../users_service/storage_service';
-import { environnement } from '../../config/environnement';
-import {extension} from 'mime-types';
 
 const ImageRepository = SocialDataSource.manager.getRepository(Image);
 
@@ -12,7 +13,7 @@ export class ImageService {
 		image.url = 'url';
 		image.idUtilisateur = idUtilisateur;
 		image.idPost = idPost;
-        image.mimetype = file.mimetype;
+		image.mimetype = file.mimetype;
 		image = await ImageRepository.save(image);
 		const fileName = 'social_img_' + image.id + '.' + extension(image.mimetype);
 		await StorageService.createFile(environnement.storage.bucket, fileName, file.buffer);
@@ -25,11 +26,11 @@ export class ImageService {
 	}
 
 	static async renewImageUrl(id: string): Promise<string> {
-		let image = await ImageRepository.findOne({where: {id: id}});
-        if (!image) {
-            throw new Error('Image not found');
-        }
-        const fileName = 'social_img_' + image.id + '.' + extension(image.mimetype);
+		let image = await ImageRepository.findOne({ where: { id: id } });
+		if (!image) {
+			throw new Error('Image not found');
+		}
+		const fileName = 'social_img_' + image.id + '.' + extension(image.mimetype);
 		const url = await StorageService.get_sas_url(environnement.storage.bucket, fileName);
 		if (url) {
 			image.url = url;
@@ -39,11 +40,11 @@ export class ImageService {
 	}
 
 	static async deleteImage(id: string, idUtilisateur: string): Promise<any> {
-        const image = await ImageRepository.findOne({where: {id: id}});
-        if (!image) {
-            throw new Error('Image not found');
-        }
-        const fileName = 'social_img_' + image.id + '.' + extension(image.mimetype);
+		const image = await ImageRepository.findOne({ where: { id: id } });
+		if (!image) {
+			throw new Error('Image not found');
+		}
+		const fileName = 'social_img_' + image.id + '.' + extension(image.mimetype);
 		await StorageService.deleteFile(environnement.storage.bucket, fileName);
 		return await ImageRepository.createQueryBuilder()
 			.softDelete()

@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
-import { StorageService } from '../../services/users_service/storage_service';
 
+import { StorageService } from '../../services/users_service/storage_service';
 
 export class FilesUploadController {
 	static async uploadFile(req: Request, res: Response): Promise<void> {

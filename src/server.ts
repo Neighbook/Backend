@@ -4,10 +4,10 @@ import { Logger } from 'tslog';
 import { DataSource } from 'typeorm';
 
 import app from './app';
+import { environnement } from './config/environnement';
 import { ts_logconfig } from './config/logger';
 import { UsersDataSource, SocialDataSource } from './core/datastores/typeorm_datastores';
 import { StorageService } from './services/users_service/storage_service';
-import {environnement} from './config/environnement';
 
 const logger = new Logger({ ...ts_logconfig, name: 'Server' });
 
@@ -73,7 +73,7 @@ try {
 	Promise.all([
 		initializeDatabase(UsersDataSource, 'UsersDataSource'),
 		initializeDatabase(SocialDataSource, 'SocialDataSource'),
-        StorageService.initialize(environnement.storage.bucket),
+		StorageService.initialize(environnement.storage.bucket),
 	]);
 
 	server.on('error', errorHandler);

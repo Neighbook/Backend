@@ -16,8 +16,8 @@ export class Image {
 	@PrimaryGeneratedColumn('uuid')
 	id!: string;
 
-    @Column({ nullable: false })
-    mimetype!: string;
+	@Column({ nullable: false })
+	mimetype!: string;
 
 	@Column()
 	url!: string;
