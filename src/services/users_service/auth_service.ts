@@ -1,4 +1,3 @@
-import { KeyVaultSecret } from '@azure/keyvault-secrets';
 import * as argon from 'argon2';
 import * as jwt from 'jsonwebtoken';
 import { Logger } from 'tslog';
@@ -9,16 +8,22 @@ import { ServiceException } from '../../core/exeptions/base_exeption';
 import { User } from '../../models/users/user';
 import { userRepository } from './user_service';
 import { UserService } from './user_service';
-import { VaultService } from './vault_service';
+import * as fs from 'fs';
 
 const logger = new Logger({ ...ts_logconfig, name: 'AuthService' });
-
+let jwt_secret = environnement.jwt_secret;
+try {
+    const data = fs.readFileSync(environnement.jwt_secret_file, 'utf8');
+    jwt_secret = data.trim();
+} catch (e) {
+    logger.warn('An error occurred while reading the jwt secret file');
+}
 export class AuthService {
 	static async healthCheck(): Promise<boolean> {
-		if (!VaultService.healthCheck()) {
+		if (!jwt_secret) {
 			return false;
 		}
-		if (!UserService.healthCheck()) {
+		if (! (await UserService.healthCheck())) {
 			return false;
 		}
 		return true;
@@ -40,30 +45,20 @@ export class AuthService {
 		if (!(await argon.verify(user.password, password))) {
 			throw new ServiceException('Invalid user credentials', 401);
 		}
-		const jwt_secret = await VaultService.getSecret(environnement.jwt_secret_name);
-		if (jwt_secret == null) {
-			logger.error('Error: JWT secret not found');
-			throw new ServiceException('Internal server error', 500);
-		}
-		if (jwt_secret.value == null) {
-			logger.error('Error: JWT secret not found');
-			throw new ServiceException('Internal server error', 500);
-		}
-		const token = jwt.sign(
+
+        return jwt.sign(
 			{
 				_user_id: user.id,
 				_user_name: user.nom_utilisateur,
 				_user_firstname: user.prenom,
 				_user_lastname: user.nom,
 			},
-			jwt_secret.value,
+			jwt_secret,
 			{
 				expiresIn: environnement.jwt_token_expiration_time,
 				issuer: environnement.jwt_token_issuer,
 			}
 		);
-
-		return token;
 	}
 
 	static async register(user: User): Promise<string> {
@@ -84,13 +79,12 @@ export class AuthService {
 	}
 
 	static async verifyToken(token: string): Promise<string> {
-		const jwt_secret = await VaultService.getSecret(environnement.jwt_secret_name);
 		if (jwt_secret == null) {
 			logger.error('Error: JWT secret not found');
 			throw new ServiceException('Internal server error', 500);
 		}
 		let decoded: any = null;
-		jwt.verify(token, String(jwt_secret.value), (err, decodedToken) => {
+		jwt.verify(token, String(jwt_secret), (err, decodedToken) => {
 			if (err) {
 				logger.error('Error - verify: ' + err);
 				throw new ServiceException('Invalid token.', 400);
@@ -101,7 +95,6 @@ export class AuthService {
 	}
 
 	static async refreshToken(token: string): Promise<string> {
-		const jwt_secret: KeyVaultSecret | null = await VaultService.getSecret(environnement.jwt_secret_name);
 		if (jwt_secret === null) {
 			logger.error('Error: JWT secret not found');
 			throw new ServiceException('Internal server error', 500);
@@ -118,7 +111,7 @@ export class AuthService {
 				_user_firstname: decoded._user_firstname,
 				_user_lastname: decoded._user_lastname,
 			},
-			jwt_secret.value as string,
+			jwt_secret as string,
 			{
 				expiresIn: environnement.jwt_token_expiration_time,
 				issuer: environnement.jwt_token_issuer,
@@ -144,12 +137,12 @@ export class AuthService {
 		if (user == null) {
 			throw new ServiceException('Invalid user credentials', 401);
 		}
-		const jwt_secret = await VaultService.getSecret(environnement.jwt_secret_name);
+
 		if (jwt_secret == null) {
 			logger.error('Error: JWT secret not found');
 			throw new ServiceException('Internal server error', 500);
 		}
-		if (jwt_secret.value == null) {
+		if (jwt_secret == null) {
 			logger.error('Error: JWT secret not found');
 			throw new ServiceException('Internal server error', 500);
 		}
@@ -179,13 +172,12 @@ export class AuthService {
 	}
 
 	static async resetPassword(token: string, password: string): Promise<boolean> {
-		const jwt_secret = await VaultService.getSecret(environnement.jwt_secret_name);
 		if (jwt_secret == null) {
 			logger.error('Error: JWT secret not found');
 			throw new ServiceException('Internal server error', 500);
 		}
 		let decoded: any = null;
-		jwt.verify(token, String(jwt_secret.value), (err, decodedToken) => {
+		jwt.verify(token, String(jwt_secret), (err, decodedToken) => {
 			if (err) {
 				logger.error('Error - verify: ' + err);
 				throw new ServiceException('Invalid token.', 400);

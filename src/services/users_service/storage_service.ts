@@ -3,38 +3,34 @@
 /**
  * @summary Manage container and file of azure storage blob
  */
-import { BlobSASPermissions } from '@azure/storage-blob';
 import { Logger } from 'tslog';
 
 import { environnement } from '../../config/environnement';
 import { ts_logconfig } from '../../config/logger';
-import { blob_storage_client } from '../../core/azure/blob_storage_client';
-
+import {Client} from 'minio';
 const logger = new Logger({ ...ts_logconfig, name: 'StoragetService' });
 
+const minioClient = new Client({
+    endPoint: environnement.storage.host,
+    port: environnement.storage.port,
+    useSSL: environnement.storage.useSSL,
+    accessKey: environnement.storage.accessKey,
+    secretKey: environnement.storage.secretKey,
+});
+const internalUrl = (environnement.storage.useSSL ? 'http://' : 'https://') + environnement.storage.host + ':' + environnement.storage.port;
 export class StorageService {
 	static async healthCheck(): Promise<boolean> {
-		if (!blob_storage_client) {
+		if (!(await minioClient.bucketExists('neighbook'))) {
 			logger.warn('Blob storage client not initialized');
 			return false;
 		}
-		try {
-			blob_storage_client.listContainers();
-			return true;
-		} catch (error) {
-			logger.error(`Error while listing containers: ${error}`);
-			return false;
-		}
+        return true;
 	}
 
 	static async createContainer(containerName: string): Promise<boolean> {
-		if (!blob_storage_client) {
-			logger.warn('Blob storage client not initialized');
-			return false;
-		}
 		let container = null;
-		await blob_storage_client
-			.createContainer(containerName.toLowerCase())
+		await minioClient
+			.makeBucket(containerName.toLowerCase())
 			.then((value) => {
 				container = value;
 			})
@@ -44,22 +40,10 @@ export class StorageService {
 		return container != null;
 	}
 
-	static async getContainer(containerName: string): Promise<boolean> {
-		if (!blob_storage_client) {
-			logger.warn('Blob storage client not initialized');
-			return false;
-		}
-		return blob_storage_client.getContainerClient(containerName) == null;
-	}
-
 	static async deleteContainer(containerName: string): Promise<boolean> {
-		if (!blob_storage_client) {
-			logger.warn('Blob storage client not initialized');
-			return false;
-		}
 		let container = null;
-		await blob_storage_client
-			.deleteContainer(containerName)
+		await minioClient
+			.removeBucket(containerName)
 			.then((value) => {
 				container = value;
 			})
@@ -72,90 +56,27 @@ export class StorageService {
 	static async createFile(
 		containerName: string,
 		fileName: string,
-		buffer: Buffer | Blob | ArrayBuffer | ArrayBufferView,
-		mimetype: string
+		buffer: Buffer,
 	): Promise<boolean> {
-		if (!blob_storage_client) {
-			logger.warn('Blob storage client not initialized');
-			return false;
-		}
-		let file = null;
-		if (!environnement.storage_accepted_files_types.split(',').includes(mimetype.toLowerCase())) {
-			logger.error(`File type ${fileName} not accepted`);
-			return false;
-		}
-		await blob_storage_client
-			.getContainerClient(containerName)
-			.getBlockBlobClient(fileName)
-			.uploadData(buffer, { blobHTTPHeaders: { blobContentType: mimetype } })
-			.then((value) => {
-				file = value;
-			})
-			.catch((error) => {
-				logger.error(`Error while creating file ${fileName}: ${error}`);
-			});
-		return file != null;
+		const result = await minioClient.putObject(containerName, fileName, buffer);
+        return result.etag != null;
 	}
 
 	static async deleteFile(containerName: string, fileName: string): Promise<boolean> {
-		if (!blob_storage_client) {
-			logger.warn('Blob storage client not initialized');
-			return false;
-		}
-		let file = null;
-		await blob_storage_client
-			.getContainerClient(containerName)
-			.getBlockBlobClient(fileName)
-			.deleteIfExists()
-			.then((value) => {
-				file = value;
-			})
-			.catch((error) => {
-				logger.error(`Error while deleting file ${fileName}: ${error}`);
-			});
-		return file != null;
+		return await minioClient.removeObject(containerName, fileName) == null;
 	}
 
 	static async get_sas_url(containerName: string, fileName: string): Promise<string | null> {
-		if (!blob_storage_client) {
-			logger.warn('Blob storage client not initialized');
-			return null;
-		}
-		let sas_url = null;
-		const expire = new Date();
-		expire.setDate(expire.getDate() + 50);
-		await blob_storage_client
-			.getContainerClient(containerName)
-			.getBlockBlobClient(fileName)
-			.generateSasUrl({
-				permissions: BlobSASPermissions.parse('r'),
-				startsOn: new Date(),
-				expiresOn: expire,
-			})
-			.then((value) => {
-				sas_url = value;
-			})
-			.catch((error) => {
-				logger.error(`Error while getting sas url for file ${fileName}: ${error}`);
-			});
-		return sas_url;
+        return (await minioClient.presignedGetObject(containerName, fileName)).replace(internalUrl, environnement.storage.publicUrl);
 	}
 
 	static async isContainerExist(containerName: string): Promise<boolean> {
-		if (!blob_storage_client) {
-			logger.warn('Blob storage client not initialized');
-			return false;
-		}
-		let container = null;
-		await blob_storage_client
-			.getContainerClient(containerName)
-			.exists()
-			.then((value) => {
-				container = value;
-			})
-			.catch((error) => {
-				logger.error(`Error while checking if container ${containerName} exist: ${error}`);
-			});
-		return container != null;
+		return await minioClient.bucketExists(containerName);
 	}
+
+    static async initialize(containerName: string): Promise<void> {
+        if (!(await StorageService.isContainerExist(containerName))) {
+            await StorageService.createContainer(containerName);
+        }
+    }
 }

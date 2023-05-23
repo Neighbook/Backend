@@ -208,3 +208,5 @@ yalc.lock
 
 *.pem
 *.cert
+
+data/*
