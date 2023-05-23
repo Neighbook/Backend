@@ -28,4 +28,4 @@ jobs:
           file: ./Dockerfile
           context: ./
           push: true
-          tags: folyjohn/neighbook-api:${{ github.ref }}
+          tags: folyjohn/neighbook-api:${{ github.ref_name }}
