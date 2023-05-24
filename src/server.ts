@@ -4,9 +4,10 @@ import { Logger } from 'tslog';
 import { DataSource } from 'typeorm';
 
 import app from './app';
+import { environnement } from './config/environnement';
 import { ts_logconfig } from './config/logger';
 import { UsersDataSource, SocialDataSource } from './core/datastores/typeorm_datastores';
-import { VaultService } from './services/users_service/vault_service';
+import { StorageService } from './services/users_service/storage_service';
 
 const logger = new Logger({ ...ts_logconfig, name: 'Server' });
 
@@ -51,8 +52,6 @@ const errorHandler = (error: { syscall: string; code: any }): void => {
 	}
 };
 
-VaultService.initialize();
-
 const server = http.createServer(app);
 
 server.listen(port);
@@ -74,6 +73,7 @@ try {
 	Promise.all([
 		initializeDatabase(UsersDataSource, 'UsersDataSource'),
 		initializeDatabase(SocialDataSource, 'SocialDataSource'),
+		StorageService.initialize(environnement.storage.bucket),
 	]);
 
 	server.on('error', errorHandler);

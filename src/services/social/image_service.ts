@@ -1,3 +1,6 @@
+import { extension } from 'mime-types';
+
+import { environnement } from '../../config/environnement';
 import { SocialDataSource } from '../../core/datastores/typeorm_datastores';
 import { Image } from '../../models/social/Image';
 import { StorageService } from '../users_service/storage_service';
@@ -10,10 +13,11 @@ export class ImageService {
 		image.url = 'url';
 		image.idUtilisateur = idUtilisateur;
 		image.idPost = idPost;
+		image.mimetype = file.mimetype;
 		image = await ImageRepository.save(image);
-		const fileName = 'social_img_' + image.id;
-		await StorageService.createFile('profilec', fileName, file.buffer, file.mimetype);
-		const url = await StorageService.get_sas_url('profilec', fileName);
+		const fileName = 'social_img_' + image.id + '.' + extension(image.mimetype);
+		await StorageService.createFile(environnement.storage.bucket, fileName, file.buffer);
+		const url = await StorageService.get_sas_url(environnement.storage.bucket, fileName);
 		if (url) {
 			image.url = url;
 			image = await ImageRepository.save(image);
@@ -22,10 +26,12 @@ export class ImageService {
 	}
 
 	static async renewImageUrl(id: string): Promise<string> {
-		let image = new Image();
-		image.id = id;
-		const fileName = 'social_img_' + image.id;
-		const url = await StorageService.get_sas_url('profilec', fileName);
+		let image = await ImageRepository.findOne({ where: { id: id } });
+		if (!image) {
+			throw new Error('Image not found');
+		}
+		const fileName = 'social_img_' + image.id + '.' + extension(image.mimetype);
+		const url = await StorageService.get_sas_url(environnement.storage.bucket, fileName);
 		if (url) {
 			image.url = url;
 			image = await ImageRepository.save(image);
@@ -34,7 +40,12 @@ export class ImageService {
 	}
 
 	static async deleteImage(id: string, idUtilisateur: string): Promise<any> {
-		await StorageService.deleteFile('profilec', 'social_img_' + id);
+		const image = await ImageRepository.findOne({ where: { id: id } });
+		if (!image) {
+			throw new Error('Image not found');
+		}
+		const fileName = 'social_img_' + image.id + '.' + extension(image.mimetype);
+		await StorageService.deleteFile(environnement.storage.bucket, fileName);
 		return await ImageRepository.createQueryBuilder()
 			.softDelete()
 			.where('id = :id and idUtilisateur = :idUtilisateur', { id, idUtilisateur })

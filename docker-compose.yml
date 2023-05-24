@@ -3,23 +3,52 @@ services:
   db:
     image: postgres:14.1-alpine
     restart: always
-    env_file:
-      - docker.env
+    environment:
+        POSTGRES_USER: postgres
+        POSTGRES_PASSWORD: postgres
+        POSTGRES_DB: postgres
     ports:
-      - '5433:5433'
+      - '5432:5432'
     volumes:
       - ./scripts/sql/:/docker-entrypoint-initdb.d/
+      - ./data/postgres-data:/var/lib/postgresql/data
+  storage:
+    image: minio/minio:latest
+    restart: always
+    environment:
+        MINIO_ROOT_USER: minio
+        MINIO_ROOT_PASSWORD: miniominio
+    ports:
+      - '9000:9000'
+      - '9001:9001'
+    volumes:
+      - ./data/minio-data:/data
+    command: server --console-address ":9001" /data
   server:
     build:
       context: ./
       dockerfile: Dockerfile
-    env_file:
-      - docker.env
+    environment:
+        - MINIO_HOST=storage
+        - MINIO_PUBLIC_URL=http://localhost:9000
+        - MINIO_PORT=9000
+        - MINIO_ACCESS_KEY=minio
+        - MINIO_SECRET_KEY=miniominio
+        - DATABASE_HOST=db
+        - DATABASE_PORT=5432
+        - DATABASE_USER=postgres
+        - DATABASE_PASSWORD=postgres
+        - API_PORT=3000
+        - JWT_SECRET_FILE=/run/secrets/jwt_secret
     ports:
-      - 3000:3000
+      - '3000:3000'
+    secrets:
+      - jwt_secret
     restart: always
     depends_on:
       - db
-volumes:
-  db:
-    driver: local
+      - storage
+
+secrets:
+  jwt_secret:
+    file: ./secrets/jwt_secret
