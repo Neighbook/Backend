@@ -5,9 +5,9 @@ COPY tsconfig.json /app
 COPY tsconfig.build.json /app
 RUN mkdir -p /app/src
 COPY /src /app/src
-RUN npm install
-RUN npm run build
+RUN yarn install
+RUN yarn build
 
 EXPOSE 3000
 
-CMD ["npm", "start"]
+CMD ["yarn", "start"]
