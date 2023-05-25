@@ -98,7 +98,7 @@ export class PostService {
 			.getOne();
 	}
 
-	static async getPosts(idUtilisateur: string): Promise<Post[]> {
+	static async getPosts(idAuteur: string, idUtilisateur: string): Promise<Post[]> {
 		return await postRepository
 			.createQueryBuilder('post')
 			.leftJoinAndSelect('post.images', 'images')
@@ -106,7 +106,7 @@ export class PostService {
 			.leftJoinAndSelect('post.repost', 'repost')
 			.leftJoinAndSelect('repost.images', 'repostimages')
 			.countReactions(idUtilisateur)
-			.where('post.idUtilisateur = :idUtilisateur', { idUtilisateur })
+			.where('post.idUtilisateur = :idAuteur', { idAuteur })
 			.orderBy('post.dateDeModification', 'DESC')
 			.getMany();
 	}
