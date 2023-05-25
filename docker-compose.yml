@@ -38,7 +38,9 @@ services:
         - DATABASE_PORT=5432
         - DATABASE_USER=postgres
         - DATABASE_PASSWORD=postgres
+        - DATABASE_SYNCHRONIZE=true
         - API_PORT=3000
+        - API_HOST=http://localhost/api/v0
         - JWT_SECRET_FILE=/run/secrets/jwt_secret
     ports:
       - '3000:3000'
@@ -48,7 +50,22 @@ services:
     depends_on:
       - db
       - storage
+  pgadmin:
+    image: dpage/pgadmin4:5.7
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: neighbook@admin.fr
+      PGADMIN_DEFAULT_PASSWORD: admin
+    ports:
+      - '5050:80'
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+    depends_on:
+      - db
 
 secrets:
   jwt_secret:
     file: ./secrets/jwt_secret
+
+volumes:
+  pgadmin_data:
