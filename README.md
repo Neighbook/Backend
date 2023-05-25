@@ -18,7 +18,17 @@ Bienvenue dans le _repository_ contenant le _backend_ du projet tutoré !
 git clone https://github.com/Neighbook/Backend.git
 ```
 
-### 2. Installer les dépendances
+### 2. Mehode docker
+
+```bash
+docker-compose up
+```
+
+### 3. Mehode classique
+
+
+
+#### 3.1. Installer les dépendances
 
 ```bash
 yarn install
@@ -27,7 +37,7 @@ Si vous n'avez pas yarn installer le en global avec la commande `npm install -g 
 
 Si vous n'avez pas npm installer le en global avec la commande `sudo apt install npm`
 
-### 3. Configurer les variables d'environnement
+#### 3.2. Configurer les variables d'environnement
 
 Pour configurer les variables d'environnement, vous pouvez soit les definir dans un fichier `.env` a la racine du projet, soit les definir dans votre environement d'os.
 
@@ -45,15 +55,14 @@ DATABASE_SERVICE_USER="users"
 DATABASE_SERVICE_SOCIAL="social"
 DATABASE_SERVICE_MESSAGE="messagerie"
 DATABASE_SERVICE_MARKETPLACE="marketplace"
+DATABASE_PORT="5432"
+MINIO_ENDPOINT="localhost"
+MINIO_PUBLIC_URL=http://localhost:9000
+MINIO_PORT=9000
+MINIO_ACCESS_KEY=minio
+MINIO_SECRET_KEY=miniominio
 DATABASE_SYNCHRONIZE="true"
 DATABASE_USE_SSL="true"
-AZURE_CLIENT_ID="tttttt-tttt-tttt-tttt-tttttttttttt"
-AZURE_CLIENT_SECRET="ssss-ssssss-ssssss-ssssss-ssssssssssss"
-AZURE_TENANT_ID="dddd-dddddd-dddddd-dddddd-dddddddddddd"
-AZURE_KEY_VAULT_URI="https://my.vault.azure.net/"
-AZURE_STORAGE_ACCOUNT_NAME="storagename"
-AZURE_STORAGE_ACCOUNT_KEY="key6446464646546546546546"
-AZURE_STORAGE_CONNECTION_STRING="DefaultEndpointsProtocol=https;AccountName=storagename;AccountKey=key6446464646546546546546;EndpointSuffix=core.windows.net"
 API_HOST="localhost"
 API_PORT="3000"
 ```
@@ -130,13 +139,6 @@ Toutes les variables d'environnement sont optionnelles, si aucune variable n'est
 | JWT_TOKEN_ISSUER          | Nom de l'issuer des token JWT                              | "neighbook-api"                        |
 | JWT_TOKEN_AUDIENCE        | Nom de l'audience des token JWT                            | "neighbook-api"                        |
 | ARGON2_SECRET_KEY_NAME    | Nom de la clé secrete pour le hashage des mots de passe    | "argon2secret"                         |
-| AZURE_CLIENT_ID           | Identifiant de l'application azure                         | "client_id"                            |
-| AZURE_CLIENT_SECRET       | Secret de l'application                                    | "client_secret"                        |
-| AZURE_TENANT_ID           | Identifiant du tenant azure                                | "tenant_id"                            |
-| AZURE_KEY_VAULT_URI       | URI du key vault azure                                     | "key_vault_uri"                        |
-| KEY_VAULT_SECRET_NAME     | Nom du secret dans le key vault                            | "secret_name"                          |
-| KEY_VAULT_SECRET_TYPE     | Type du secret dans le key vault                           | "hmac"                                 |
-| KEY_VAULT_SECRET_LENGTH   | Longueur du secret dans le key vault                       | 32                                     |
 | DATABASE_DIALECT          | Type de base de données                                    | "postgres"                             |
 | DATABASE_HOST             | Host de la base de données                                 | "localhost"                            |
 | DATABASE_PORT             | Port de la base de données                                 | 5432                                   |
