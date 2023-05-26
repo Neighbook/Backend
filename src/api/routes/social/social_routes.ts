@@ -127,7 +127,7 @@ _socialRoutes.get('/posts', async (req: express.Request, res: express.Response) 
 	// #swagger.description = 'Endpoint to get a user posts'
 	// #swagger.summary = 'Get posts of the user'
 	if (req.query.userId) {
-		const posts = await PostService.getPosts(req.query.userId.toString());
+		const posts = await PostService.getPosts(req.query.userId.toString(), req.body.user._user_id);
 		res.status(200).json(await Promise.all(posts.map(async (post) => await formatPost(post))));
 	} else {
 		res.status(400).send();
