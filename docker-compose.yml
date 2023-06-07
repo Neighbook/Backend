@@ -11,7 +11,7 @@ services:
       - '5432:5432'
     volumes:
       - ./scripts/sql/:/docker-entrypoint-initdb.d/
-      - ./data/postgres-data:/var/lib/postgresql/data
+      # - ./data/postgres-data:/var/lib/postgresql/data
   storage:
     image: minio/minio:latest
     restart: always
@@ -59,7 +59,6 @@ services:
       - pgadmin_data:/var/lib/pgadmin
     depends_on:
       - db
-
 
 volumes:
   pgadmin_data:
