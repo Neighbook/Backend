@@ -24,29 +24,6 @@ services:
     volumes:
       - ./data/minio-data:/data
     command: server --console-address ":9001" /data
-  server:
-    build:
-      context: ./
-      dockerfile: Dockerfile
-    environment:
-        - MINIO_HOST=storage
-        - MINIO_PUBLIC_URL=http://localhost:9000
-        - MINIO_PORT=9000
-        - MINIO_ACCESS_KEY=minio
-        - MINIO_SECRET_KEY=miniominio
-        - DATABASE_HOST=db
-        - DATABASE_PORT=5432
-        - DATABASE_USER=postgres
-        - DATABASE_PASSWORD=postgres
-        - DATABASE_SYNCHRONIZE=true
-        - API_PORT=3000
-        - API_HOST=http://localhost/api/v0
-    ports:
-      - '3000:3000'
-    restart: always
-    depends_on:
-      - db
-      - storage
   pgadmin:
     image: dpage/pgadmin4:5.7
     restart: always
