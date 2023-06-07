@@ -8,6 +8,7 @@ import multer from 'multer';
 import swaggerUi from 'swagger-ui-express';
 
 import { healthRoutes } from './api/routes/health/health_routes';
+import { messagerieRoutes } from './api/routes/messagerie/messagerie_routes';
 import { socialRoutes } from './api/routes/social/social_routes';
 import { authRoutes } from './api/routes/users/auth_routes';
 import { fileUploadRouter } from './api/routes/users/file_upload_routes';
@@ -45,5 +46,6 @@ app.use(apiConfig.base_path + '/', fileUploadRouter);
 app.use(apiConfig.base_path + '/', userRoutes);
 app.use(apiConfig.base_path + '/', authMiddleware, managedResourceMiddleware, userPreferenceRoutes);
 app.use(apiConfig.base_path + '/social', authMiddleware, socialRoutes);
+app.use(apiConfig.base_path + '/messagerie', messagerieRoutes);
 
 export default app;
