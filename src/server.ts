@@ -5,13 +5,13 @@ import { Logger } from 'tslog';
 import { DataSource } from 'typeorm';
 
 import app from './app';
-import { environnement } from './config/environnement';
-import { StorageService } from './services/users_service/storage_service';
 import { cors_config } from './config/cors';
+import { environnement } from './config/environnement';
 import { ts_logconfig } from './config/logger';
 import { UsersDataSource, SocialDataSource } from './core/datastores/typeorm_datastores';
 import { ClientToServerEvents, InterServerEvents, ServerToClientEvents } from './models/messagerie/events';
 import { initializeSocketEvents } from './services/messagerie/socket';
+import { StorageService } from './services/users_service/storage_service';
 
 const logger = new Logger({ ...ts_logconfig, name: 'Server' });
 

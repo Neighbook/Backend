@@ -44,8 +44,6 @@ services:
         - JWT_SECRET_FILE=/run/secrets/jwt_secret
     ports:
       - '3000:3000'
-    secrets:
-      - jwt_secret
     restart: always
     depends_on:
       - db
@@ -63,9 +61,6 @@ services:
     depends_on:
       - db
 
-secrets:
-  jwt_secret:
-    file: ./secrets/jwt_secret
 
 volumes:
   pgadmin_data:
