@@ -13,6 +13,7 @@ import { Post } from '../../models/social/Post';
 import { PostReaction } from '../../models/social/PostReaction';
 import { User } from '../../models/users/user';
 import { UserPreference } from '../../models/users/user_preference';
+import { Story } from '../../models/social/Story';
 
 export const UsersDataSource = new DataSource({
 	type: 'postgres',
@@ -41,7 +42,7 @@ export const SocialDataSource = new DataSource({
 	synchronize: environnement.database.synchronize,
 	logging: environnement.database.logging,
 	ssl: environnement.database.use_ssl,
-	entities: [Abonnement, Block, Comment, Event, Follow, Image, Post, PostReaction],
+	entities: [Abonnement, Block, Comment, Event, Follow, Image, Post, PostReaction, Story],
 	connectTimeoutMS: environnement.database.timeout,
 	migrations: [],
 	subscribers: [],
