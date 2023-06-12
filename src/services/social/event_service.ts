@@ -4,8 +4,6 @@ import { SocialDataSource } from '../../core/datastores/typeorm_datastores';
 import { geoCode } from '../../core/utils/geolocalisation_utils';
 import { Coordonate } from '../../models/social/Coordonate';
 import { Event } from '../../models/social/Evenement';
-import {User} from '../../models/users/user';
-import {followRepository} from './follow_service';
 
 export class EventService {
 	static repository: Repository<Event> = SocialDataSource.manager.getRepository(Event);
@@ -24,18 +22,18 @@ export class EventService {
 		return event;
 	}
 
-    static async getAllEvents(): Promise<Event[] | null> {
-        return await this.repository.find({
-            select: {
-                id: true,
-                titre: true,
-                adresse: true,
-                dateDeCreation: true,
-                latitude: true,
-                longitude: true,
-            },
-        });
-    }
+	static async getAllEvents(): Promise<Event[] | null> {
+		return await this.repository.find({
+			select: {
+				id: true,
+				titre: true,
+				adresse: true,
+				dateDeCreation: true,
+				latitude: true,
+				longitude: true,
+			},
+		});
+	}
 
 	static async createEvent(title: string, eventDate: Date, location: string): Promise<Event | null> {
 		const event = new Event();

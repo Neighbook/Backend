@@ -192,18 +192,18 @@ _socialRoutes.get('/event', async (req: express.Request, res: express.Response) 
 });
 
 _socialRoutes.get('/events', async (req: express.Request, res: express.Response) => {
-    // #swagger.tags = ['Social']
-    // #swagger.description = 'Endpoint to get a user events'
-    // #swagger.summary = 'Get all event'
-    // #swagger.parameters['id'] = { description: 'event id' }
-    // #swagger.responses[200] = { description: 'Success' }
-    // #swagger.responses[500] = { description: 'Internal Server Error' }
-    const events = await EventService.getAllEvents();
-    if (events !== null) {
-        res.status(200).json(events);
-    } else {
-        res.status(400).send();
-    }
+	// #swagger.tags = ['Social']
+	// #swagger.description = 'Endpoint to get a user events'
+	// #swagger.summary = 'Get all event'
+	// #swagger.parameters['id'] = { description: 'event id' }
+	// #swagger.responses[200] = { description: 'Success' }
+	// #swagger.responses[500] = { description: 'Internal Server Error' }
+	const events = await EventService.getAllEvents();
+	if (events !== null) {
+		res.status(200).json(events);
+	} else {
+		res.status(400).send();
+	}
 });
 
 _socialRoutes.post('/event', async (req: express.Request, res: express.Response) => {
