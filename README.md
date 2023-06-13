@@ -46,6 +46,8 @@ Pour plus d'information sur les variables d'environnement, voir la section [Les 
 Exemple de fichier `.env` :
 
 ```.env
+LOGGING_LEVEL="debug"
+MINIO_ENDPOINT="localhost"
 MINIO_HOST=127.0.0.1
 MINIO_PUBLIC_URL=http://localhost:9000
 MINIO_PORT=9000
@@ -55,10 +57,15 @@ DATABASE_HOST=127.0.0.1
 DATABASE_PORT=5432
 DATABASE_USER=postgres
 DATABASE_PASSWORD=postgres
-DATABASE_SYNCHRONIZE=true
+DATABASE_SERVICE_USER="users"
+DATABASE_SERVICE_SOCIAL="social"
+DATABASE_SERVICE_MESSAGE="messagerie"
+DATABASE_SERVICE_MARKETPLACE="marketplace"
+DATABASE_SYNCHRONIZE="true"
+DATABASE_USE_SSL="true"
+POSTGRES_PASSWORD="postgres"
 API_PORT=3000
 API_HOST=http://localhost/api/v0
-JWT_SECRET_FILE=/run/secrets/jwt_secret
 ```
 
 ### 4. Genrer le fichier de documentation swagger
