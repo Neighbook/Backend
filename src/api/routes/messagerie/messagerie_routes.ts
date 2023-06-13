@@ -8,6 +8,7 @@ messagerieRoutes.get('/groups', async (req: express.Request, res: express.Respon
 	// #swagger.tags = ['Messagerie']
 	// #swagger.description = 'Endpoint to get groups of a user.'
 	// #swagger.summary = 'Get groups of a user'
+	// #swagger.parameters['idUser'] = { description: 'id user', type: "string" }
 	if (req.body.idUser) {
 		RoomGroupService.getGroups(req.body.idUser).then((comment) => res.status(200).send(comment));
 	} else {
@@ -19,11 +20,15 @@ messagerieRoutes.post('/group', async (req: express.Request, res: express.Respon
 	// #swagger.tags = ['Messagerie']
 	// #swagger.description = 'Endpoint to create group.'
 	// #swagger.summary = 'Create group'
+	// #swagger.parameters['groupName'] = { description: 'group name', type: "string"  }
+	// #swagger.parameters['idUtilisateurs'] = { description: 'ids utilisateurs', type: "string" }
+	// #swagger.responses[200] = { description: 'Success' }
+	// #swagger.responses[400] = { description: 'fields group name or idUtilisateurs missing' }
 	if (req.body.groupName && req.body.idUtilisateurs) {
 		RoomGroupService.createGroup(req.body.groupName, req.body.idUtilisateurs).then((comment) =>
 			res.status(200).send(comment)
 		);
 	} else {
-		res.status(400).json('invalid fields');
+		res.status(400).json('fields group name or idUtilisateurs missing');
 	}
 });
