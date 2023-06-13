@@ -10,8 +10,8 @@ messagerieRoutes.get('/groups', async (req: express.Request, res: express.Respon
 	// #swagger.description = 'Endpoint to get groups of a user.'
 	// #swagger.summary = 'Get groups of a user'
 	// #swagger.parameters['idUser'] = { description: 'id user', type: "string" }
-	if (req.body.idUser) {
-		GroupRoomService.getGroups(req.body.idUser).then((group) => res.status(200).send(group));
+	if (req.query.idUser) {
+		GroupRoomService.getGroups(req.query.idUser.toString()).then((group) => res.status(200).send(group));
 	} else {
 		res.status(400).json('invalid fields');
 	}
@@ -23,10 +23,11 @@ messagerieRoutes.get('/messages', async (req: express.Request, res: express.Resp
 	// #swagger.summary = 'Get messages of a room'
 	// #swagger.parameters['idUser'] = { description: 'id user', type: "string" }
 	// #swagger.parameters['receiverOrRoomId'] = { description: 'receiverOrRoom id', type: "string" }
-	if (req.body.idUser && req.body.receiverOrRoomId) {
-		MessagerieService.getRoomMessages(req.body.idUser, req.body.receiverOrRoomId).then((messages) =>
-			res.status(200).send(messages)
-		);
+	if (req.query.idUser && req.query.receiverOrRoomId) {
+		MessagerieService.getRoomMessages(
+			req.query.idUser.toString(),
+			req.query.receiverOrRoomId.toString()
+		).then((messages) => res.status(200).send(messages));
 	} else {
 		res.status(400).json('invalid fields');
 	}
