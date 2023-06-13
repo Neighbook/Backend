@@ -3,8 +3,7 @@ import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 export type MessageType = {
 	idMessage: string;
 	senderId: string;
-	receiverId: string;
-	roomId: string;
+	receiverOrRoomId: string;
 	isRoomMessage: boolean;
 	content: string;
 	date: Date;
@@ -21,10 +20,7 @@ export class Message implements MessageType {
 	senderId!: string;
 
 	@Column()
-	receiverId!: string;
-
-	@Column()
-	roomId!: string;
+	receiverOrRoomId!: string;
 
 	@Column()
 	isRoomMessage!: boolean;

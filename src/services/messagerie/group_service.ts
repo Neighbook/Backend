@@ -3,12 +3,12 @@ import { Repository } from 'typeorm';
 import { MessagerieDataSource } from '../../core/datastores/typeorm_datastores';
 import { GroupRoom } from '../../models/messagerie/GroupRoom';
 
-export const roomGroupRepository: Repository<GroupRoom> =
+export const groupRoomRepository: Repository<GroupRoom> =
 	MessagerieDataSource.manager.getRepository(GroupRoom);
 
-export class RoomGroupService {
+export class GroupRoomService {
 	static async getGroups(idUser: string): Promise<GroupRoom[] | null> {
-		const groups = await roomGroupRepository.find({
+		const groups = await groupRoomRepository.find({
 			where: {
 				idUtilisateurs: idUser,
 			},

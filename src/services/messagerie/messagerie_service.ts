@@ -6,10 +6,11 @@ import { Message } from '../../models/messagerie/Message';
 export const messageRepository: Repository<Message> = MessagerieDataSource.manager.getRepository(Message);
 
 export class MessagerieService {
-	static async getMessages(id: string): Promise<Message[] | null> {
+	static async getRoomMessages(senderId: string, receiverOrRoomId: string): Promise<Message[] | null> {
 		const messages = await messageRepository.find({
 			where: {
-				idMessage: id,
+				senderId,
+				receiverOrRoomId,
 			},
 		});
 

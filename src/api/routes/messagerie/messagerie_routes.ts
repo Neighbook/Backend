@@ -1,6 +1,7 @@
 import express from 'express';
 
-import { RoomGroupService } from '../../../services/messagerie/group_service';
+import { GroupRoomService } from '../../../services/messagerie/group_service';
+import { MessagerieService } from '../../../services/messagerie/messagerie_service';
 
 export const messagerieRoutes = express.Router();
 
@@ -10,7 +11,22 @@ messagerieRoutes.get('/groups', async (req: express.Request, res: express.Respon
 	// #swagger.summary = 'Get groups of a user'
 	// #swagger.parameters['idUser'] = { description: 'id user', type: "string" }
 	if (req.body.idUser) {
-		RoomGroupService.getGroups(req.body.idUser).then((comment) => res.status(200).send(comment));
+		GroupRoomService.getGroups(req.body.idUser).then((group) => res.status(200).send(group));
+	} else {
+		res.status(400).json('invalid fields');
+	}
+});
+
+messagerieRoutes.get('/messages', async (req: express.Request, res: express.Response) => {
+	// #swagger.tags = ['Messagerie']
+	// #swagger.description = 'Endpoint to get messages of a room.'
+	// #swagger.summary = 'Get messages of a room'
+	// #swagger.parameters['idUser'] = { description: 'id user', type: "string" }
+	// #swagger.parameters['receiverOrRoomId'] = { description: 'receiverOrRoom id', type: "string" }
+	if (req.body.idUser && req.body.receiverOrRoomId) {
+		MessagerieService.getRoomMessages(req.body.idUser, req.body.receiverOrRoomId).then((messages) =>
+			res.status(200).send(messages)
+		);
 	} else {
 		res.status(400).json('invalid fields');
 	}
@@ -25,8 +41,8 @@ messagerieRoutes.post('/group', async (req: express.Request, res: express.Respon
 	// #swagger.responses[200] = { description: 'Success' }
 	// #swagger.responses[400] = { description: 'fields group name or idUtilisateurs missing' }
 	if (req.body.groupName && req.body.idUtilisateurs) {
-		RoomGroupService.createGroup(req.body.groupName, req.body.idUtilisateurs).then((comment) =>
-			res.status(200).send(comment)
+		GroupRoomService.createGroup(req.body.groupName, req.body.idUtilisateurs).then((group) =>
+			res.status(200).send(group)
 		);
 	} else {
 		res.status(400).json('fields group name or idUtilisateurs missing');

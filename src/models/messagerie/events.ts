@@ -1,7 +1,7 @@
 export type MessageEventData = {
 	roomId: string;
 	senderId: string;
-	receiverId: string;
+	receiverOrRoomId: string;
 	isRoomMessage: boolean;
 	content: string;
 	date: Date;

@@ -31,7 +31,7 @@ export const initializeSocketEvents = (
 		socket.to(event.roomId).emit('messageReceived', {
 			roomId: event.roomId,
 			senderId: event.senderId,
-			receiverId: event.receiverId,
+			receiverOrRoomId: event.receiverOrRoomId,
 			isRoomMessage: event.isRoomMessage,
 			content: event.content,
 			date: event.date,
@@ -41,8 +41,7 @@ export const initializeSocketEvents = (
 		message.content = event.content;
 		message.date = event.date;
 		message.isRoomMessage = event.isRoomMessage;
-		message.receiverId = event.receiverId;
-		message.roomId = event.roomId;
+		message.receiverOrRoomId = event.receiverOrRoomId;
 		message.senderId = event.senderId;
 
 		MessagerieService.createMessage(message);
