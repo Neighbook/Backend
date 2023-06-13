@@ -35,6 +35,7 @@ export const environnement = {
 		password: process.env.DATABASE_PASSWORD || 'postgres',
 		users_service_database: process.env.DATABASE_SERVICE_USER || 'users',
 		social_service_database: process.env.DATABASE_SERVICE_SOCIAL || 'social',
+		messagerie_service_database: process.env.DATABASE_SERVICE_MESSAGERIE || 'messagerie',
 		use_ssl: Boolean(process.env.DATABASE_USE_SSL) || false,
 		logging: Boolean(process.env.DATABASE_LOGGING) || false,
 		synchronize: Boolean(process.env.DATABASE_SYNCHRONIZE) || false,

@@ -1,6 +1,10 @@
 export type MessageEventData = {
 	roomId: string;
-	message: string;
+	senderId: string;
+	receiverId: string;
+	isRoomMessage: boolean;
+	content: string;
+	date: Date;
 };
 
 export type ConnectionEventData = {
@@ -8,9 +12,11 @@ export type ConnectionEventData = {
 	receiverId: string;
 };
 
+export type GroupConnectionEventData = {
+	roomId: string;
+};
+
 export type RoomCreatedEventData = {
-	senderId: string;
-	receiverId: string;
 	roomId: string;
 };
 
@@ -22,6 +28,7 @@ export type ServerToClientEvents = {
 
 export type ClientToServerEvents = {
 	connectToSomeone: (event: ConnectionEventData) => void;
+	connectToGroup: (event: GroupConnectionEventData) => void;
 	messageSended: (event: MessageEventData) => void;
 };
 
