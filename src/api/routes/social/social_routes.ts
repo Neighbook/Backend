@@ -8,6 +8,7 @@ import { EventService } from '../../../services/social/event_service';
 import { FollowService } from '../../../services/social/follow_service';
 import { PostService, formatPost } from '../../../services/social/post_service';
 import { ReactionService } from '../../../services/social/reactions_service';
+import { StoryService, formatStory } from '../../../services/social/story_service';
 import { imageRoutes } from './image_routes';
 
 export const _socialRoutes = express.Router();
@@ -411,6 +412,48 @@ _socialRoutes.patch('/reaction', async (req: express.Request, res: express.Respo
 		);
 	} else {
 		res.status(400).json('provide id');
+	}
+});
+
+// Story routes
+_socialRoutes.get('/story', async (req: express.Request, res: express.Response) => {
+	// #swagger.tags = ['Social']
+	// #swagger.description = 'Endpoint to get a story details'
+	// #swagger.summary = 'Get a story'
+	if (req.query.id) {
+		const story = await StoryService.getStory(req.query.id.toString());
+		if (story !== null) {
+			res.status(200).json(await formatStory(story));
+		} else {
+			res.status(404).send();
+		}
+	} else {
+		res.status(400).json('provide id');
+	}
+});
+
+_socialRoutes.post('/story', async (req: express.Request, res: express.Response) => {
+	// #swagger.tags = ['Social']
+	// #swagger.description = 'Endpoint to create a story.'
+	// #swagger.summary = 'Create a story'
+	if (req.body.user._user_id) {
+		StoryService.saveStory(req.body.user._user_id, JSON.stringify(req.body.instaStoryObject));
+		res.status(200);
+	} else {
+		res.status(400).json('invalid fields');
+	}
+});
+
+_socialRoutes.delete('/story', async (req: express.Request, res: express.Response) => {
+	// #swagger.tags = ['Social']
+	// #swagger.description = 'Endpoint to delete a story.'
+	// #swagger.summary = 'Delete a story'
+	if (req.query.id) {
+		StoryService.deleteStory(req.query.id.toString(), req.body.user._user_id).then(() =>
+			res.status(200).send()
+		);
+	} else {
+		res.status(400).json('invalid fields');
 	}
 });
 
