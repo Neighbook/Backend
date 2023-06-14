@@ -9,7 +9,6 @@ export class MessagerieService {
 	static async getRoomMessages(senderId: string, receiverOrRoomId: string): Promise<Message[] | null> {
 		const messages = await messageRepository.find({
 			where: {
-				senderId,
 				receiverOrRoomId,
 			},
 		});
