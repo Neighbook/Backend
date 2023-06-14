@@ -276,12 +276,14 @@ _socialRoutes.post('/follow', async (req: express.Request, res: express.Response
 	// #swagger.tags = ['Social']
 	// #swagger.description = 'Endpoint to follow a user.'
 	// #swagger.summary = 'Follow a user'
-	if (req.body.idToFollow && req.body.user._user_id) {
+	if (!req.body.idToFollow) {
+		res.status(400).json('invalid fields');
+	} else if (req.body.idToFollow === req.body.user._user_id) {
+		res.status(403).json('cannot self-follow');
+	} else {
 		FollowService.createFollow(req.body.user._user_id, req.body.idToFollow).then(() =>
 			res.status(200).send()
 		);
-	} else {
-		res.status(400).json('invalid fields');
 	}
 });
 
@@ -346,15 +348,17 @@ _socialRoutes.post('/block', async (req: express.Request, res: express.Response)
 	// #swagger.tags = ['Social']
 	// #swagger.description = 'Endpoint to block a user.'
 	// #swagger.summary = 'Block a user'
-	if (req.body.idToBlock && req.body.user._user_id) {
+	if (!req.body.idToBlock) {
+		res.status(400).json('invalid fields');
+	} else if (req.body.idToBlock === req.body.user._user_id) {
+		res.status(403).json('cannot self-block');
+	} else {
 		BlockService.createBlock(req.body.user._user_id, req.body.idToBlock)
 			.then(() => res.status(200).send())
 			.catch((error) => {
 				logger.error(error);
 				res.status(500).send();
 			});
-	} else {
-		res.status(400).json('invalid fields');
 	}
 });
 
