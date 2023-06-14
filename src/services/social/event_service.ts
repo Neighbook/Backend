@@ -22,6 +22,19 @@ export class EventService {
 		return event;
 	}
 
+	static async getAllEvents(): Promise<Event[] | null> {
+		return await this.repository.find({
+			select: {
+				id: true,
+				titre: true,
+				adresse: true,
+				dateDeCreation: true,
+				latitude: true,
+				longitude: true,
+			},
+		});
+	}
+
 	static async createEvent(title: string, eventDate: Date, location: string): Promise<Event | null> {
 		const event = new Event();
 		let response: Event | null = null;

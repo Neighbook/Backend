@@ -3,6 +3,8 @@ import 'reflect-metadata';
 import { DataSource } from 'typeorm';
 
 import { environnement } from '../../config/environnement';
+import { GroupRoom } from '../../models/messagerie/GroupRoom';
+import { Message } from '../../models/messagerie/Message';
 import { Abonnement } from '../../models/social/Abonnement';
 import { Block } from '../../models/social/Block';
 import { Comment } from '../../models/social/Comment';
@@ -43,6 +45,21 @@ export const SocialDataSource = new DataSource({
 	logging: environnement.database.logging,
 	ssl: environnement.database.use_ssl,
 	entities: [Abonnement, Block, Comment, Event, Follow, Image, Post, PostReaction, Story],
+	connectTimeoutMS: environnement.database.timeout,
+	migrations: [],
+	subscribers: [],
+});
+export const MessagerieDataSource = new DataSource({
+	type: 'postgres',
+	host: environnement.database.host,
+	port: environnement.database.port,
+	username: environnement.database.username,
+	password: environnement.database.password,
+	database: environnement.database.messagerie_service_database,
+	synchronize: environnement.database.synchronize,
+	logging: environnement.database.logging,
+	ssl: environnement.database.use_ssl,
+	entities: [Message, GroupRoom],
 	connectTimeoutMS: environnement.database.timeout,
 	migrations: [],
 	subscribers: [],
