@@ -60,6 +60,7 @@ export class BlockService {
 		return SocialDataSource.manager.transaction(async (transactionalEntityManager) => {
 			await transactionalEntityManager.save(block);
 			await transactionalEntityManager.delete(Follow, { idUtilisateur: id, idUtilisateurSuivi: idToBlock });
+			await transactionalEntityManager.delete(Follow, { idUtilisateur: idToBlock, idUtilisateurSuivi: id });
 		});
 	}
 
