@@ -8,12 +8,16 @@ export const groupRoomRepository: Repository<GroupRoom> =
 
 export class GroupRoomService {
 	static async getGroups(idUser: string): Promise<GroupRoom[] | null> {
-		const groups = await groupRoomRepository.find({
-			where: {
-				idUtilisateurs: idUser,
-			},
-		});
+		// const groups = await groupRoomRepository.find({
+		// 	where: {
+		// 		idUtilisateurs: idUser,
+		// 	},
+		// });
 
+		const groups = await groupRoomRepository
+			.createQueryBuilder('grouproom')
+			.where('grouproom.idUtilisateurs like :idUsers', { idUsers: `%${idUser}%` })
+			.getMany();
 		return groups;
 	}
 	static async createGroup(name: string, idUtilisateurs: string[]): Promise<any> {
