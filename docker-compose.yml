@@ -41,6 +41,8 @@ services:
         - DATABASE_SYNCHRONIZE=true
         - API_PORT=3000
         - API_HOST=http://localhost/api/v0
+    volumes:
+      - node_modules:/node_modules
     ports:
       - '3000:3000'
     restart: always
@@ -63,3 +65,4 @@ services:
 
 volumes:
   pgadmin_data:
+  node_modules:

@@ -26,7 +26,7 @@ export class StoryService {
 			.getOne();
 	}
 
-	static async saveStory(idUtilisateur: string, instaStoryObject: any): Promise<Post> {
+	static async saveStory(idUtilisateur: string, instaStoryObject: any): Promise<Story> {
 		const story = new Story();
 		story.idUtilisateur = idUtilisateur;
 		story.instaStoryObject = instaStoryObject;
