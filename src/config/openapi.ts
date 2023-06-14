@@ -16,7 +16,7 @@ export const metadata = {
 		},
 	},
 	host: environnement.api_host + ':' + environnement.api_port,
-  basePath: '/api' + environnement.api_base_path + 'v' + environnement.api_version[0],
+	basePath: '/api' + environnement.api_base_path + 'v' + environnement.api_version[0],
 	servers: [
 		{
 			description: 'Local server',
